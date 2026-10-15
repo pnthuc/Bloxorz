@@ -165,6 +165,8 @@ def run_all_tests():
                 assert isinstance(result, dict) and required <= result.keys(), 'Sai schema kết quả'
                 assert type(result['found']) is bool and isinstance(result['moves'], list), 'Sai kiểu found/moves'
                 assert type(result['expanded_nodes']) is int and result['expanded_nodes'] >= 0, 'Sai expanded_nodes'
+                if not b.is_goal(b.get_initial_state()):
+                    assert result['expanded_nodes'] > 0, 'expanded_nodes phải > 0 khi đã mở rộng trạng thái; kiểm tra tên key trả về'
                 for key in ('search_time_ms','memory_kb','total_cost'):
                     assert math.isfinite(result[key]) and result[key] >= 0, 'Sai metric '+key
                 assert result['found'] == case['solvable'], 'Sai found'

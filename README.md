@@ -1,5 +1,7 @@
 # Bloxorz
 
+[![Bloxorz CI](https://github.com/pnthuc/Bloxorz/actions/workflows/ci.yml/badge.svg)](https://github.com/pnthuc/Bloxorz/actions/workflows/ci.yml)
+
 Đọc **Giao_viec_Bloxorz.pdf** trước khi bắt đầu. Đây là source bàn giao để nhóm tự hoàn thiện thuật toán, không phải bài nộp đã hoàn chỉnh.
 
 ## Phân công

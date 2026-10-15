@@ -29,10 +29,17 @@ let dom;
   w.HTMLCanvasElement.prototype.setPointerCapture=function(){};
   const errors=[];w.addEventListener('error',e=>errors.push(e.message));
   let moves=[],solveDelay=0,moveFailure=false,inflight=0,maxInflight=0,mockSolvers=false;
+  let solverUnavailable=true;
   const walkthroughs=JSON.parse(fs.readFileSync(path.join(root,'tests/walkthroughs.json'),'utf8'));
   // Canned API responses exercise replay UI only; they are NOT solver implementations.
   w.fetch=async(url,options={})=>{
     if(url==='/api/solve'&&solveDelay)await sleep(solveDelay);
+    // Exercise the unavailable-solver UI independently of real solver progress.
+    // Flask's real 501 response is covered by test_game_logic.py.
+    if(url==='/api/solve'&&solverUnavailable){
+      return new Response(JSON.stringify({error:'Thuật toán chưa hoàn thiện (fixture).',
+        code:'SOLVER_NOT_IMPLEMENTED'}),{status:501});
+    }
     if(url==='/api/solve'&&mockSolvers){
       const id=JSON.parse(options.body).level_id,actions=walkthroughs[id];
       return new Response(JSON.stringify({found:true,moves:actions,solution_length:actions.length,
@@ -106,10 +113,10 @@ let dom;
   console.log('PASS: thin bevel geometry, outward normals and square split-cube maps');
   console.log('PASS: initial UI, perspective scene, separate PBR maps, no emoji');
   d.querySelector('[data-solver="bfs"]').click();
-  await wait(()=>el('status-toast').textContent.includes('thành viên 2'),'pending solver notice');
+  await wait(()=>el('status-toast').textContent.includes('chưa hoàn thiện'),'pending solver notice');
   assert.equal(count(),0);assert.equal(el('playback').hidden,true);
   console.log('PASS: unimplemented solver reports 501 clearly; manual play remains available');
-  mockSolvers=true;await reset();
+  solverUnavailable=false;mockSolvers=true;await reset();
   tap('Space');await sleep(70);assert.equal(count(),0);assert.equal(moves.length,0);
   tap('KeyD');tap('ArrowDown');await wait(()=>count()===2,'queued WASD and arrow');
   assert.equal(moves[0].request.action,'RIGHT');assert.equal(moves[1].request.action,'DOWN');

@@ -1,0 +1,118 @@
+name: Bloxorz CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  engine:
+    name: Engine / Python ${{ matrix.python }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.10", "3.12"]
+    defaults:
+      run:
+        working-directory: Src
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+          cache-dependency-path: Src/requirements.txt
+      - name: Install Python dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Test game rules and Flask API
+        run: python -m unittest discover -s tests -p "test_*.py" -v
+
+  solvers:
+    name: Solver / ${{ matrix.solver }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        solver: [bfs, dfs, ucs, astar]
+    defaults:
+      run:
+        working-directory: Src
+    env:
+      SOLVER: ${{ matrix.solver }}
+      # Set to "true" once all four solvers must be complete.
+      REQUIRE_COMPLETE_SOLVERS: "false"
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: Src/requirements.txt
+      - name: Install Python dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Test solver and report pending work
+        shell: bash
+        run: |
+          set +e
+          python -u test_solvers.py --solver "$SOLVER" > solver-results.txt 2>&1
+          result=$?
+          set -e
+          cat solver-results.txt
+          {
+            printf '### Solver: %s\n\n' "$SOLVER"
+            printf '```text\n'
+            tail -n 1 solver-results.txt
+            printf '\n```\n'
+          } >> "$GITHUB_STEP_SUMMARY"
+          case "$result" in
+            0) ;;
+            2)
+              echo "::warning::${SOLVER} has PENDING cases; it is not complete."
+              if [ "$REQUIRE_COMPLETE_SOLVERS" = "true" ]; then
+                echo "::error::All solvers must be complete in strict mode."
+                exit 1
+              fi
+              ;;
+            *) exit "$result" ;;
+          esac
+
+  ui:
+    name: UI / DOM and Three.js
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: Src/requirements.txt
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: Src/tests/package-lock.json
+      - name: Install Python dependencies
+        run: python -m pip install -r Src/requirements.txt
+      - name: Install frontend test dependencies
+        working-directory: Src/tests
+        run: npm ci
+      - name: Check JavaScript syntax
+        run: |
+          node --check Src/static/js/materials.js
+          node --check Src/static/js/scene.js
+          node --check Src/static/js/game.js
+          node --check Src/tests/test_ui.cjs
+      - name: Test input, API replay and 3D transforms
+        working-directory: Src/tests
+        run: npm test
