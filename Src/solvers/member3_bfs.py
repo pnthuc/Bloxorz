@@ -27,11 +27,11 @@ def _bfs_core(board: BloxorzBoard) -> Dict[str, Any]:
     
     queue = deque([start_state])
     parent = {start_state: None}
-    expended_nodes = 0
+    expanded_nodes = 0
     
     while queue :
         current = queue.popleft()
-        expended_nodes += 1
+        expanded_nodes += 1
         
         for action, nxt in board.get_successors(current):
             if nxt in parent:
@@ -50,7 +50,7 @@ def _bfs_core(board: BloxorzBoard) -> Dict[str, Any]:
                 return {
                     "found" : True,
                     "moves" : moves,
-                    "expended_nodes" : expended_nodes,
+                    "expanded_nodes" : expanded_nodes,
                     "total_cost" : len(moves),
                     
                 }
@@ -58,7 +58,7 @@ def _bfs_core(board: BloxorzBoard) -> Dict[str, Any]:
     return {
         "found" : False,
         "moves" : [],
-        "expended_nodes" : 0,
+        "expanded_nodes" : expanded_nodes,
         "total_cost" : 0
     }
 
