@@ -8,9 +8,9 @@
 | --- | --- | --- | --- |
 | Phan Ngọc Thức | 24120228 | Game engine, UI, levels và testcase | `Src/game_logic.py`, `main.py`, `static/`, `templates/`, `levels/`, `tests/`, `test_solvers.py` |
 | Nguyễn Lê Minh Quân | 24120219 | DFS | `Src/solvers/member2_dfs.py` |
-| Bùi Phương Nam | 24120502 | BFS | `Src/solvers/member3_bfs.py` |
-| Phan Gia Phúc | 24120503 | UCS | `Src/solvers/member4_ucs.py` |
-| Tống Phúc Thiện | 24120141 | A* và heuristic | `Src/solvers/member5_astar.py` |
+| Bùi Phương Nam | 24120502 | BFS | `Src/solvers/member3_bfs.py` |\
+| Tống Phúc Thiện | 24120141 | A* và heuristic | `Src/solvers/member4_astar.py` |
+| Phan Gia Phúc | 24120503 | UCS | `Src/solvers/member5_ucs.py` |
 
 ## Chạy game
 
