@@ -1,4 +1,4 @@
-# Bloxorz - bộ khung làm nhóm 4 người
+# Bloxorz
 
 Đọc **Giao_viec_Bloxorz.pdf** trước khi bắt đầu. Đây là source bàn giao để nhóm tự hoàn thiện thuật toán, không phải bài nộp đã hoàn chỉnh.
 
