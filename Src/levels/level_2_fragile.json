@@ -1,0 +1,18 @@
+{
+  "id": "2",
+  "name": "Stage 2: Fragile Path",
+  "difficulty": "Medium (Fragile Orange Tiles)",
+  "start_pos": [
+    2,
+    1
+  ],
+  "initial_bridges": [],
+  "switches": {},
+  "grid": [
+    [1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 2, 2, 2, 2, 1, 9, 1],
+    [1, 1, 2, 2, 2, 2, 1, 1, 1],
+    [0, 0, 0, 0, 0, 0, 1, 1, 1]
+  ]
+}
