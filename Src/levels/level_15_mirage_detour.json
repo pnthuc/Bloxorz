@@ -1,0 +1,114 @@
+{
+  "id": "15",
+  "name": "Ảo ảnh khoảng cách",
+  "display_name": "Challenge 03: Ảo ảnh khoảng cách",
+  "description": "Đích chỉ cách 2 ô nhưng bị ngăn bởi vực; phải đi một vòng chữ U khổng lồ để bật switch nặng.",
+  "difficulty": "Cực khó (A* Heuristic Trap)",
+  "start_pos": [
+    0,
+    0
+  ],
+  "initial_bridges": [
+    false
+  ],
+  "switches": {
+    "8,3": {
+      "behavior": "open",
+      "targets": [
+        0
+      ]
+    }
+  },
+  "grid": [
+    [
+      1,
+      1,
+      1,
+      0,
+      0,
+      1,
+      1,
+      9
+    ],
+    [
+      1,
+      1,
+      1,
+      10,
+      10,
+      1,
+      1,
+      1
+    ],
+    [
+      1,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0
+    ],
+    [
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      0
+    ],
+    [
+      0,
+      0,
+      1,
+      1,
+      1,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      1,
+      4,
+      1,
+      0,
+      0,
+      0
+    ]
+  ]
+}

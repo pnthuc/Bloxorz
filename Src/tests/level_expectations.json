@@ -46,5 +46,77 @@
   "12": {
     "bfs_moves": 30,
     "ucs_cost": 34.0
+  },
+  "13": {
+    "bfs_moves": 25,
+    "ucs_cost": 25.0
+  },
+  "14": {
+    "bfs_moves": 20,
+    "ucs_cost": 32.0
+  },
+  "15": {
+    "bfs_moves": 39,
+    "ucs_cost": 39.0
+  },
+  "16": {
+    "bfs_moves": 38,
+    "ucs_cost": 38.0
+  },
+  "17": {
+    "bfs_moves": 24,
+    "ucs_cost": 24.0
+  },
+  "18": {
+    "bfs_moves": 20,
+    "ucs_cost": 20.0
+  },
+  "19": {
+    "bfs_moves": 33,
+    "ucs_cost": 77.0
+  },
+  "20": {
+    "bfs_moves": 21,
+    "ucs_cost": 21.0
+  },
+  "21": {
+    "bfs_moves": 14,
+    "ucs_cost": 14.0
+  },
+  "22": {
+    "bfs_moves": 24,
+    "ucs_cost": 26.0
+  },
+  "23": {
+    "bfs_moves": 28,
+    "ucs_cost": 28.0
+  },
+  "24": {
+    "bfs_moves": 43,
+    "ucs_cost": 43.0
+  },
+  "25": {
+    "bfs_moves": 57,
+    "ucs_cost": 57.0
+  },
+  "26": {
+    "bfs_moves": 54,
+    "ucs_cost": 54.0
+  },
+  "27": {
+    "bfs_moves": 73,
+    "ucs_cost": 73.0
+  },
+  "28": {
+    "bfs_moves": 58,
+    "ucs_cost": 58.0
+  },
+  "29": {
+    "bfs_moves": 48,
+    "ucs_cost": 48.0
+  },
+  "30": {
+    "bfs_moves": 56,
+    "ucs_cost": 56.0
   }
 }

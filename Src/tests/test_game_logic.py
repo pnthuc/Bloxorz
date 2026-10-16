@@ -218,7 +218,7 @@ class LevelAndApiTests(unittest.TestCase):
         cls.expected = json.loads((Path(__file__).parent / 'level_expectations.json').read_text())
 
     def test_twelve_levels_numeric_order(self):
-        self.assertEqual(list(self.levels), [str(n) for n in range(1, 13)])
+        self.assertEqual(list(self.levels), [str(n) for n in range(1, len(self.levels) + 1)])
 
     def test_level_data_and_switch_targets(self):
         for id, lv in self.levels.items():
@@ -261,7 +261,7 @@ class LevelAndApiTests(unittest.TestCase):
 
     def test_api_level_catalog_and_each_level(self):
         response = self.client.get('/api/levels')
-        self.assertEqual(response.status_code, 200); self.assertEqual(len(response.json), 12)
+        self.assertEqual(response.status_code, 200); self.assertEqual(len(response.json), len(self.levels))
         self.assertEqual(response.json['12']['display_name'], 'Hành trình liên hoàn')
         for id in self.levels:
             with self.subTest(level=id):
