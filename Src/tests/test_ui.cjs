@@ -16,7 +16,18 @@ async function wait(check, label, timeout=12000) {
 }
 let dom;
 (async()=>{
-  for(let i=0;i<60;i++){try{await fetch('http://127.0.0.1:5001/api/levels');break;}catch{await sleep(100);}}
+  let catalog=null;
+  for(let i=0;i<60;i++){
+    try{
+      const response=await fetch('http://127.0.0.1:5001/api/levels');
+      if(response.ok){catalog=await response.json();break;}
+    }catch{}
+    await sleep(100);
+  }
+  assert(catalog,'Flask did not return a level catalog');
+  const levelIds=Object.keys(catalog);
+  assert(levelIds.length>0,'The level catalog must not be empty');
+  const stageNumber=id=>`MÀN ${String(levelIds.indexOf(id)+1).padStart(2,'0')} / ${String(levelIds.length).padStart(2,'0')}`;
   const html=fs.readFileSync(path.join(root,'templates/index.html'),'utf8');
   dom=new JSDOM(html,{runScripts:'outside-only',pretendToBeVisual:true,url:'http://127.0.0.1:5001/'});
   const w=dom.window,d=w.document;
@@ -74,10 +85,11 @@ let dom;
   };
   const tap=code=>{key(code);key(code,'keyup')};
   const click=id=>el(id).click();
-  const ready=()=>el('loading').hidden&&el('level-select').options.length===12&&el('status-toast').textContent.includes('WASD');
+  const ready=()=>el('loading').hidden&&el('level-select').options.length===levelIds.length&&el('status-toast').textContent.includes('WASD');
   async function reset(){tap('KeyR');await wait(()=>count()===0&&ready(),'restart');}
   async function select(value){el('level-select').value=value;el('level-select').dispatchEvent(new w.Event('change',{bubbles:true}));await wait(()=>ready()&&el('level-select').value===value,'select '+value);}
   await wait(ready,'initial load');
+  assert.deepEqual(Array.from(el('level-select').options,option=>option.value),levelIds);
   assert.equal(scene.camera.isPerspectiveCamera,true);assert.equal(scene.renderer.shadowMap.enabled,false);
   for(const m of [scene.materials.stone[0],scene.materials.fragile,scene.materials.copper,scene.materials.cube]){
     assert(m.map&&m.normalMap&&m.roughnessMap);assert.notEqual(m.map,m.normalMap);
@@ -86,7 +98,7 @@ let dom;
   assert.equal(scene.materials.cube.map.image.width,scene.materials.cube.map.image.height);
   assert.equal(scene.materials.copper.map.image.height,2*scene.materials.copper.map.image.width);
   assert.equal(/\p{Extended_Pictographic}/u.test(d.body.textContent),false);
-  assert.equal(el('stage-number').textContent,'MÀN 01 / 12');
+  assert.equal(el('stage-number').textContent,stageNumber('1'));
   assert.equal(el('level-difficulty').textContent,'Cơ bản');
   // Thin beveled geometry must stay finite, convex and outward-facing.
   for(const dims of [[.78,.024,.78,.015],[.86,.032,.018,.007],[.94,1.94,.94,.055]]){
@@ -200,7 +212,7 @@ let dom;
   console.log('PASS: bridge closure drops only unsupported split cube');
   await select('12');
   assert.equal(el('stage-title').textContent,'Hành trình liên hoàn');
-  assert.equal(el('stage-number').textContent,'MÀN 12 / 12');
+  assert.equal(el('stage-number').textContent,stageNumber('12'));
   assert.equal(el('level-difficulty').textContent,'Thử thách');
   assert.equal(el('level-summary').textContent,el('stage-description').textContent);
   for(const bridge of scene.bridgeGroups.values())assert(bridge.every(group=>!group.visible));
