@@ -33,7 +33,7 @@ def heuristic(board: BloxorzBoard, state: State, goal_pos: Tuple[int, int]) -> f
     """
     if board.is_goal(state):
         return 0.0
-
+    
     # Lấy tọa độ vị trí hiện tại
     cells = state.get_occupied_cells()
     if not cells:
