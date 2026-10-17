@@ -120,7 +120,7 @@ def verify_solution_walk(board: BloxorzBoard, moves: List[str]) -> Tuple[bool, s
                 f"Bước thứ {idx + 1} ('{action}') không hợp lệ (rơi khỏi sàn hoặc vỡ gạch cam)!",
                 total_cost
             )
-        total_cost += 1 + 2 * sum(board.grid[r][c] == 2 for r, c in next_state.get_occupied_cells())
+        total_cost += 1 + 0.5 * sum(board.grid[r][c] == 2 for r, c in next_state.get_occupied_cells())
         state = next_state
 
     if not board.is_goal(state):
@@ -149,7 +149,7 @@ def run_all_tests():
     # Boundary fixture: no action is needed when starting at the goal.
     cases.append({'title':'T10 - Start already at goal', 'solvable':True, 'expected_bfs_len':0,
                   'level':{'id':'T10','name':'Start goal','grid':[[9]],'start_pos':[0,0]}})
-    fixture_costs = {'T1':7,'T2':8,'T3':17,'T5':2,'T7':4,'T8':4,'T10':0}
+    fixture_costs = {'T1':7,'T2':7.5,'T3':17,'T5':2,'T7':4,'T8':4,'T10':0}
     for case in cases:
         case['expected_ucs_cost'] = fixture_costs.get(case['level']['id'])
     for id, lv in load_all_levels().items():

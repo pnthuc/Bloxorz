@@ -5,7 +5,7 @@
   },
   "2": {
     "bfs_moves": 6,
-    "ucs_cost": 8.0
+    "ucs_cost": 7.5
   },
   "3": {
     "bfs_moves": 15,
@@ -13,7 +13,7 @@
   },
   "4": {
     "bfs_moves": 17,
-    "ucs_cost": 19.0
+    "ucs_cost": 17.5
   },
   "5": {
     "bfs_moves": 12,
@@ -21,7 +21,7 @@
   },
   "6": {
     "bfs_moves": 8,
-    "ucs_cost": 16.0
+    "ucs_cost": 10.0
   },
   "7": {
     "bfs_moves": 11,
@@ -45,7 +45,7 @@
   },
   "12": {
     "bfs_moves": 30,
-    "ucs_cost": 34.0
+    "ucs_cost": 31.0
   },
   "13": {
     "bfs_moves": 25,
@@ -53,7 +53,7 @@
   },
   "14": {
     "bfs_moves": 20,
-    "ucs_cost": 32.0
+    "ucs_cost": 23.0
   },
   "15": {
     "bfs_moves": 39,
@@ -73,7 +73,7 @@
   },
   "19": {
     "bfs_moves": 33,
-    "ucs_cost": 77.0
+    "ucs_cost": 44.0
   },
   "20": {
     "bfs_moves": 21,
@@ -85,7 +85,7 @@
   },
   "22": {
     "bfs_moves": 24,
-    "ucs_cost": 26.0
+    "ucs_cost": 24.5
   },
   "23": {
     "bfs_moves": 28,
@@ -121,7 +121,7 @@
   },
   "31": {
     "bfs_moves": 9,
-    "ucs_cost": 13.0
+    "ucs_cost": 10.0
   },
   "32": {
     "bfs_moves": 6,
