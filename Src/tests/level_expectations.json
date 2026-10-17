@@ -118,5 +118,13 @@
   "30": {
     "bfs_moves": 56,
     "ucs_cost": 56.0
+  },
+  "31": {
+    "bfs_moves": 9,
+    "ucs_cost": 13.0
+  },
+  "32": {
+    "bfs_moves": 6,
+    "ucs_cost": 6.0
   }
 }
