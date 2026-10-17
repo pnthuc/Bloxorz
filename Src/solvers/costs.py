@@ -6,4 +6,4 @@ from game_logic import BloxorzBoard, State, FRAGILE
 
 
 def step_cost(board: BloxorzBoard, current_state: State, action: str, next_state: State) -> float:
-    return float(1 + 2 * sum(board.grid[r][c] == FRAGILE for r, c in next_state.get_occupied_cells()))
+    return float(1 + 0.5 * sum(board.grid[r][c] == FRAGILE for r, c in next_state.get_occupied_cells()))
