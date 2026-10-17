@@ -32,7 +32,7 @@ def run_benchmarks():
                 res = solver_fn(board)
             except NotImplementedError as error:
                 print(f"PENDING: {error}")
-                print("Hoàn thiện cả 4 thuật toán và chạy test_solvers.py trước khi đo so sánh.")
+                print("Hoàn thiện cả 4 thuật toán và chạy run_tests.py trước khi đo so sánh.")
                 return False
             summary[algo_name]["time"].append(res["search_time_ms"])
             summary[algo_name]["mem"].append(res["memory_kb"])

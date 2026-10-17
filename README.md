@@ -8,7 +8,7 @@
 
 | Họ và tên | MSSV | Phạm vi | File chính |
 | --- | --- | --- | --- |
-| Phan Ngọc Thức | 24120228 | Game engine, UI, levels và testcase | `Src/game_logic.py`, `main.py`, `static/`, `templates/`, `levels/`, `tests/`, `test_solvers.py` |
+| Phan Ngọc Thức | 24120228 | Game engine, UI, levels và testcase | `Src/game_logic.py`, `main.py`, `static/`, `templates/`, `levels/`, `tests/`, `run_tests.py` |
 | Nguyễn Lê Minh Quân | 24120219 | DFS | `Src/solvers/member2_dfs.py` |
 | Bùi Phương Nam | 24120502 | BFS | `Src/solvers/member3_bfs.py` |
 | Tống Phúc Thiện | 24120141 | A* và heuristic | `Src/solvers/member4_astar.py` |
@@ -48,43 +48,37 @@ Các thành viên dùng chung:
 - `get_initial_state()`, `is_goal(state)`, `get_successors(state)` và `apply_move(state, action)` của engine.
 - `State` bất biến, hash được, gồm tọa độ, hướng, trạng thái cầu và khối đang điều khiển.
 - `solvers/base.py`: wrapper đo thời gian và bộ nhớ đỉnh; không chứa thuật toán tìm kiếm.
-- `solvers/costs.py`: chi phí cố định cho UCS/A*: 1 + 2 cho mỗi ô cam bị chiếm ở trạng thái tiếp theo, kể cả Space. BFS/DFS dùng số hành động làm total_cost.
+- `solvers/costs.py`: chi phí chung cho UCS/A*: 1 + 0.5 cho mỗi ô cam bị chiếm ở trạng thái tiếp theo, kể cả Space. BFS/DFS dùng số hành động làm total_cost.
 
-Đổi schema, State hoặc cost phải trao đổi với nhóm và cập nhật test tương ứng. Không dùng `tests/walkthroughs.json` để trả lời solver: đó chỉ là đường đi mẫu kiểm tra engine/UI.
+Đổi schema, State hoặc cost phải trao đổi với nhóm và cập nhật test tương ứng. Toàn bộ kỳ vọng và đường đi mẫu nằm trong **một file** `Src/tests/test_cases.json`. Board của map thật được tham chiếu theo ID từ `Src/levels/`; các board nhỏ chỉ phục vụ test được khai báo ngay trong ca tương ứng.
 
 ## Chạy kiểm thử
 
-Từ `Src`:
+Từ `Src`, chạy các test nền rồi gọi cả bốn solver trên toàn bộ 43 ca:
+
+```bash
+python run_tests.py
+```
+
+Chọn một solver hoặc một số ID:
+
+```bash
+python run_tests.py --solver bfs
+python run_tests.py --solver dfs
+python run_tests.py --solver ucs
+python run_tests.py --solver astar
+python run_tests.py --solver ucs --cases T5 T10 33
+```
+
+`--cases` lọc các lượt chạy solver; các kiểm tra nền vẫn chạy đầy đủ.
+Để chỉ chạy test nền, không tìm kiếm trên các map lớn:
 
 ```bash
 python -m unittest discover -s tests -p "test_*.py" -v
-python test_solvers.py --solver bfs
-python test_solvers.py --solver dfs
-python test_solvers.py --solver ucs
-python test_solvers.py --solver astar
-python test_solvers.py
 ```
 
-- Engine/API: 38 test, chạy độc lập với solver.
-- Solver: 10 fixture + 12 màn = 22 ca cho mỗi thuật toán, 88 ca khi chạy tất cả.
-- Mã thoát solver: **0 = tất cả PASS; 1 = có FAIL; 2 = còn TODO/PENDING**.
-- Ở bản bàn giao này, 88 PENDING là đúng vì nhóm chưa cài đặt thuật toán. Không ghi là 88 PASS.
-- Bộ test kiểm tra schema, đường đi, đích, số bước BFS, cost UCS/A*, các mốc biên và điều kiện cơ bản của heuristic. Test hữu hạn không thay thế chứng minh heuristic.
-
-Test giao diện tùy chọn, cần Node.js 18+ và Python đã cài Flask:
+UI cần Node.js 18+ và `npm ci` trong `Src/tests` một lần. Sau đó, từ `Src`:
 
 ```bash
-cd tests
-npm install
-npm test
+python run_tests.py --ui
 ```
-
-Test tự mở Flask ở cổng 5001. Có thể đặt biến `PYTHON` trỏ tới Python trong môi trường ảo. Solver response dùng fixture để kiểm tra replay, không phải thuật toán thật; phần render GPU được giả lập, còn Three.js geometry/quaternion và API nước đi chạy thật.
-
-Sau khi cả bốn thuật toán hoàn thiện:
-
-```bash
-python experiments.py
-```
-
-Script in bảng đo và xuất `experiments_comparison.png`. Đây là công cụ hỗ trợ; phần phân tích thực nghiệm và người làm báo cáo/video vẫn cần nhóm thống nhất.

@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   engine:
-    name: Engine / Python ${{ matrix.python }}
+    name: Core tests / Python ${{ matrix.python }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     strategy:
@@ -33,7 +33,7 @@ jobs:
           cache-dependency-path: Src/requirements.txt
       - name: Install Python dependencies
         run: python -m pip install -r requirements.txt
-      - name: Test game rules and Flask API
+      - name: Test engine, API, case data and runner contracts
         run: python -m unittest discover -s tests -p "test_*.py" -v
 
   solvers:
@@ -64,7 +64,7 @@ jobs:
         shell: bash
         run: |
           set +e
-          python -u test_solvers.py --solver "$SOLVER" > solver-results.txt 2>&1
+          python -u run_tests.py --solver "$SOLVER" > solver-results.txt 2>&1
           result=$?
           set -e
           cat solver-results.txt
