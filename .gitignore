@@ -6,3 +6,16 @@ node_modules/
 .env
 *.log
 .DS_Store
+
+# Office temporary files and local submission package
+~$*
+/submission/
+
+# Original video and editor projects: keep scripts/subtitles/URLs in Git
+/handoff/phuc/video/*.mp4
+/handoff/phuc/video/*.mov
+/handoff/phuc/video/*.mkv
+/handoff/phuc/video/*.webm
+/handoff/phuc/video/*.avi
+/handoff/phuc/video/*.prproj
+/handoff/phuc/video/*.drp

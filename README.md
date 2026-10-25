@@ -2,7 +2,7 @@
 
 [![Bloxorz CI](https://github.com/pnthuc/Bloxorz/actions/workflows/ci.yml/badge.svg)](https://github.com/pnthuc/Bloxorz/actions/workflows/ci.yml)
 
-Đọc **Giao_viec_Bloxorz.pdf** trước khi bắt đầu. Đây là source bàn giao để nhóm tự hoàn thiện thuật toán, không phải bài nộp đã hoàn chỉnh.
+Repo gồm game Bloxorz, bốn solver và bộ kiểm thử. Phần việc thực nghiệm, báo cáo, video và quy trình bàn giao hiện tại nằm trong [handoff/README.md](handoff/README.md).
 
 ## Phân công
 
@@ -13,6 +13,18 @@
 | Bùi Phương Nam | 24120502 | BFS | `Src/solvers/member3_bfs.py` |
 | Tống Phúc Thiện | 24120141 | A* và heuristic | `Src/solvers/member4_astar.py` |
 | Phan Gia Phúc | 24120503 | UCS | `Src/solvers/member5_ucs.py` |
+
+## Làm tiếp phần thực nghiệm, báo cáo và video
+
+Đọc [quy trình giao việc và đẩy nhánh](handoff/README.md). Mỗi thành viên có README ghi đầu vào, yêu cầu, đầu ra và tiêu chí hoàn thành:
+
+- [Quân — DFS, công cụ đo và CSV](handoff/quan/README.md).
+- [Nam — BFS, mô hình hóa và báo cáo tổng](handoff/nam/README.md).
+- [Thiện — A* và heuristic](handoff/thien/README.md).
+- [Phúc — UCS/cost, bảng/biểu đồ, video và source sạch](handoff/phuc/README.md).
+- [Thức — engine/UI, tư liệu và nghiệm thu](handoff/thuc/README.md).
+
+Trước khi đo chính thức, điền [bản code và cách đo dùng chung](handoff/shared/baseline.md). Các thư mục mới là khung bàn giao; chưa có kết quả thực nghiệm hoặc báo cáo được điền sẵn.
 
 ## Chạy game
 
