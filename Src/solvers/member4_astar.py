@@ -104,7 +104,7 @@ def _astar_core(board: BloxorzBoard) -> Dict[str, Any]:
     """
     start_state = board.get_initial_state()
 
-    # Trường hợp biên: vị trí xuất phát đã là đích
+    # Trường hợp vị trí xuất phát đã là đích
     if board.is_goal(start_state):
         return {
             "found": True,
@@ -113,6 +113,7 @@ def _astar_core(board: BloxorzBoard) -> Dict[str, Any]:
             "total_cost": 0.0
         }
 
+    # Trường hợp vị trí đích không hợp lệ
     goal_pos = _find_goal_pos(board)
     if goal_pos == (-1, -1):
         return {
@@ -123,33 +124,33 @@ def _astar_core(board: BloxorzBoard) -> Dict[str, Any]:
         }
 
     h0 = heuristic(board, start_state, goal_pos)
+
+    # tie breaker để so node nào đến trước khi f và h = nhau
     counter = itertools.count()
 
-    # Priority queue lưu các tuple: (f, h, tie_breaker, state)
-    frontier: List[Tuple[float, float, int, State]] = []
-    heapq.heappush(frontier, (h0, h0, next(counter), start_state))
+    # Priority queue lưu các tuple: (f, h, tie breaker, state)
+    pq: List[Tuple[float, float, int, State]] = []
+    heapq.heappush(pq, (h0, h0, next(counter), start_state))
 
     best_g: Dict[State, float] = {start_state: 0.0}
-    parent: Dict[State, Tuple[Optional[State], Optional[str]]] = {start_state: (None, None)}
+    parent: Dict[State, Tuple[State, str]] = {}
 
     expanded_nodes = 0
 
-    while frontier:
-        f, h, _, current_state = heapq.heappop(frontier)
+    while pq:
+        f, h, _, current_state = heapq.heappop(pq)
         current_g = best_g.get(current_state, float("inf"))
 
-        # Bỏ qua entry heap lỗi thời (đã có đường khác rẻ hơn tới state này)
+        # Nếu đã có cách đến vị trí này với cost rẻ hơn thì continue
         if f - h > current_g + 1e-9:
             continue
 
-        # Kiểm tra đích tại thời điểm lấy ra khỏi frontier
+        # Kiểm tra đích tại thời điểm lấy ra khỏi pq
         if board.is_goal(current_state):
             moves: List[str] = []
             cur = current_state
-            while True:
+            while cur in parent:
                 prev_state, act = parent[cur]
-                if prev_state is None or act is None:
-                    break
                 moves.append(act)
                 cur = prev_state
             moves.reverse()
@@ -161,11 +162,11 @@ def _astar_core(board: BloxorzBoard) -> Dict[str, Any]:
                 "total_cost": current_g
             }
 
-        # Node thực sự được mở rộng để sinh successors
+        # Mở rộng node
         expanded_nodes += 1
 
         for action, next_state in board.get_successors(current_state):
-            cost = step_cost(board, current_state, action, next_state)
+            cost = step_cost(board, next_state)
             new_g = current_g + cost
 
             if new_g < best_g.get(next_state, float("inf")) - 1e-9:
@@ -173,9 +174,9 @@ def _astar_core(board: BloxorzBoard) -> Dict[str, Any]:
                 parent[next_state] = (current_state, action)
                 h_next = heuristic(board, next_state, goal_pos)
                 f_next = new_g + h_next
-                heapq.heappush(frontier, (f_next, h_next, next(counter), next_state))
+                heapq.heappush(pq, (f_next, h_next, next(counter), next_state))
 
-    # Toàn bộ không gian trạng thái đã duyệt nhưng không tới được đích (vô nghiệm)
+    # Không thể tới đích
     return {
         "found": False,
         "moves": [],
