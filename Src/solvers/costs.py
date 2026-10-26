@@ -7,5 +7,4 @@ from game_logic import BloxorzBoard, State
 
 
 def step_cost(board: BloxorzBoard, current_state: State, action: str, next_state: State) -> float:
-    legal_moves = len(board.get_successors(next_state))
-    return float(legal_moves)
+    return 1 + 0.5 * (sum(board.grid[r][c] == 2 for r, c in next_state.get_occupied_cells()))
