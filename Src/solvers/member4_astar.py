@@ -18,7 +18,7 @@ def precompute_switch_costs_from_goal(
         return {}
     gr, gc = goal_pos
 
-    # 1. Lọc ra danh sách các split switch
+    # Lọc ra danh sách các split switch
     switches = []
     for key, sw in board.switches.items():
         if sw.get("behavior") == "split":
@@ -92,7 +92,7 @@ def heuristic(
         # Khối đang đè lên ô đích nhưng không ở trạng thái STANDING
         h_direct = 1.0
     else:
-        h_direct = float((d_min + 1) // 2)
+        h_direct = (d_min + 1) // 2
 
     # Xét khối ở trạng thái SPLIT
     if state.orientation == SPLIT:
@@ -100,13 +100,10 @@ def heuristic(
         d_between = abs(state.r - state.r2) + abs(state.c - state.c2)
 
         # 2 khối chỉ cần ở kế nhau là được => khoảng cách 2 khối = d_between - 1
-        h_direct = max(h_direct, float(max(0, d_between - 1)))
+        h_direct = max(h_direct, max(0, d_between - 1))
 
 
-    # 2. Xét khả năng dịch chuyển khi kích hoạt split switch (nếu chưa tách)
-    if switch_table is None and board.switches:
-        switch_table = precompute_switch_costs_from_goal(board, goal_pos)
-
+    # Xét khả năng dịch chuyển khi kích hoạt split switch (nếu chưa tách)
     if switch_table:
         for (sr, sc), cost_sw_to_goal in switch_table.items():
             d_to_sw = min(abs(r - sr) + abs(c - sc) for r, c in cells)
