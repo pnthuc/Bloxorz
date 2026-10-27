@@ -1,7 +1,3 @@
-"""Thành viên 4: tự cài đặt phần TODO; xem Giao_viec_Bloxorz.pdf.
-Không thay chữ ký solve_* hoặc schema kết quả. Không dùng walkthroughs để giải.
-Core trả found, moves, expanded_nodes, total_cost; wrapper đo thời gian/bộ nhớ.
-"""
 from typing import Any, Dict, List, Tuple, Optional
 import heapq
 import itertools
@@ -10,27 +6,75 @@ from .base import run_with_profiler
 from .costs import step_cost
 
 
-def heuristic(board: BloxorzBoard, state: State, goal_pos: Tuple[int, int]) -> float:
-    """Cận dưới chi phí còn lại từ state đến goal_pos.
-
-    Tính Admissibility & Consistency:
-    1. Hàm chi phí mỗi bước (step_cost) luôn >= 1 (1 + 2 * số ô FRAGILE).
-    2. Mỗi hành động (UP, DOWN, LEFT, RIGHT) làm khoảng cách Manhattan nhỏ nhất
-       từ các ô bị chiếm của khối tới đích giảm tối đa 2 đơn vị. Do đó, số bước
-       tối thiểu để tiếp cận đích qua di chuyển thông thường là ceil(d_min / 2).
-       Vì step_cost >= 1, nên (d_min + 1) // 2 luôn <= chi phí tối ưu thực tế (Admissible)
-       và |h(s) - h(s')| <= 1 <= step_cost(s, a, s') (Consistent).
-    3. Trạng thái đích: khi khối STANDING tại ô GOAL, h(goal) = 0.
-       Nếu khối chưa STANDING tại GOAL, nó cần ít nhất 1 bước chuyển hướng để thắng,
-       do đó nếu d_min == 0 nhưng chưa thỏa is_goal thì h = 1.0.
-    4. Xử lý Split Switch (Công tắc phân tách / teleport):
-       Nếu trên sàn có Split Switch, khối có thể di chuyển tới switch đó, tách và
-       dịch chuyển tức thời tới 2 vị trí mục tiêu (targets). Khoảng cách hình học
-       trực tiếp tới đích có thể lớn hơn đường đi qua split switch. Vì vậy, ta xét thêm
-       cận dưới của đường đi qua từng split switch:
-         h_via_switch = ceil(d_switch / 2) + ceil(d_targets_to_goal / 2) + 1
-       và lấy min(h_direct, h_via_switch) để đảm bảo không bao giờ đánh giá quá cao (Admissible).
+def precompute_switch_costs_from_goal(
+    board: BloxorzBoard, 
+    goal_pos: Tuple[int, int]
+) -> Dict[Tuple[int, int], float]:
     """
+    Hàm này sẽ dùng Bellman ford để tính sẵn khoảng cách từ
+    các switch -> landing target -> switch -> ... -> goal
+    """
+    if not board.switches:
+        return {}
+    gr, gc = goal_pos
+
+    # 1. Lọc ra danh sách các split switch
+    switches = []
+    for key, sw in board.switches.items():
+        if sw.get("behavior") == "split":
+            sr, sc = map(int, key.split(","))
+            targets = [tuple(t) for t in sw.get("targets", [])]
+            switches.append(((sr, sc), targets))
+
+    # Nếu không có split switch
+    K = len(switches)
+    if K == 0:
+        return {}
+    
+    # Khoảng cách bước từ landing target tới 1 ô bất kỳ
+    def step_dist(targets, r, c) -> float:
+        d = min(abs(tr - r) + abs(tc - c) for tr, tc in targets)
+        return float((d + 1) // 2)
+    
+    # Xây dựng danh sách cạnh từ goal tới các landing target
+    edges = []
+    for i in range(K):
+        w_to_goal = step_dist(switches[i][1], gr, gc)
+        edges.append(('GOAL', i, w_to_goal))
+
+    # Xây dựng các cạnh ngược từ switch j -> i
+    for i in range(K):
+        for j in range(K):
+            if i != j:
+                sjr, sjc = switches[j][0]
+                w_ij = step_dist(switches[i][1], sjr, sjc) + 1.0
+                edges.append((j, i, w_ij))
+
+
+    dist = {i: float('inf') for i in range(K)}
+
+    # Cập nhật sẵn goal -> landing targets
+    for u, v, w in edges:
+        if u == 'GOAL':
+            dist[v] = min(dist[v], w)
+
+    # Bellman ford
+    for _ in range(K - 1):
+        for u, v, w in edges:
+            if u != 'GOAL' and dist[u] != float('inf'):
+                if dist[u] + w < dist[v]:
+                    dist[v] = dist[u] + w
+
+    
+    return {switches[i][0]: dist[i] for i in range(K)}
+
+def heuristic(
+    board: BloxorzBoard,
+    state: State,
+    goal_pos: Tuple[int, int],
+    switch_table: Optional[Dict[Tuple[int, int], float]] = None
+) -> float:
+    
     if board.is_goal(state):
         return 0.0
     
@@ -58,31 +102,16 @@ def heuristic(board: BloxorzBoard, state: State, goal_pos: Tuple[int, int]) -> f
         # 2 khối chỉ cần ở kế nhau là được => khoảng cách 2 khối = d_between - 1
         h_direct = max(h_direct, float(max(0, d_between - 1)))
 
+
     # 2. Xét khả năng dịch chuyển khi kích hoạt split switch (nếu chưa tách)
-    if state.orientation != SPLIT and board.switches:
-        for key, sw in board.switches.items():
-            if sw.get("behavior") == "split":
-                # Lấy tọa độ của split switch
-                sr, sc = map(int, key.split(","))
+    if switch_table is None and board.switches:
+        switch_table = precompute_switch_costs_from_goal(board, goal_pos)
 
-                # Lấy tọa độ 2 khối được dịch chuyển khi kích hoạt split switch
-                targets = sw.get("targets", [])
-                x1, x2 = targets[0], targets[1]
-
-                # Tính khoảng cách từ vị trí hiện tại đến split switch
-                d_to_sw = min(abs(r - sr) + abs(c - sc) for r, c in cells)
-
-                # Lấy min 2 khối nhỏ đến đích
-                d_targets = min(
-                abs(x1[0] - gr) + abs(x1[1] - gc),
-                abs(x2[0] - gr) + abs(x2[1] - gc)
-                )
-
-                # Tính heuristic nếu chọn kích hoạt split switch
-                h_via_sw = float(d_to_sw + d_targets + 2) // 2
-
-                # Lấy min để h_direct chắc chắn admissible
-                h_direct = min(h_direct, h_via_sw)
+    if switch_table:
+        for (sr, sc), cost_sw_to_goal in switch_table.items():
+            d_to_sw = min(abs(r - sr) + abs(c - sc) for r, c in cells)
+            h_via_sw = float((d_to_sw + 1) // 2 + 1 + cost_sw_to_goal)
+            h_direct = min(h_direct, h_via_sw)
 
     return float(h_direct)
 
@@ -96,12 +125,6 @@ def _find_goal_pos(board: BloxorzBoard) -> Tuple[int, int]:
 
 
 def _astar_core(board: BloxorzBoard) -> Dict[str, Any]:
-    """Tìm kiếm A* với f(n) = g(n) + h(n).
-    - Ưu tiên f nhỏ nhất; tie-breaker ưu tiên h nhỏ hơn, sau đó theo thứ tự sinh node.
-    - Cập nhật best_g khi tìm thấy đường rẻ hơn; bỏ qua các entry lỗi thời trên heap.
-    - Xử lý đúng start = goal (0 bước, 0 node mở rộng) và trường hợp vô nghiệm.
-    - Chỉ tăng expanded_nodes khi một node thực sự được lấy ra để mở rộng các successors.
-    """
     start_state = board.get_initial_state()
 
     # Trường hợp vị trí xuất phát đã là đích
@@ -123,7 +146,8 @@ def _astar_core(board: BloxorzBoard) -> Dict[str, Any]:
             "total_cost": 0.0
         }
 
-    h0 = heuristic(board, start_state, goal_pos)
+    switch_table = precompute_switch_costs_from_goal(board, goal_pos)
+    h0 = heuristic(board, start_state, goal_pos, switch_table)
 
     # tie breaker để so node nào đến trước khi f và h = nhau
     counter = itertools.count()
@@ -136,6 +160,7 @@ def _astar_core(board: BloxorzBoard) -> Dict[str, Any]:
     parent: Dict[State, Tuple[State, str]] = {}
 
     expanded_nodes = 0
+    
 
     while pq:
         f, h, _, current_state = heapq.heappop(pq)
@@ -162,7 +187,7 @@ def _astar_core(board: BloxorzBoard) -> Dict[str, Any]:
                 "total_cost": current_g
             }
 
-        # Mở rộng node
+        # Mở rộng
         expanded_nodes += 1
 
         for action, next_state in board.get_successors(current_state):
@@ -172,7 +197,7 @@ def _astar_core(board: BloxorzBoard) -> Dict[str, Any]:
             if new_g < best_g.get(next_state, float("inf")) - 1e-9:
                 best_g[next_state] = new_g
                 parent[next_state] = (current_state, action)
-                h_next = heuristic(board, next_state, goal_pos)
+                h_next = heuristic(board, next_state, goal_pos, switch_table)
                 f_next = new_g + h_next
                 heapq.heappush(pq, (f_next, h_next, next(counter), next_state))
 
