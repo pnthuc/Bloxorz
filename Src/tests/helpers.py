@@ -12,6 +12,7 @@ from typing import Any, Dict, FrozenSet, List, Optional, Tuple
 
 from game_logic import BloxorzBoard, GOAL, State
 from solvers import heuristic
+from solvers.member4_astar import precompute_switch_costs_from_goal
 from solvers.costs import step_cost
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -201,7 +202,7 @@ def replay_solution(board: BloxorzBoard, moves: List[str]) -> Replay:
                 state,
                 frozenset(visited),
             )
-        cost += step_cost(board, state, action, child)
+        cost += step_cost(board, child)
         state = child
         visited.add(state.orientation)
         visited.update(board.grid[r][c] for r, c in state.get_occupied_cells())
@@ -248,13 +249,19 @@ def validate_heuristic(board: BloxorzBoard, case: Case, goal_state: State) -> No
     goal_pos = next(
         (r, c) for r, row in enumerate(board.grid) for c, tile in enumerate(row) if tile == GOAL
     )
-    h_start = heuristic(board, board.get_initial_state(), goal_pos)
+    
+    # 1. Tiền xử lý switch_table bằng tọa độ goal_pos (Tuple[int, int])
+    switch_table = precompute_switch_costs_from_goal(board, goal_pos)
+    
+    # 2. Truyền switch_table vào cả lúc tính h_start và h_goal
+    h_start = heuristic(board, board.get_initial_state(), goal_pos, switch_table)
     check(finite_number(h_start), "h(start) phải hữu hạn, không âm")
     check(
         h_start <= case.ucs_cost + EPSILON,
         f"h(start)={h_start:g} vượt cost tối ưu {case.ucs_cost:g}",
     )
-    h_goal = heuristic(board, goal_state, goal_pos)
+    
+    h_goal = heuristic(board, goal_state, goal_pos, switch_table)
     check(finite_number(h_goal) and h_goal <= EPSILON, "h(goal) phải bằng 0")
 
 
