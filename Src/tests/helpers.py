@@ -201,7 +201,7 @@ def replay_solution(board: BloxorzBoard, moves: List[str]) -> Replay:
                 state,
                 frozenset(visited),
             )
-        cost += step_cost(board, state, action, child)
+        cost += step_cost(board, child)
         state = child
         visited.add(state.orientation)
         visited.update(board.grid[r][c] for r, c in state.get_occupied_cells())
