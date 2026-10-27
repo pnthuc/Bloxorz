@@ -12,7 +12,7 @@ def precompute_switch_costs_from_goal(
 ) -> Dict[Tuple[int, int], float]:
     """
     Hàm này sẽ dùng Bellman ford để tính sẵn khoảng cách từ
-    các switch -> landing target -> switch -> ... -> goal
+    các split switch -> landing target -> switch -> ... -> goal
     """
     if not board.switches:
         return {}
@@ -47,7 +47,7 @@ def precompute_switch_costs_from_goal(
         for j in range(K):
             if i != j:
                 sjr, sjc = switches[j][0]
-                w_ij = step_dist(switches[i][1], sjr, sjc) + 1.0
+                w_ij = step_dist(switches[i][1], sjr, sjc)
                 edges.append((j, i, w_ij))
 
 
@@ -100,14 +100,17 @@ def heuristic(
         d_between = abs(state.r - state.r2) + abs(state.c - state.c2)
 
         # 2 khối chỉ cần ở kế nhau là được => khoảng cách 2 khối = d_between - 1
-        h_direct = max(h_direct, max(0, d_between - 1))
+        h_direct = max(h_direct, d_between - 1)
 
 
     # Xét khả năng dịch chuyển khi kích hoạt split switch (nếu chưa tách)
+    if switch_table is None and board.switches:
+        switch_table = precompute_switch_costs_from_goal(board, goal_pos)
+
     if switch_table:
         for (sr, sc), cost_sw_to_goal in switch_table.items():
             d_to_sw = min(abs(r - sr) + abs(c - sc) for r, c in cells)
-            h_via_sw = float((d_to_sw + 1) // 2 + 1 + cost_sw_to_goal)
+            h_via_sw = (d_to_sw + 1) // 2 + cost_sw_to_goal
             h_direct = min(h_direct, h_via_sw)
 
     return float(h_direct)
