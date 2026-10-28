@@ -69,16 +69,41 @@ def get_git_commit() -> str:
         return "UNKNOWN"
 
 
+def get_cpu_and_ram() -> tuple[str, str]:
+    """Lấy tên CPU chi tiết và tổng dung lượng RAM."""
+    cpu_name = platform.processor()
+    ram_str = "Unknown"
+    if sys.platform == "win32":
+        try:
+            cmd_cpu = ["powershell", "-NoProfile", "-Command", "(Get-CimInstance Win32_Processor).Name"]
+            out_cpu = subprocess.check_output(cmd_cpu, text=True).strip()
+            if out_cpu:
+                cpu_name = out_cpu
+        except Exception:
+            pass
+        try:
+            cmd_ram = ["powershell", "-NoProfile", "-Command", "(Get-CimInstance Win32_PhysicalMemory | Measure-Object -Property Capacity -Sum).Sum / 1GB"]
+            out_ram = subprocess.check_output(cmd_ram, text=True).strip()
+            if out_ram:
+                ram_str = f"{round(float(out_ram), 1)} GB"
+        except Exception:
+            pass
+    return cpu_name, ram_str
+
+
 def save_environment_metadata(out_dir: Path, config: dict) -> None:
     """Lưu cấu hình hệ thống và thông số chạy benchmark."""
     out_dir.mkdir(parents=True, exist_ok=True)
+    cpu_name, ram_str = get_cpu_and_ram()
     env_info = {
+        "cpu": cpu_name,
+        "ram": ram_str,
         "os": platform.platform(),
         "python_version": sys.version,
-        "processor": platform.processor(),
-        "machine": platform.machine(),
         "git_commit": get_git_commit(),
         "date": datetime.now().isoformat(),
+        "timeout_sec": config.get("timeout_sec"),
+        "repeats": config.get("repeats"),
     }
     with open(out_dir / "environment.json", "w", encoding="utf-8") as f:
         json.dump(env_info, f, indent=2, ensure_ascii=False)

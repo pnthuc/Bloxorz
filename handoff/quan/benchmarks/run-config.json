@@ -10,5 +10,5 @@
     "astar"
   ],
   "repeats": 1,
-  "timeout_sec": 30.0
+  "timeout_sec": 60.0
 }
