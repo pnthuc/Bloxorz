@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#12382f">
+  <title>Bloxorz | Vịnh Hạ Long Edition</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="{{ url_for('static', filename='v2/halong.css') }}">
+  <script defer src="{{ url_for('static', filename='vendor/three.min.js') }}"></script>
+  <script defer src="{{ url_for('static', filename='v2/materials.js') }}"></script>
+  <script defer src="{{ url_for('static', filename='v2/scene.js') }}"></script>
+  <script defer src="{{ url_for('static', filename='v2/background.js') }}"></script>
+  <script defer src="{{ url_for('static', filename='v2/game.js') }}"></script>
+</head>
+<body>
+  <svg class="svg-defs" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-arrow" viewBox="0 0 24 24">
+      <path d="M12 19V5M6 11l6-6 6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="i-reset" viewBox="0 0 24 24">
+      <path d="M4 10a8 8 0 1 1 1.5 6.5M4 4v6h6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="i-compass" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/>
+      <polygon points="10,10 16,8 14,14 8,16" fill="currentColor"/>
+    </symbol>
+    <symbol id="i-helm" viewBox="0 0 64 64">
+      <circle cx="32" cy="32" r="18" fill="none" stroke="currentColor" stroke-width="4.5"/>
+      <circle cx="32" cy="32" r="6" fill="none" stroke="currentColor" stroke-width="3.5"/>
+      <line x1="32" y1="4" x2="32" y2="60" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
+      <line x1="4" y1="32" x2="60" y2="32" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
+      <line x1="12" y1="12" x2="52" y2="52" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
+      <line x1="52" y1="12" x2="12" y2="52" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="i-pearl" viewBox="0 0 64 64">
+      <path d="M10 38 C8 20, 22 10, 32 10 C42 10, 56 20, 54 38 C46 44, 18 44, 10 38 Z" fill="none" stroke="currentColor" stroke-width="3.2"/>
+      <path d="M6 42 C16 54, 48 54, 58 42 C46 46, 18 46, 6 42 Z" fill="none" stroke="currentColor" stroke-width="3.2"/>
+      <circle cx="32" cy="34" r="9.5" fill="currentColor"/>
+    </symbol>
+  </svg>
+
+  <main class="halong-stage" aria-label="Bàn chơi Bloxorz Vịnh Hạ Long">
+    <!-- Living Animated Water, Mist & Sea Horizon Canvas -->
+    <canvas id="bg-canvas" class="bg-canvas" aria-hidden="true"></canvas>
+
+    <!-- 3D WebGL Viewport over Ha Long Bay Scenery -->
+    <div id="canvas-container" tabindex="0" role="application" aria-label="Bàn chơi 3D. Dùng phím mũi tên hoặc W A S D để di chuyển. Space đổi khối, R chơi lại.">
+      <div id="loading" class="loading-banner">
+        <span class="loading-gem"></span>
+        <span>Đang dựng đảo đá Vịnh Hạ Long...</span>
+      </div>
+
+      <!-- Victory / Loss Wooden Scroll Overlay -->
+      <div id="game-overlay" class="wood-modal" hidden>
+        <div class="wood-modal-inner">
+          <span class="rivet tl"></span><span class="rivet tr"></span>
+          <span class="rivet bl"></span><span class="rivet br"></span>
+          <p class="modal-eyebrow" id="overlay-label">MÀN CHƠI HOÀN TẤT</p>
+          <h2 id="overlay-title">Đã đến đích</h2>
+          <p id="overlay-description">Bạn đã đưa khối ngọc về đích.</p>
+          <div class="modal-actions">
+            <button id="overlay-restart" class="brass-btn primary">Chơi lại màn (R)</button>
+            <button id="next-stage-btn" class="brass-btn">Màn tiếp theo</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOP-LEFT HANGING WOODEN PLAQUE: STAGE INFO & LEVEL SELECT -->
+    <header class="hanging-sign sign-left" aria-label="Thông tin màn chơi">
+      <div class="ropes"><span class="rope left"></span><span class="rope right"></span></div>
+      <div class="wood-board">
+        <span class="rivet tl"></span><span class="rivet tr"></span>
+        <span class="rivet bl"></span><span class="rivet br"></span>
+        <div class="stone-plate">
+          <div class="sign-top-row">
+            <span class="sign-eyebrow" id="stage-number">STAGE 01</span>
+            <span class="difficulty-pill" id="level-difficulty">Cơ bản</span>
+          </div>
+          <div class="stage-picker-row">
+            <button id="prev-stage" class="nav-arrow prev" aria-label="Màn trước" title="Màn trước"><svg><use href="#i-arrow"/></svg></button>
+            <label class="sr-only" for="level-select">Chọn màn chơi</label>
+            <select id="level-select" disabled><option>Đang tải danh sách</option></select>
+            <button id="next-stage" class="nav-arrow next" aria-label="Màn sau" title="Màn sau"><svg><use href="#i-arrow"/></svg></button>
+          </div>
+          <h1 id="stage-title" class="stage-title-text">Đang tải màn chơi</h1>
+          <p id="stage-description" class="sr-only">Đưa khối đứng thẳng vào ô đích.</p>
+          <p id="level-summary" class="stage-subtext">Đưa khối đứng thẳng vào ô đích.</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- TOP-RIGHT HANGING WOODEN PLAQUE: MOVES & BLOCK POSTURE -->
+    <aside class="hanging-sign sign-right" aria-label="Trạng thái bước đi">
+      <div class="ropes"><span class="rope left"></span><span class="rope right"></span></div>
+      <div class="wood-board">
+        <span class="rivet tl"></span><span class="rivet tr"></span>
+        <span class="rivet bl"></span><span class="rivet br"></span>
+        <div class="stone-plate moves-plate">
+          <div class="moves-counter-box">
+            <span class="sign-eyebrow">MOVES</span>
+            <strong id="hud-moves" class="moves-number">00</strong>
+          </div>
+          <div class="plate-divider"></div>
+          <div class="posture-box">
+            <span class="sign-eyebrow">TRẠNG THÁI KHỐI</span>
+            <strong id="hud-orient" class="posture-text">Đứng thẳng</strong>
+            <button id="switch-cube" data-action="SPACE" class="space-pill" disabled title="Đổi khối điều khiển (Space)">
+              Đổi khối <kbd>SPACE</kbd>
+            </button>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- BOTTOM-LEFT: PEARL RULES / D-PAD TOGGLE & STATUS TOAST -->
+    <div class="corner-anchor bottom-left">
+      <div class="pearl-cluster">
+        <button id="rules-toggle" class="medallion-btn pearl-btn" aria-expanded="false" title="Xem quy tắc & ký hiệu các ô">
+          <svg class="medallion-icon"><use href="#i-pearl"/></svg>
+          <span class="medallion-label">QUY TẮC</span>
+        </button>
+        <button id="dpad-toggle" class="medallion-btn dpad-toggle-btn" aria-expanded="false" title="Bật/tắt phím di chuyển trên màn hình">
+          <svg class="medallion-icon"><use href="#i-arrow"/></svg>
+          <span class="medallion-label">PHÍM BẤM</span>
+        </button>
+      </div>
+
+      <!-- On-screen D-Pad popover for mouse/touch play -->
+      <div id="dpad-popover" class="wood-popover dpad-panel" hidden>
+        <div class="dpad" aria-label="Nút di chuyển">
+          <button data-action="UP" class="dpad-up" aria-label="Di chuyển lên" title="Lên (W)"><svg><use href="#i-arrow"/></svg></button>
+          <button data-action="LEFT" class="dpad-left" aria-label="Di chuyển trái" title="Trái (A)"><svg><use href="#i-arrow"/></svg></button>
+          <button data-action="DOWN" class="dpad-down" aria-label="Di chuyển xuống" title="Xuống (S)"><svg><use href="#i-arrow"/></svg></button>
+          <button data-action="RIGHT" class="dpad-right" aria-label="Di chuyển phải" title="Phải (D)"><svg><use href="#i-arrow"/></svg></button>
+        </div>
+      </div>
+
+      <!-- Legend / Rules Popover -->
+      <div id="rules-popover" class="wood-popover rules-panel" hidden>
+        <h3>Chỉ dẫn các loại ô &amp; Luật chơi</h3>
+        <ul class="tile-guide-list">
+          <li><span class="tile-badge stone"></span><div><strong>Đá vôi cổ:</strong> Sàn đá vững chắc cho mọi tư thế khối.</div></li>
+          <li><span class="tile-badge fragile"></span><div><strong>Gạch đất nung rạn (Cam):</strong> Chỉ chịu được khối nằm ngang; dựng đứng khối sẽ làm vỡ gạch.</div></li>
+          <li><span class="tile-badge soft"></span><div><strong>Công tắc Vòng tròn (O):</strong> Chạm nhẹ (nằm hoặc đứng) đều kích hoạt cầu.</div></li>
+          <li><span class="tile-badge heavy"></span><div><strong>Công tắc Chữ thập (X):</strong> Đòi hỏi khối Ngọc Bích đứng thẳng trên tâm công tắc.</div></li>
+          <li><span class="tile-badge split"></span><div><strong>Công tắc Tách đôi:</strong> Đứng thẳng lên sẽ tách thành 2 khối đơn 1x1 (nhấn <kbd>Space</kbd> để đổi khối).</div></li>
+          <li><span class="tile-badge goal"></span><div><strong>Hố Đích Hào Quang:</strong> Đưa khối đứng thẳng lọt xuống hố vàng để qua màn.</div></li>
+        </ul>
+        <p class="guide-keys">Phím tắt: <kbd>WASD</kbd> / Mũi tên để lăn · <kbd>Space</kbd> đổi khối · <kbd>R</kbd> chơi lại · <kbd>C</kbd> góc nhìn chuẩn</p>
+      </div>
+    </div>
+
+    <!-- BOTTOM-CENTER: WOOD & BRASS AI SOLVER DOCK -->
+    <section class="solver-dock" aria-label="Thuật toán tìm kiếm AI">
+      <!-- Live status & metrics strip -->
+      <div class="dock-status-strip">
+        <span id="status-toast" role="status" aria-live="polite" data-tone="neutral">Dùng mũi tên hoặc WASD để di chuyển.</span>
+        <span class="status-separator">·</span>
+        <span id="input-status" class="input-state-tag">BÀN PHÍM SẴN SÀNG</span>
+      </div>
+
+      <!-- Playback progress bar (visible during solving/replay) -->
+      <div id="playback" class="playback-bar" hidden>
+        <span id="playback-label">Đang tìm lời giải</span>
+        <progress id="playback-progress" max="1" value="0" aria-label="Tiến trình lời giải"></progress>
+        <button id="stop-solver" class="brass-mini-btn">Dừng</button>
+      </div>
+
+      <div class="wood-board dock-board">
+        <span class="rivet tl"></span><span class="rivet tr"></span>
+        <span class="rivet bl"></span><span class="rivet br"></span>
+
+        <div class="dock-header">
+          <span class="dock-title">SOLVER: <strong id="solver-name">CHƯA CHẠY</strong></span>
+          <div class="metrics-inline" aria-label="Kết quả tìm kiếm">
+            <span>Thời gian: <b id="m-time">—</b></span>
+            <span>Bộ nhớ: <b id="m-mem">—</b></span>
+            <span>Nodes: <b id="m-nodes">—</b></span>
+            <span>Độ dài: <b id="m-len">—</b></span>
+            <span>Chi phí: <b id="m-cost">—</b></span>
+          </div>
+        </div>
+
+        <div class="solver-buttons" role="group" aria-label="Chọn thuật toán giải">
+          <button data-solver="bfs" class="solver-btn">
+            <strong>BFS</strong>
+            <small>Chiều rộng</small>
+          </button>
+          <span class="solver-sep">|</span>
+          <button data-solver="dfs" class="solver-btn">
+            <strong>DFS</strong>
+            <small>Chiều sâu</small>
+          </button>
+          <span class="solver-sep">|</span>
+          <button data-solver="ucs" class="solver-btn">
+            <strong>UCS</strong>
+            <small>Chi phí cực tiểu</small>
+          </button>
+          <span class="solver-sep">|</span>
+          <button data-solver="astar" class="solver-btn">
+            <strong>A*</strong>
+            <small>Heuristic</small>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- BOTTOM-RIGHT: SHIP'S HELM RESTART & CAMERA RESET -->
+    <div class="corner-anchor bottom-right">
+      <div class="helm-cluster">
+        <button id="view-reset" class="medallion-btn compass-btn" aria-label="Đặt lại góc nhìn" title="Đặt lại góc nhìn chuẩn (Phím C)">
+          <svg class="medallion-icon"><use href="#i-compass"/></svg>
+          <span class="medallion-label">GÓC NHÌN</span>
+        </button>
+        <button id="restart" class="medallion-btn helm-btn" aria-label="Chơi lại màn" title="Chơi lại màn (Phím R)">
+          <svg class="medallion-icon helm-wheel"><use href="#i-helm"/></svg>
+          <span class="medallion-label">RESTART</span>
+        </button>
+        <!-- Hidden compatibility buttons -->
+        <button id="restart-top" hidden aria-hidden="true"></button>
+        <button id="new-game" hidden aria-hidden="true"></button>
+      </div>
+    </div>
+  </main>
+
+  <noscript>Vui lòng bật JavaScript để chơi Bloxorz.</noscript>
+</body>
+</html>

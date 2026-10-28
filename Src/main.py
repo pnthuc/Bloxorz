@@ -133,8 +133,15 @@ def deserialize_state(d: dict) -> State:
 
 
 @app.route("/")
+@app.route("/v2")
 def index():
-    """Hiển thị giao diện chính từ Source/templates/index.html."""
+    """Hiển thị giao diện chính Vịnh Hạ Long từ Source/templates/v2.html."""
+    return render_template("v2.html")
+
+
+@app.route("/legacy")
+def legacy_index():
+    """Giữ giao diện cũ độc lập khi cần đối chiếu."""
     return render_template("index.html")
 
 
