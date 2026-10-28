@@ -3,14 +3,7 @@
 import argparse
 import shutil
 import subprocess
-import sys
 import unittest
-
-if sys.stdout and hasattr(sys.stdout, "reconfigure"):
-    try:
-        sys.stdout.reconfigure(encoding="utf-8")
-    except Exception:
-        pass
 from typing import Callable, Dict, List, Optional
 
 from solvers import solve_astar, solve_bfs, solve_dfs, solve_ucs

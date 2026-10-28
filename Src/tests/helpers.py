@@ -12,7 +12,6 @@ from typing import Any, Dict, FrozenSet, List, Optional, Tuple
 
 from game_logic import BloxorzBoard, GOAL, State
 from solvers import heuristic
-from solvers.member4_astar import precompute_switch_costs_from_goal
 from solvers.costs import step_cost
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -119,7 +118,7 @@ def _parse_case(case_id: str, data: dict, levels: dict) -> Case:
             and all(isinstance(action, str) and action in ACTIONS for action in moves),
             f"{case_id}: walkthrough chứa hành động sai",
         )
-        check(sum(1 for m in moves if m != "SPACE") == length, f"{case_id}: walkthrough phải có bfs_moves bước lăn")
+        check(len(moves) == length, f"{case_id}: walkthrough phải có bfs_moves hành động")
         check(
             finite_number(walk_cost) and walk_cost >= cost,
             f"{case_id}: walkthrough_cost phải >= ucs_cost",
@@ -202,7 +201,7 @@ def replay_solution(board: BloxorzBoard, moves: List[str]) -> Replay:
                 state,
                 frozenset(visited),
             )
-        cost += step_cost(board, child)
+        cost += step_cost(board, state, action, child)
         state = child
         visited.add(state.orientation)
         visited.update(board.grid[r][c] for r, c in state.get_occupied_cells())
@@ -239,10 +238,7 @@ def validate_schema(result: Any) -> None:
     )
     for key in ("solution_length", "expanded_nodes"):
         check(type(result[key]) is int and result[key] >= 0, f"{key} phải là số nguyên không âm")
-    check(
-        result["solution_length"] == sum(1 for m in result["moves"] if m != "SPACE"),
-        "solution_length phải bằng số bước lăn (không tính SPACE)",
-    )
+    check(result["solution_length"] == len(result["moves"]), "solution_length khác len(moves)")
     for key in ("search_time_ms", "memory_kb", "total_cost"):
         check(finite_number(result[key]), f"{key} phải là số hữu hạn, không âm")
 
@@ -252,19 +248,13 @@ def validate_heuristic(board: BloxorzBoard, case: Case, goal_state: State) -> No
     goal_pos = next(
         (r, c) for r, row in enumerate(board.grid) for c, tile in enumerate(row) if tile == GOAL
     )
-    
-    # 1. Tiền xử lý switch_table bằng tọa độ goal_pos (Tuple[int, int])
-    switch_table = precompute_switch_costs_from_goal(board, goal_pos)
-    
-    # 2. Truyền switch_table vào cả lúc tính h_start và h_goal
-    h_start = heuristic(board, board.get_initial_state(), goal_pos, switch_table)
+    h_start = heuristic(board, board.get_initial_state(), goal_pos)
     check(finite_number(h_start), "h(start) phải hữu hạn, không âm")
     check(
         h_start <= case.ucs_cost + EPSILON,
         f"h(start)={h_start:g} vượt cost tối ưu {case.ucs_cost:g}",
     )
-    
-    h_goal = heuristic(board, goal_state, goal_pos, switch_table)
+    h_goal = heuristic(board, goal_state, goal_pos)
     check(finite_number(h_goal) and h_goal <= EPSILON, "h(goal) phải bằng 0")
 
 
@@ -285,7 +275,7 @@ def validate_result(name: str, case: Case, board: BloxorzBoard, result: Any) -> 
 
     replay = replay_solution(board, result["moves"])
     check(replay.valid, replay.reason)
-    path_cost = sum(1 for m in result["moves"] if m != "SPACE") if name in ("bfs", "dfs") else replay.cost
+    path_cost = len(result["moves"]) if name in ("bfs", "dfs") else replay.cost
     check(
         math.isclose(result["total_cost"], path_cost, rel_tol=0, abs_tol=EPSILON),
         f"total_cost={result['total_cost']:g}, replay tính được {path_cost:g}",
