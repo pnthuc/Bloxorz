@@ -29,7 +29,7 @@
   "4": {
     "level": "4",
     "solvable": true,
-    "bfs_moves": 17,
+    "bfs_moves": 16,
     "ucs_cost": 17.5,
     "walkthrough": [
       "RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN", "RIGHT", "RIGHT", "RIGHT", "UP", "SPACE", "UP", "RIGHT",
@@ -90,7 +90,7 @@
   "10": {
     "level": "10",
     "solvable": true,
-    "bfs_moves": 22,
+    "bfs_moves": 20,
     "ucs_cost": 22,
     "walkthrough": [
       "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN", "SPACE", "DOWN", "RIGHT", "RIGHT", "RIGHT", "RIGHT",
@@ -173,7 +173,7 @@
   "17": {
     "level": "17",
     "solvable": true,
-    "bfs_moves": 24,
+    "bfs_moves": 22,
     "ucs_cost": 24,
     "walkthrough": [
       "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "SPACE", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT",
@@ -208,7 +208,7 @@
   "20": {
     "level": "20",
     "solvable": true,
-    "bfs_moves": 21,
+    "bfs_moves": 19,
     "ucs_cost": 21,
     "walkthrough": [
       "UP", "RIGHT", "RIGHT", "DOWN", "DOWN", "RIGHT", "RIGHT", "SPACE", "DOWN", "RIGHT", "RIGHT", "SPACE",
@@ -230,7 +230,7 @@
   "22": {
     "level": "22",
     "solvable": true,
-    "bfs_moves": 24,
+    "bfs_moves": 22,
     "ucs_cost": 24.5,
     "walkthrough": [
       "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "SPACE", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT",
@@ -266,7 +266,7 @@
   "25": {
     "level": "25",
     "solvable": true,
-    "bfs_moves": 57,
+    "bfs_moves": 55,
     "ucs_cost": 57,
     "walkthrough": [
       "RIGHT", "UP", "RIGHT", "DOWN", "LEFT", "UP", "LEFT", "DOWN", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN",
@@ -309,7 +309,7 @@
   "28": {
     "level": "28",
     "solvable": true,
-    "bfs_moves": 58,
+    "bfs_moves": 57,
     "ucs_cost": 58,
     "walkthrough": [
       "RIGHT", "UP", "RIGHT", "DOWN", "LEFT", "UP", "LEFT", "DOWN", "RIGHT", "UP", "RIGHT", "RIGHT", "RIGHT",
@@ -323,7 +323,7 @@
   "29": {
     "level": "29",
     "solvable": true,
-    "bfs_moves": 48,
+    "bfs_moves": 47,
     "ucs_cost": 48,
     "walkthrough": [
       "RIGHT", "UP", "RIGHT", "DOWN", "LEFT", "UP", "LEFT", "DOWN", "RIGHT", "DOWN", "DOWN", "RIGHT", "RIGHT",
@@ -366,7 +366,7 @@
   "33": {
     "level": "33",
     "solvable": true,
-    "bfs_moves": 119,
+    "bfs_moves": 110,
     "ucs_cost": 119.5,
     "walkthrough": [
       "UP", "RIGHT", "DOWN", "LEFT", "UP", "UP", "LEFT", "RIGHT", "RIGHT", "DOWN", "RIGHT", "DOWN", "DOWN",
@@ -426,7 +426,7 @@
       ]
     },
     "solvable": true,
-    "bfs_moves": 17,
+    "bfs_moves": 16,
     "ucs_cost": 17,
     "walkthrough": [
       "RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN", "RIGHT", "RIGHT", "RIGHT", "UP", "SPACE", "UP", "RIGHT",

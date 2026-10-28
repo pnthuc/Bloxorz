@@ -423,7 +423,7 @@ class CaseDataTests(unittest.TestCase):
                     continue
                 replay = replay_solution(case.make_board(), case.walkthrough)
                 self.assertTrue(replay.valid, replay.reason)
-                self.assertEqual(len(case.walkthrough), case.bfs_moves)
+                self.assertEqual(sum(1 for m in case.walkthrough if m != "SPACE"), case.bfs_moves)
                 self.assertAlmostEqual(replay.cost, case.walkthrough_cost)
                 self.assertGreaterEqual(replay.cost, case.ucs_cost)
                 self.assertTrue(set(case.visits) <= replay.visited, (case.visits, replay.visited))

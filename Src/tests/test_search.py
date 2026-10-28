@@ -27,9 +27,9 @@ def make_result(moves=None, cost=None, **changes):
     result = {
         "found": True,
         "moves": moves,
-        "solution_length": len(moves),
+        "solution_length": sum(1 for m in moves if m != "SPACE"),
         "expanded_nodes": 0 if not moves else 2,
-        "total_cost": len(moves) if cost is None else cost,
+        "total_cost": sum(1 for m in moves if m != "SPACE") if cost is None else cost,
         "search_time_ms": 0.1,
         "memory_kb": 1.0,
     }
@@ -191,7 +191,7 @@ class SolverRunnerTests(unittest.TestCase):
         self.assertEqual(len(cases), 10 + len(load_levels()))
         map33 = select_cases(cases, ["33"])[0]
         self.assertEqual(
-            (map33.bfs_moves, map33.ucs_cost, map33.walkthrough_cost), (119, 119.5, 120)
+            (map33.bfs_moves, map33.ucs_cost, map33.walkthrough_cost), (110, 119.5, 120)
         )
 
     def test_filters_cases_without_changing_default_solver_contract(self):

@@ -47,7 +47,7 @@ def _dfs_core(board: BloxorzBoard) -> Dict[str, Any]:
                     "found": True,
                     "moves": moves,
                     "expanded_nodes": expanded_nodes,
-                    "total_cost": len(moves),
+                    "total_cost": sum(1 for m in moves if m != "SPACE"),
                 }
 
             stack.append(nxt)
