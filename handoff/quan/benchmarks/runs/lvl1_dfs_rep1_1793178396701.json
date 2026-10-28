@@ -1,0 +1,27 @@
+{
+  "run_id": "lvl1_dfs_rep1_1793178396701",
+  "level_id": "1",
+  "level_name": "Stage 1: Classic Warmup",
+  "solver": "dfs",
+  "repeat_index": 1,
+  "status": "SOLVED",
+  "search_time_ms": 0.652,
+  "memory_kb": 4.41,
+  "expanded_nodes": 7,
+  "solution_length": 7,
+  "rolling_steps": 7,
+  "total_cost": 7.0,
+  "path_cost": 7.0,
+  "timeout_sec": 30.0,
+  "timestamp": "2026-10-28T16:06:36.701382",
+  "error_message": "",
+  "moves": [
+    "RIGHT",
+    "RIGHT",
+    "DOWN",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "DOWN"
+  ]
+}
