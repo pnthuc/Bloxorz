@@ -85,7 +85,7 @@
     if(!data.valid&&action==='SPACE')return false;
     const completed=await scene.roll(previous,action,data.next_state,data.valid,data.failure_state);
     if(!completed||token!==epoch)return false;
-    moveCount++;
+    if(action!=='SPACE')moveCount++;
     if(!data.valid){if(data.failure_state)state=data.failure_state;endGame(false,data.failure_reason);return false;}
     state=data.next_state;updateUI();
     if(data.is_goal){

@@ -157,7 +157,7 @@ async function createUI() {
           JSON.stringify({
             found: sample.solvable,
             moves: actions,
-            solution_length: actions.length,
+            solution_length: actions.filter((a) => a !== 'SPACE').length,
             expanded_nodes: 10,
             search_time_ms: 1,
             memory_kb: 1,
@@ -480,12 +480,13 @@ test('Bloxorz UI', async (t) => {
         const parked = scene.blocks.children[0].quaternion.clone();
         sameRotation(parked, original0.clone().premultiply(rightTurn).premultiply(rightTurn));
         tap('Space');
-        await wait(() => count() === 5, 'Space switch');
+        await wait(() => el('hud-orient').textContent === 'Khối 2 / 2', 'Space switch');
+        assert.equal(count(), 4);
         assert.equal(el('hud-orient').textContent, 'Khối 2 / 2');
         sameRotation(scene.blocks.children[0].quaternion, parked);
         sameRotation(scene.blocks.children[1].quaternion, original1);
         tap('ArrowLeft');
-        await wait(() => count() === 6, 'move other cube while switch held');
+        await wait(() => count() === 5, 'move other cube while switch held');
         sameRotation(scene.blocks.children[0].quaternion, parked);
         sameRotation(scene.blocks.children[1].quaternion, original1.clone().premultiply(leftTurn));
         assert.equal(moves.at(-1).data.next_state.bridges[0], true);
@@ -538,7 +539,7 @@ test('Bloxorz UI', async (t) => {
       d.querySelector('[data-solver="astar"]').click();
       await wait(() => !el('game-overlay').hidden, 'stage 4 A* victory', 18000);
       assert.equal(el('overlay-title').textContent, 'Đã đến đích');
-      assert.equal(count(), 17);
+      assert.equal(count(), 16);
       assert(moves.some((m) => m.request.action === 'SPACE'));
     });
     await t.test(
