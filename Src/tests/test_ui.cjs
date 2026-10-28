@@ -304,8 +304,8 @@ test('Bloxorz UI', async (t) => {
         Array.from(el('level-select').options, (option) => option.value),
         levelIds,
       );
-      assert.equal(scene.camera.isPerspectiveCamera, true);
-      assert.equal(scene.renderer.shadowMap.enabled, false);
+      assert.equal(scene.camera.isOrthographicCamera, true);
+      assert.equal(scene.renderer.shadowMap.enabled, true);
       for (const m of [
         scene.materials.stone[0],
         scene.materials.fragile,
@@ -366,7 +366,7 @@ test('Bloxorz UI', async (t) => {
         controls.solverUnavailable = true;
         await select('1');
         await reset();
-        d.querySelector('[data-solver="bfs"]').click();
+        void w.Bloxorz.ui.actions.runSolver('bfs');
         await wait(
           () => el('status-toast').textContent.includes('chưa hoàn thiện'),
           'pending solver notice',
@@ -433,7 +433,9 @@ test('Bloxorz UI', async (t) => {
       controls.mockSolvers = true;
       await select('1');
       await reset();
-      d.querySelector('[data-solver="bfs"]').click();
+      void w.Bloxorz.ui.actions.runSolver('bfs');
+      await wait(() => el('status-toast').textContent.includes('Nhấn Phát'), 'solution ready');
+      void w.Bloxorz.ui.actions.playReplay();
       await wait(() => el('input-status').textContent === 'ĐANG PHÁT LỜI GIẢI', 'BFS start');
       const before = moves.length;
       tap('KeyD');
@@ -502,7 +504,9 @@ test('Bloxorz UI', async (t) => {
       controls.solverUnavailable = false;
       controls.mockSolvers = true;
       await select('3');
-      d.querySelector('[data-solver="bfs"]').click();
+      void w.Bloxorz.ui.actions.runSolver('bfs');
+      await wait(() => el('status-toast').textContent.includes('Nhấn Phát'), 'solution ready');
+      void w.Bloxorz.ui.actions.playReplay();
       await wait(() => count() === 2, 'replay before Stop');
       click('stop-solver');
       const stopped = count();
@@ -512,7 +516,7 @@ test('Bloxorz UI', async (t) => {
       tap('KeyR');
       await wait(() => count() === 0 && ready(), 'restart after Stop');
       controls.solveDelay = 350;
-      d.querySelector('[data-solver="bfs"]').click();
+      void w.Bloxorz.ui.actions.runSolver('bfs');
       await wait(() => el('input-status').textContent === 'ĐANG TÌM LỜI GIẢI', 'slow solver');
       await select('2');
       await sleep(600);
@@ -536,7 +540,9 @@ test('Bloxorz UI', async (t) => {
       controls.solverUnavailable = false;
       controls.mockSolvers = true;
       await select('4');
-      d.querySelector('[data-solver="astar"]').click();
+      void w.Bloxorz.ui.actions.runSolver('astar');
+      await wait(() => el('status-toast').textContent.includes('Nhấn Phát'), 'solution ready');
+      void w.Bloxorz.ui.actions.playReplay();
       await wait(() => !el('game-overlay').hidden, 'stage 4 A* victory', 18000);
       assert.equal(el('overlay-title').textContent, 'Đã đến đích');
       assert.equal(count(), 16);
@@ -611,6 +617,117 @@ test('Bloxorz UI', async (t) => {
       assert.equal(el('level-summary').textContent, el('stage-description').textContent);
       for (const bridge of scene.bridgeGroups.values())
         assert(bridge.every((group) => !group.visible));
+    });
+    await t.test('screen stack blocks moves and restores play; settings persist', async () => {
+      w.eval(fs.readFileSync(path.join(root, 'static/js/shell.js'), 'utf8'));
+      await select('1');
+      click('menu-toggle');
+      assert.equal(w.Bloxorz.ui.screen, 'pause');
+      const before=count();tap('KeyD');await sleep(350);assert.equal(count(),before);
+      click('choose-settings');
+      const jade=[...d.querySelectorAll('.skin-option')].find(b=>b.textContent==='Ngọc');jade.click();
+      click('apply');
+      assert.equal(JSON.parse(w.localStorage.getItem('bloxorz-garden')).skin,'jade');
+      assert.equal(w.Bloxorz.ui.screen,'pause');click('resume');
+      assert.equal(w.Bloxorz.ui.screen,'play');
+    });
+    await t.test('solver result waits for play and replay seek restores engine state', async () => {
+      await select('4');
+      controls.mockSolvers=false;controls.solverUnavailable=false;
+      await w.Bloxorz.ui.actions.runSolver('astar');
+      assert.equal(count(),0);
+      await w.Bloxorz.ui.actions.seekReplay(4);
+      assert.equal(count(),4);assert.equal(el('hud-orient').textContent,'Khối 1 / 2');
+      await w.Bloxorz.ui.actions.seekReplay(0);assert.equal(count(),0);
+      assert.equal(el('hud-orient').textContent,'Đứng thẳng');
+    });
+    await t.test('render readiness and victory isolate replay controls', async () => {
+      await select('1');
+      assert.equal(d.body.dataset.renderReady,'true');
+      await w.Bloxorz.ui.actions.runSolver('astar');
+      await w.Bloxorz.ui.actions.playReplay();
+      await wait(() => !el('game-overlay').hidden,'victory shell');
+      assert.equal(el('result-strip').hidden,true);
+      assert.equal(el('shell').inert,true);
+      tap('Escape');assert.equal(d.body.dataset.screen,'outcome');
+      click('end-metrics');
+      assert.equal(el('game-overlay').hidden,true);
+      assert.equal(d.body.dataset.screen,'results');
+      assert.equal(el('result-strip').hidden,false);
+      assert.equal(el('shell').inert,false);
+      await w.Bloxorz.ui.actions.playReplay();
+      await wait(() => !el('game-overlay').hidden,'second victory');
+      tap('KeyR');
+      await wait(() => d.body.dataset.mode==='idle','keyboard restart');
+      assert.equal(d.body.dataset.screen,'play');
+      assert.equal(el('simple-hud').hidden,false);
+      await w.Bloxorz.ui.actions.seekReplay(0);
+      assert.equal(count(),0);
+    });
+    await t.test('water and bed remain in front of near clip throughout orbit and zoom', async () => {
+      const T=w.THREE;
+      for(const screen of ['play','settings','solver']){
+        d.body.dataset.screen=screen;
+        for(const elevation of [.3,.65,1.18])for(const zoom of [.65,1,1.65])for(const azimuth of [0,1.2,3.1,4.8]){
+          scene.elevation=elevation;scene.zoom=zoom;scene.azimuth=azimuth;scene.setCamera();
+          for(const y of [-.85,-2.6])for(const xN of [-1,1])for(const yN of [-1,1]){
+            const ray=new T.Raycaster();ray.setFromCamera(new T.Vector2(xN,yN),scene.camera);
+            const hit=ray.ray.intersectPlane(new T.Plane(new T.Vector3(0,1,0),-y),new T.Vector3());
+            assert(hit,'every screen corner must intersect water in front of the camera');
+            const projected=hit.clone().project(scene.camera);
+            assert(projected.z>-1&&projected.z<1,'water/bed must be between near and far clipping planes');
+          }
+        }
+      }
+      d.body.dataset.screen='play';scene.resetCamera();
+    });
+    await t.test('fall poses never penetrate surviving floor slabs', async () => {
+      const fixtures=JSON.parse(fs.readFileSync(path.join(root,'tests/visual_cases.json'),'utf8'));
+      const tween=scene.tween;let samples=0;
+      scene.tween=async function(duration,update){
+        for(let frame=0;frame<=60;frame++){
+          update(frame/60);this.scene.updateMatrixWorld(true);samples++;
+          for(const obj of [...this.blocks.children,...this.pivot.children]){
+            if(!obj.visible||!obj.children[0]?.geometry)continue;
+            const mesh=obj.children[0],positions=mesh.geometry.attributes.position;
+            for(let j=0;j<positions.count;j++){
+              const p=new w.THREE.Vector3().fromBufferAttribute(positions,j).applyMatrix4(mesh.matrixWorld);
+              if(p.y>=-.025||p.y<=-.37)continue;
+              for(const [key,tile] of this.tiles){const [r,c]=key.split(',').map(Number);if(!tile.visible||tile.position.y<-.02||this.level.grid[r][c]===9)continue;
+                assert(!(Math.abs(p.x-tile.position.x)<.45&&Math.abs(p.z-tile.position.z)<.45),'block intersects supported slab '+key);
+              }
+            }
+          }
+        }
+        return true;
+      };
+      try{for(const item of fixtures){scene.build(item.level,item.before);scene.rotation.copy(scene.canonicalRotation(item.before.orientation));scene.showState(item.before);
+        const out=item.outcome;await scene.roll(item.before,item.action,out.next_state,out.valid,out.failure_state);
+        if(item.name==='goal')await scene.victory();
+      }assert(samples>400);}finally{scene.tween=tween;}
+    });
+    await t.test('AI status is replaced across algorithm changes and results', async () => {
+      await select('1');click('menu-toggle');click('choose-solver');
+      assert.equal(el('solver-status').dataset.state,'ready');
+      await w.Bloxorz.ui.actions.runSolver('astar');
+      assert.equal(el('solver-status').dataset.state,'found');
+      const bfs=[...el('tabs').querySelectorAll('button')].find(b=>b.textContent==='BFS');bfs.click();
+      await wait(()=>d.body.dataset.mode==='idle','algorithm reset');
+      assert.equal(el('solver-status').dataset.state,'ready');assert(el('result-strip').hidden);
+      assert.equal(d.querySelectorAll('#solver-status').length,1);
+    });
+    await t.test('map themes change scenery without changing engine cells', async () => {
+      w.eval(fs.readFileSync(path.join(root,'static/js/garden.js'),'utf8'));
+      await select('2');const grid=JSON.stringify(scene.level.grid),tileCount=scene.tiles.size;
+      scene.setAppearance('stone','garden');
+      assert(scene.decor.children.some(x=>x.material===scene.artMats.pink));
+      scene.setAppearance('stone','frost');
+      assert(scene.decor.children.some(x=>x.material===scene.artMats.snow));
+      assert(scene.decor.children.some(x=>x.material===scene.artMats.pine));
+      assert(!scene.decor.children.some(x=>scene.artMats.leaf.includes(x.material)||x.material===scene.artMats.pink||x.material===scene.artMats.purple));
+      assert.equal(JSON.stringify(scene.level.grid),grid);assert.equal(scene.tiles.size,tileCount);
+      assert.equal(scene.water.position.y,-.85);assert.equal(scene.seabed.position.y,-2.6);
+      scene.setAppearance('stone','ruins');
     });
     await t.test('no uncaught runtime errors. GPU rasterization was not tested.', async () => {
       controls.solverUnavailable = false;

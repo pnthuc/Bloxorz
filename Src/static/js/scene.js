@@ -9,13 +9,13 @@
     constructor(container) {
       this.container = container;
       this.scene = new THREE.Scene();
-      this.camera = new THREE.PerspectiveCamera(37, 1, .1, 160);
+      this.camera = new THREE.OrthographicCamera(-10,10,10,-10,.1,160);
       this.renderer = new THREE.WebGLRenderer({antialias:true, alpha:true, powerPreference:'high-performance'});
       this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
       this.renderer.outputEncoding = THREE.sRGBEncoding;
       this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
       this.renderer.toneMappingExposure = 1.12;
-      this.renderer.shadowMap.enabled = false;
+      this.renderer.shadowMap.enabled = true;this.renderer.shadowMap.type=THREE.PCFSoftShadowMap;
       this.renderer.localClippingEnabled = true;
       this.renderer.domElement.setAttribute('aria-hidden', 'true');
       container.prepend(this.renderer.domElement);
@@ -27,8 +27,8 @@
       this.markers = new THREE.Group();
       this.pivot = new THREE.Group();
       this.scene.add(this.board, this.blocks, this.pivot, this.markers);
-      this.scene.add(new THREE.HemisphereLight(0xddebf2, 0x233445, .8));
-      const key = new THREE.DirectionalLight(0xffe6ca, 2.0); key.position.set(-5, 12, 7); this.scene.add(key);
+      this.scene.add(new THREE.HemisphereLight(0xddebf2, 0x233445, .65));
+      const key = new THREE.DirectionalLight(0xffe6ca, 1.15); key.position.set(-5, 12, 7);key.castShadow=true;key.shadow.mapSize.set(2048,2048);Object.assign(key.shadow.camera,{left:-20,right:20,top:20,bottom:-20});key.shadow.radius=2;key.shadow.bias=-.0003;this.scene.add(key);
       const fill = new THREE.DirectionalLight(0x8db5d7, .55); fill.position.set(8, 5, -5); this.scene.add(fill);
       const rim = new THREE.DirectionalLight(0xc7e9e7, .7); rim.position.set(-5, 4, -7); this.scene.add(rim);
       this.target = new THREE.Vector3(0, .15, 0);
@@ -48,9 +48,12 @@
     }
     box(w, h, d, mat, radius = .025) {
       const key = `box:${w}:${h}:${d}:${radius}`;
-      return new THREE.Mesh(this.geometry(key, () => B.roundedBox(w,h,d,radius)), mat);
+      const mesh=new THREE.Mesh(this.geometry(key, () => B.roundedBox(w,h,d,radius)), mat);mesh.castShadow=true;mesh.receiveShadow=true;return mesh;
     }
     render() {
+      const layoutKey=[document.body.dataset.screen,document.body.dataset.results,this.container.clientWidth,this.container.clientHeight].join(':');
+      if(this.layoutKey!==layoutKey){this.layoutKey=layoutKey;this.resize();return;}
+      this.updateWaterCoverage?.();
       this.scene.updateMatrixWorld(true);
       // Selection is a world-space overlay, not a face painted on the cube.
       this.markers.children.forEach(marker => {
@@ -66,8 +69,30 @@
     }
     setCamera() {
       const d = this.distance * this.zoom, c = Math.cos(this.elevation);
-      this.camera.position.set(this.target.x + Math.sin(this.azimuth)*c*d,
-        this.target.y + Math.sin(this.elevation)*d, this.target.z + Math.cos(this.azimuth)*c*d);
+      if(this.camera.isOrthographicCamera){
+        const W=Math.max(1,this.container.clientWidth),H=Math.max(1,this.container.clientHeight);
+        const screen=document.body.dataset.screen||'play',results=document.body.dataset.results==='open';
+        const landscape=H<=500&&W>H,mobile=W<=700;
+        let left=0,top=0,width=W,height=H-(mobile?240:150);
+        if(landscape){width=W-185;height=H;}
+        if(['levels','settings','help'].includes(screen)&&!mobile&&!landscape){left=W*.32;width=W-left;height=H-180;top=100;}
+        if(['solver','results'].includes(screen)){top=150;height=H-top-(results?250:110);}
+        height=Math.max(120,height);width=Math.max(180,width);
+        this.safeRect={left,top,width,height,W,H};
+        const h=d*.34,hh=h*H/height,hw=h*W/height;
+        const cx=(left+width/2-W/2)*2/W,cy=1-(top+height/2)*2/H;
+        this.camera.left=-hw-cx*hw;this.camera.right=hw-cx*hw;
+        this.camera.top=hh-cy*hh;this.camera.bottom=-hh-cy*hh;this.camera.updateProjectionMatrix();
+      }
+      // Orthographic scale and camera distance are independent. Keep the entire
+      // near plane above the highest object even at the minimum orbit elevation.
+      const verticalReach=Math.max(Math.abs(this.camera.top),Math.abs(this.camera.bottom))*c;
+      const highest=this.sceneCeiling??4;
+      const cameraDistance=Math.max(d,(highest+1-this.target.y+verticalReach)/Math.sin(this.elevation));
+      this.camera.far=cameraDistance+4*(Math.abs(this.camera.top)+Math.abs(this.camera.bottom)+Math.abs(this.camera.left)+5)/Math.sin(this.elevation);
+      this.camera.updateProjectionMatrix();
+      this.camera.position.set(this.target.x + Math.sin(this.azimuth)*c*cameraDistance,
+        this.target.y + Math.sin(this.elevation)*cameraDistance, this.target.z + Math.cos(this.azimuth)*c*cameraDistance);
       this.camera.lookAt(this.target); this.camera.updateMatrixWorld();
     }
     fitCamera() {
@@ -84,7 +109,7 @@
       pts.push(new THREE.Vector3(start.x,2.2,start.z));
       for (let i=0;i<65;i++) {
         this.setCamera();
-        if (pts.every(v => {const p=v.clone().project(this.camera);return Math.abs(p.x)<.85 && p.y<.68 && p.y>-.79 && p.z<1;})) break;
+        if (pts.every(v => {const p=v.clone().project(this.camera);const a=this.safeRect;const x=(p.x+1)*a.W/2,y=(1-p.y)*a.H/2;return x>a.left+a.width*.08&&x<a.left+a.width*.92&&y>a.top+a.height*.10&&y<a.top+a.height*.90&&p.z<1;})) break;
         this.distance *= 1.04;
       }
       this.zoom = oldZoom; this.setCamera();
@@ -221,14 +246,14 @@
       });
     }
     async roll(prev,action,next,valid,failureState=null) {
-      if(action==='SPACE'){this.showState(next);return true;}
+      if(action==='SPACE'){B.sound?.();this.showState(next);return true;}
       const objects=this.blocks.children.slice();
       const index=prev.orientation==='SPLIT'?prev.active_cube:0;
       const obj=this.blocks.children[index],pos=this.placements(prev)[index];
       const [dx,dz]=directions[action],axis=new THREE.Vector3(dz,0,-dx),angle=Math.PI/2;
       this.pivot.position.set(pos.x+dx*pos.w/2,0,pos.z+dz*pos.d/2);this.pivot.rotation.set(0,0,0);
       this.scene.updateMatrixWorld(true);this.pivot.attach(obj);
-      const ok=await this.tween(this.reducedMotion?90:230,t=>this.pivot.quaternion.setFromAxisAngle(axis,angle*ease(t)));
+      const ok=await this.tween((this.reducedMotion?90:230)/(this.playbackSpeed||1),t=>this.pivot.quaternion.setFromAxisAngle(axis,angle*ease(t)));
       if(!ok)return false;
       if(!valid) {
         if(failureState)return this.fallAfterSwitch(failureState,objects);
@@ -245,48 +270,63 @@
       } else {
         this.rotation.copy(this.canonicalRotation(next.orientation));
       }
-      this.showState(next);return true;
+      B.sound?.();this.showState(next);return true;
     }
-    async fallAfterSwitch(st,objects) {
-      // Commit visible bridge/switch effects before the loss animation.
+    supportPlan(obj, bridges) {
+      this.scene.updateMatrixWorld(true);
+      const box=new THREE.Box3().setFromObject(obj),supported=[],missing=[],fragile=[];
+      const min=this.world(0,0);
+      for(let r=Math.floor(box.min.z-min.z+.5);r<=Math.floor(box.max.z-min.z+.5);r++)
+      for(let c=Math.floor(box.min.x-min.x+.5);c<=Math.floor(box.max.x-min.x+.5);c++){
+        const p=this.world(r,c),tile=this.level.grid[r]?.[c];
+        if(Math.min(box.max.x,p.x+.5)-Math.max(box.min.x,p.x-.5)<.12||Math.min(box.max.z,p.z+.5)-Math.max(box.min.z,p.z-.5)<.12)continue;
+        const upright=box.max.y-box.min.y>1.5;
+        if(tile===2&&upright){fragile.push(this.tiles.get(`${r},${c}`));missing.push(p);}
+        else if(tile&&(tile<10||bridges[tile-10]))supported.push(p);else missing.push(p);
+      }
+      if(!missing.length)return {supported:true};
+      if(!supported.length)return {fragile};
+      const center=points=>points.reduce((v,p)=>v.add(new THREE.Vector3(p.x,0,p.z)),new THREE.Vector3()).multiplyScalar(1/points.length);
+      const delta=center(missing).sub(center(supported));
+      const dx=Math.abs(delta.x)>=Math.abs(delta.z)?Math.sign(delta.x):0,dz=dx?0:Math.sign(delta.z);
+      const pivot=obj.position.clone();pivot.y=0;
+      if(dx)pivot.x=(dx>0?Math.max(...supported.map(p=>p.x))+.5:Math.min(...supported.map(p=>p.x))-.5);
+      else pivot.z=(dz>0?Math.max(...supported.map(p=>p.z))+.5:Math.min(...supported.map(p=>p.z))-.5);
+      return {pivot,axis:new THREE.Vector3(dz,0,-dx),fragile};
+    }
+    async animateUnsupported(objects,bridges) {
       this.scene.updateMatrixWorld(true);
       objects.forEach(obj=>this.blocks.attach(obj));this.pivot.clear();this.markers.clear();
-      this.updateBoard(st);this.render();
-      const supported=(r,c)=>{
-        const tile=this.level.grid[r]?.[c];
-        return !!tile&&(tile<10||st.bridges[tile-10]);
-      };
-      const falling=st.orientation==='SPLIT'
-        ? objects.filter((obj,i)=>!supported(i===0?st.r:st.r2,i===0?st.c:st.c2))
-        : objects;
-      const starts=falling.map(obj=>({obj,position:obj.position.clone(),rotation:obj.quaternion.clone()}));
-      if(!await this.tween(this.reducedMotion?50:140,()=>{}))return false;
-      const ok=await this.tween(this.reducedMotion?160:650,t=>{
-        starts.forEach(({obj,position,rotation})=>{
-          obj.position.copy(position);obj.position.y-=7.5*t*t;
-          obj.quaternion.copy(rotation).premultiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0,0,1),t*.35));
-        });
+      const plans=objects.map(obj=>({obj,...this.supportPlan(obj,bridges),position:obj.position.clone(),rotation:obj.quaternion.clone()})).filter(p=>!p.supported);
+      const tipped=plans.filter(p=>p.pivot);
+      // A partly supported cuboid first tips about the surviving ledge. Its supported
+      // half rises, instead of translating down through a tile that still exists.
+      if(tipped.length){
+        if(!await this.tween(this.reducedMotion?100:420,t=>{
+          for(const p of tipped){const q=new THREE.Quaternion().setFromAxisAngle(p.axis,Math.PI/2*t*t);
+            p.obj.position.copy(p.position).sub(p.pivot).applyQuaternion(q).add(p.pivot);
+            p.obj.quaternion.copy(p.rotation).premultiply(q);
+          }
+        }))return false;
+      }
+      const starts=plans.map(p=>({...p,position:p.obj.position.clone()}));
+      const ok=await this.tween(this.reducedMotion?140:520,t=>{
+        for(const p of starts){p.obj.position.copy(p.position);p.obj.position.y-=7.5*t*t;
+          // A fragile slab breaks beneath the upright block, not through its neighbours.
+          for(const tile of p.fragile||[])if(tile)tile.position.y=-7.5*t*t;
+        }
       });
-      if(ok){falling.forEach(obj=>obj.visible=false);this.render();}
+      if(ok){for(const p of plans){p.obj.visible=false;for(const tile of p.fragile||[])if(tile)tile.visible=false;}this.render();}
       return ok;
     }
+    async fallAfterSwitch(st,objects) {
+      this.scene.updateMatrixWorld(true);objects.forEach(obj=>this.blocks.attach(obj));this.pivot.clear();
+      this.updateBoard(st);this.render();
+      if(!await this.tween(this.reducedMotion?40:100,()=>{}))return false;
+      return this.animateUnsupported(objects,st.bridges);
+    }
     async fall(obj,dx,dz,prev,action) {
-      this.scene.updateMatrixWorld(true);this.blocks.attach(obj);this.pivot.clear();
-      const start=obj.position.clone(),rotation=obj.quaternion.clone();
-      // A standing block on a fragile tile takes the tile down with it.
-      let fragile=null;
-      if(prev.orientation==='HORIZONTAL'&&(action==='LEFT'||action==='RIGHT')) {
-        const c=prev.c+(action==='LEFT'?-1:2);if(this.level.grid[prev.r]?.[c]===2)fragile=this.tiles.get(`${prev.r},${c}`);
-      }
-      if(prev.orientation==='VERTICAL'&&(action==='UP'||action==='DOWN')) {
-        const r=prev.r+(action==='UP'?-1:2);if(this.level.grid[r]?.[prev.c]===2)fragile=this.tiles.get(`${r},${prev.c}`);
-      }
-      const ok=await this.tween(this.reducedMotion?160:650,t=>{
-        obj.position.copy(start).add(new THREE.Vector3(dx*t*.55,-7.5*t*t,dz*t*.55));
-        obj.quaternion.copy(rotation).premultiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(dz,0,-dx),t*.65));
-        if(fragile){fragile.position.y=-8*t*t;fragile.rotation.x=t*.45;}
-      });
-      if(ok){obj.visible=false;this.markers.clear();if(fragile)fragile.visible=false;this.render();}return ok;
+      return this.animateUnsupported([obj],prev.bridges);
     }
     async victory() {
       const obj=this.blocks.children[0];if(!obj)return true;
