@@ -18,8 +18,8 @@ Kế thừa engine, UI, levels và test đã làm. Cung cấp ghi chú/tư liệ
 
 | Đã bàn giao | Mã | Nhiệm vụ |
 | --- | --- | --- |
-| [ ] | `T01` | Ghi chú engine và mô hình để người khác viết tiếp |
-| [ ] | `T02` | Bàn giao tư liệu và đường thao tác demo |
+| [x] | `T01` | Ghi chú engine và mô hình để người khác viết tiếp |
+| [x] | `T02` | Bàn giao tư liệu và đường thao tác demo |
 | [ ] | `T03` | Chốt snapshot và giao ước dùng chung |
 | [ ] | `T04` | Nghiệm thu tích hợp và xác nhận đóng góp |
 | [ ] | `T05` | Tạo và kiểm tra gói nộp cuối |

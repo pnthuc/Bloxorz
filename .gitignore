@@ -20,4 +20,4 @@ node_modules/
 /handoff/phuc/video/*.prproj
 /handoff/phuc/video/*.drp
 
-screenshots/
+/screenshots/
