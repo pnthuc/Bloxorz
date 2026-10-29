@@ -25,12 +25,3 @@ node_modules/
 # Local AI tools; not needed to run or test the game
 /.agents/
 /skills-lock.json
-
-# Retired frontend modules retained only in existing local checkouts
-/Src/static/js/experience.js
-/Src/static/js/motion.js
-
-# Redundant local copies; shared document is Phan_Ngoc_Thuc.docx
-/handoff/thuc/architecture.docx
-/handoff/thuc/demo-notes.docx
-/handoff/thuc/model-notes.docx
