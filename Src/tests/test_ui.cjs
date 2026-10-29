@@ -5,7 +5,7 @@ const assert = require('node:assert/strict');
 const { spawn } = require('node:child_process');
 const { test } = require('node:test');
 const { JSDOM } = require('jsdom');
-const { createCanvas, ImageData } = require('@napi-rs/canvas');
+const { createCanvas, ImageData, loadImage } = require('@napi-rs/canvas');
 
 const root = path.resolve(__dirname, '..');
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -242,6 +242,7 @@ async function createUI({savedLevel,storageUnavailable=false}={}) {
     };
     for (const file of ['materials.js', 'scene.js'])
       w.eval(fs.readFileSync(path.join(root, 'static/js', file), 'utf8'));
+    await w.Bloxorz.prepareRenderAssets(url => loadImage(path.join(root, url.slice(1))));
     const OriginalScene = w.Bloxorz.GameScene;
     let scene;
     w.Bloxorz.GameScene = class extends OriginalScene {

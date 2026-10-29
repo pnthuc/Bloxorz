@@ -292,6 +292,7 @@
     bindInput();updateUI();
     try {
       if(!window.THREE)throw new Error('Không tải được thư viện 3D đi kèm.');
+      await B.prepareRenderAssets();
       scene=new B.GameScene($('canvas-container'));
       allLevels=await api('/api/levels');
       $('level-select').replaceChildren();

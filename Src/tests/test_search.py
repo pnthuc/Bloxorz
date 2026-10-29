@@ -297,7 +297,7 @@ class RunCommandTests(unittest.TestCase):
             ui.return_value.returncode = 0
             self.assertEqual(run_tests.main(["--solver", "bfs", "--cases", "T5", "--ui"]), 2)
             solve.assert_called_once_with("bfs", ["T5"])
-            self.assertEqual(ui.call_args.args[0], ["node", "--test", "test_ui.cjs", "test_audio.cjs"])
+            self.assertEqual(ui.call_args.args[0], ["node", "--test", "test_ui.cjs", "test_audio.cjs", "test_render_assets.cjs"])
             ui.return_value.returncode = 1
             self.assertEqual(run_tests.main(["--ui"]), 1)
 

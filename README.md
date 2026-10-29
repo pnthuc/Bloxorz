@@ -51,7 +51,7 @@ Src/
   solvers/          Bốn thuật toán, profiler và cost chung
   benchmarks/       CLI thực nghiệm và worker đo cho GUI
   levels/           level_01.json đến level_33.json
-  static/           JavaScript, CSS, font, âm thanh và thư viện local
+  static/           JavaScript, CSS, texture tạo sẵn, font, âm thanh và thư viện local
   templates/        HTML
   tests/            Regression và dữ liệu ca kiểm thử
 handoff/            Giao việc, bản thảo và đầu ra của từng thành viên
