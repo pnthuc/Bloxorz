@@ -1,4 +1,4 @@
-/* Local score/ambience and user-supplied gameplay recordings; see audio/README.md. */
+/* Local audio playback, mixer controls and background pause. */
 (()=>{
  const B=window.Bloxorz;let context=null,settings=()=>({}),unlocked=false;
  const music=new Audio('/static/audio/lagoon-jig.wav');music.loop=true;music.preload='none';

@@ -111,5 +111,4 @@ Quy ước hiện tại:
   (trường API tên `memory_kb`), không phải tổng RAM hay bộ nhớ GPU.
 
 Dữ liệu đo theo quy ước SPACE riêng trước đây cần đo lại trước khi dùng để so sánh bản này.
-Nguồn âm thanh được ghi tại [static/audio/README.md](Src/static/audio/README.md);
-giữ kèm giấy phép [font](Src/static/fonts/OFL.txt) và [Three.js](Src/static/vendor/THREE-LICENSE.txt).
+Giữ kèm giấy phép [font](Src/static/fonts/OFL.txt) và [Three.js](Src/static/vendor/THREE-LICENSE.txt).
