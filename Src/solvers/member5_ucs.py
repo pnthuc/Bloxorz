@@ -53,7 +53,7 @@ def _ucs_core(board: BloxorzBoard) -> Dict[str, Any]:
 
         expanded_nodes += 1
         for action, next_state in board.get_successors(current):
-            next_g = current_g + step_cost(board, current, action, next_state)
+            next_g = current_g + step_cost(board, next_state)
             if next_g >= best_g.get(next_state, float("inf")):
                 continue
 

@@ -157,7 +157,7 @@ async function createUI() {
           JSON.stringify({
             found: sample.solvable,
             moves: actions,
-            solution_length: actions.length,
+            solution_length: actions.filter((a) => a !== 'SPACE').length,
             expanded_nodes: 10,
             search_time_ms: 1,
             memory_kb: 1,
@@ -304,8 +304,8 @@ test('Bloxorz UI', async (t) => {
         Array.from(el('level-select').options, (option) => option.value),
         levelIds,
       );
-      assert.equal(scene.camera.isPerspectiveCamera, true);
-      assert.equal(scene.renderer.shadowMap.enabled, false);
+      assert.equal(scene.camera.isOrthographicCamera, true);
+      assert.equal(scene.renderer.shadowMap.enabled, true);
       for (const m of [
         scene.materials.stone[0],
         scene.materials.fragile,
@@ -366,7 +366,7 @@ test('Bloxorz UI', async (t) => {
         controls.solverUnavailable = true;
         await select('1');
         await reset();
-        d.querySelector('[data-solver="bfs"]').click();
+        void w.Bloxorz.ui.actions.runSolver('bfs');
         await wait(
           () => el('status-toast').textContent.includes('chưa hoàn thiện'),
           'pending solver notice',
@@ -433,7 +433,9 @@ test('Bloxorz UI', async (t) => {
       controls.mockSolvers = true;
       await select('1');
       await reset();
-      d.querySelector('[data-solver="bfs"]').click();
+      void w.Bloxorz.ui.actions.runSolver('bfs');
+      await wait(() => el('status-toast').textContent.includes('Nhấn Phát'), 'solution ready');
+      void w.Bloxorz.ui.actions.playReplay();
       await wait(() => el('input-status').textContent === 'ĐANG PHÁT LỜI GIẢI', 'BFS start');
       const before = moves.length;
       tap('KeyD');
@@ -480,12 +482,13 @@ test('Bloxorz UI', async (t) => {
         const parked = scene.blocks.children[0].quaternion.clone();
         sameRotation(parked, original0.clone().premultiply(rightTurn).premultiply(rightTurn));
         tap('Space');
-        await wait(() => count() === 5, 'Space switch');
+        await wait(() => el('hud-orient').textContent === 'Khối 2 / 2', 'Space switch');
+        assert.equal(count(), 4);
         assert.equal(el('hud-orient').textContent, 'Khối 2 / 2');
         sameRotation(scene.blocks.children[0].quaternion, parked);
         sameRotation(scene.blocks.children[1].quaternion, original1);
         tap('ArrowLeft');
-        await wait(() => count() === 6, 'move other cube while switch held');
+        await wait(() => count() === 5, 'move other cube while switch held');
         sameRotation(scene.blocks.children[0].quaternion, parked);
         sameRotation(scene.blocks.children[1].quaternion, original1.clone().premultiply(leftTurn));
         assert.equal(moves.at(-1).data.next_state.bridges[0], true);
@@ -501,7 +504,9 @@ test('Bloxorz UI', async (t) => {
       controls.solverUnavailable = false;
       controls.mockSolvers = true;
       await select('3');
-      d.querySelector('[data-solver="bfs"]').click();
+      void w.Bloxorz.ui.actions.runSolver('bfs');
+      await wait(() => el('status-toast').textContent.includes('Nhấn Phát'), 'solution ready');
+      void w.Bloxorz.ui.actions.playReplay();
       await wait(() => count() === 2, 'replay before Stop');
       click('stop-solver');
       const stopped = count();
@@ -511,7 +516,7 @@ test('Bloxorz UI', async (t) => {
       tap('KeyR');
       await wait(() => count() === 0 && ready(), 'restart after Stop');
       controls.solveDelay = 350;
-      d.querySelector('[data-solver="bfs"]').click();
+      void w.Bloxorz.ui.actions.runSolver('bfs');
       await wait(() => el('input-status').textContent === 'ĐANG TÌM LỜI GIẢI', 'slow solver');
       await select('2');
       await sleep(600);
@@ -535,10 +540,12 @@ test('Bloxorz UI', async (t) => {
       controls.solverUnavailable = false;
       controls.mockSolvers = true;
       await select('4');
-      d.querySelector('[data-solver="astar"]').click();
+      void w.Bloxorz.ui.actions.runSolver('astar');
+      await wait(() => el('status-toast').textContent.includes('Nhấn Phát'), 'solution ready');
+      void w.Bloxorz.ui.actions.playReplay();
       await wait(() => !el('game-overlay').hidden, 'stage 4 A* victory', 18000);
       assert.equal(el('overlay-title').textContent, 'Đã đến đích');
-      assert.equal(count(), 17);
+      assert.equal(count(), 16);
       assert(moves.some((m) => m.request.action === 'SPACE'));
     });
     await t.test(
@@ -610,6 +617,153 @@ test('Bloxorz UI', async (t) => {
       assert.equal(el('level-summary').textContent, el('stage-description').textContent);
       for (const bridge of scene.bridgeGroups.values())
         assert(bridge.every((group) => !group.visible));
+    });
+    await t.test('screen stack blocks moves and restores play; settings persist', async () => {
+      w.eval(fs.readFileSync(path.join(root, 'static/js/shell.js'), 'utf8'));
+      await select('1');
+      click('menu-toggle');
+      assert.equal(w.Bloxorz.ui.screen, 'pause');
+      const before=count();tap('KeyD');await sleep(350);assert.equal(count(),before);
+      click('choose-settings');
+      const jade=[...d.querySelectorAll('.skin-option')].find(b=>b.textContent==='Ngọc');jade.click();
+      click('apply');
+      assert.equal(JSON.parse(w.localStorage.getItem('bloxorz-garden')).skin,'jade');
+      assert.equal(w.Bloxorz.ui.screen,'pause');click('resume');
+      assert.equal(w.Bloxorz.ui.screen,'play');
+    });
+    await t.test('solver result waits for play and replay seek restores engine state', async () => {
+      await select('4');
+      controls.mockSolvers=false;controls.solverUnavailable=false;
+      await w.Bloxorz.ui.actions.runSolver('astar');
+      assert.equal(count(),0);
+      await w.Bloxorz.ui.actions.seekReplay(4);
+      assert.equal(count(),4);assert.equal(el('hud-orient').textContent,'Khối 1 / 2');
+      await w.Bloxorz.ui.actions.seekReplay(0);assert.equal(count(),0);
+      assert.equal(el('hud-orient').textContent,'Đứng thẳng');
+    });
+    await t.test('render readiness and victory isolate replay controls', async () => {
+      await select('1');
+      assert.equal(d.body.dataset.renderReady,'true');
+      await w.Bloxorz.ui.actions.runSolver('astar');
+      await w.Bloxorz.ui.actions.playReplay();
+      await wait(() => !el('game-overlay').hidden,'victory shell');
+      assert.equal(el('result-strip').hidden,true);
+      assert.equal(el('shell').inert,true);
+      tap('Escape');assert.equal(d.body.dataset.screen,'outcome');
+      click('end-metrics');
+      assert.equal(el('game-overlay').hidden,true);
+      assert.equal(d.body.dataset.screen,'results');
+      assert.equal(el('result-strip').hidden,false);
+      assert.equal(el('shell').inert,false);
+      await w.Bloxorz.ui.actions.playReplay();
+      await wait(() => !el('game-overlay').hidden,'second victory');
+      tap('KeyR');
+      await wait(() => d.body.dataset.mode==='idle','keyboard restart');
+      assert.equal(d.body.dataset.screen,'play');
+      assert.equal(el('simple-hud').hidden,false);
+      await w.Bloxorz.ui.actions.seekReplay(0);
+      assert.equal(count(),0);
+    });
+    await t.test('water and bed remain in front of near clip throughout orbit and zoom', async () => {
+      const T=w.THREE;
+      for(const screen of ['play','settings','solver']){
+        d.body.dataset.screen=screen;
+        for(const elevation of [.3,.65,1.18])for(const zoom of [.65,1,1.65])for(const azimuth of [0,1.2,3.1,4.8]){
+          scene.elevation=elevation;scene.zoom=zoom;scene.azimuth=azimuth;scene.setCamera();
+          for(const y of [-.85,-2.6])for(const xN of [-1,1])for(const yN of [-1,1]){
+            const ray=new T.Raycaster();ray.setFromCamera(new T.Vector2(xN,yN),scene.camera);
+            const hit=ray.ray.intersectPlane(new T.Plane(new T.Vector3(0,1,0),-y),new T.Vector3());
+            assert(hit,'every screen corner must intersect water in front of the camera');
+            const projected=hit.clone().project(scene.camera);
+            assert(projected.z>-1&&projected.z<1,'water/bed must be between near and far clipping planes');
+          }
+        }
+      }
+      d.body.dataset.screen='play';scene.resetCamera();
+    });
+    await t.test('fall poses never penetrate surviving floor slabs', async () => {
+      const fixtures=JSON.parse(fs.readFileSync(path.join(root,'tests/visual_cases.json'),'utf8'));
+      const tween=scene.tween;let samples=0;
+      scene.tween=async function(duration,update){
+        for(let frame=0;frame<=60;frame++){
+          update(frame/60);this.scene.updateMatrixWorld(true);samples++;
+          for(const obj of [...this.blocks.children,...this.pivot.children]){
+            if(!obj.visible||!obj.children[0]?.geometry)continue;
+            const mesh=obj.children[0],positions=mesh.geometry.attributes.position;
+            for(let j=0;j<positions.count;j++){
+              const p=new w.THREE.Vector3().fromBufferAttribute(positions,j).applyMatrix4(mesh.matrixWorld);
+              if(p.y>=-.025||p.y<=-.37)continue;
+              for(const [key,tile] of this.tiles){const [r,c]=key.split(',').map(Number);if(!tile.visible||tile.position.y<-.02||this.level.grid[r][c]===9)continue;
+                assert(!(Math.abs(p.x-tile.position.x)<.45&&Math.abs(p.z-tile.position.z)<.45),'block intersects supported slab '+key);
+              }
+            }
+          }
+        }
+        return true;
+      };
+      try{for(const item of fixtures){scene.build(item.level,item.before);scene.rotation.copy(scene.canonicalRotation(item.before.orientation));scene.showState(item.before);
+        const out=item.outcome;await scene.roll(item.before,item.action,out.next_state,out.valid,out.failure_state);
+        if(item.name==='goal')await scene.victory();
+      }assert(samples>400);}finally{scene.tween=tween;}
+    });
+    await t.test('AI status is replaced across algorithm changes and results', async () => {
+      await select('1');click('menu-toggle');click('choose-solver');
+      assert.equal(el('solver-status').dataset.state,'ready');
+      await w.Bloxorz.ui.actions.runSolver('astar');
+      assert.equal(el('solver-status').dataset.state,'found');
+      const bfs=[...el('tabs').querySelectorAll('button')].find(b=>b.textContent==='BFS');bfs.click();
+      await wait(()=>d.body.dataset.mode==='idle','algorithm reset');
+      assert.equal(el('solver-status').dataset.state,'ready');assert(el('result-strip').hidden);
+      assert.equal(d.querySelectorAll('#solver-status').length,1);
+    });
+    await t.test('map themes change scenery without changing engine cells', async () => {
+      w.eval(fs.readFileSync(path.join(root,'static/js/garden.js'),'utf8'));
+      await select('2');const grid=JSON.stringify(scene.level.grid),tileCount=scene.tiles.size;
+      scene.setAppearance('stone','garden');
+      assert(scene.decor.children.some(x=>x.material===scene.artMats.pink));
+      scene.setAppearance('stone','frost');
+      assert(scene.decor.children.some(x=>x.material===scene.artMats.snow));
+      assert(scene.decor.children.some(x=>x.material===scene.artMats.pine));
+      assert(!scene.decor.children.some(x=>scene.artMats.leaf.includes(x.material)||x.material===scene.artMats.pink||x.material===scene.artMats.purple));
+      assert.equal(JSON.stringify(scene.level.grid),grid);assert.equal(scene.tiles.size,tileCount);
+      for(const theme of ['ruins','garden','frost']){
+        scene.setAppearance('stone',theme);
+        for(const mesh of scene.decor.children){if(!mesh.isInstancedMesh)continue;mesh.geometry.computeBoundingBox();
+          for(let i=0;i<mesh.count;i++){const transform=new w.THREE.Matrix4();mesh.getMatrixAt(i,transform);const box=mesh.geometry.boundingBox.clone().applyMatrix4(transform);
+            if(box.max.y<=.025||box.min.y>=2.35)continue;
+            scene.level.grid.forEach((row,r)=>row.forEach((tile,c)=>{if(!tile)return;const p=scene.world(r,c);assert(!(box.max.x>p.x-.495&&box.min.x<p.x+.495&&box.max.z>p.z-.495&&box.min.z<p.z+.495),'scenery enters playable volume');}));
+          }
+        }
+      }
+      assert.equal(scene.water.position.y,-.85);assert.equal(scene.seabed.position.y,-2.6);
+      scene.setAppearance('stone','ruins');
+    });
+    await t.test('submerged shelves affect depth without emitting a surface contact outline', () => {
+      scene.makeWater([[0,0,1,true]],10,10,false);
+      const submerged=scene.shoreTexture.image.data;
+      assert([...submerged].filter((_,i)=>i%4===2).every(x=>x===255),'deep terrain must not generate a waterline');
+      assert([...submerged].filter((_,i)=>i%4===0).some(x=>x===0),'deep terrain still contributes shallow depth');
+      scene.makeWater([[0,0,1,false]],10,10,false);
+      assert([...scene.shoreTexture.image.data].filter((_,i)=>i%4===2).some(x=>x===0),'surface masonry retains its contact field');
+      scene.buildScenery(scene.level,scene.theme);
+    });
+    await t.test('water highlight patch reaches the bundled r128 shader output', () => {
+      const source=w.THREE.ShaderLib.standard;
+      const shader={uniforms:{},vertexShader:source.vertexShader,fragmentShader:source.fragmentShader};
+      scene.waterMaterial.onBeforeCompile(shader);
+      const bound=shader.fragmentShader.indexOf('min(reflectedLight.directSpecular,vec3(.018,.032,.040))');
+      const output=shader.fragmentShader.indexOf('gl_FragColor = vec4( outgoingLight, diffuseColor.a );');
+      assert(bound>=0&&bound<output,'highlight bound must execute before the actual bundled shader output');
+      assert.throws(()=>scene.waterMaterial.onBeforeCompile({uniforms:{},vertexShader:'',fragmentShader:''}),/output anchor missing/);
+    });
+    await t.test('resize updates raster scale when browser zoom changes', async()=>{
+      const ratios=[],original=scene.renderer.setPixelRatio;
+      scene.renderer.setPixelRatio=r=>ratios.push(r);
+      const previous=w.devicePixelRatio;
+      Object.defineProperty(w,'devicePixelRatio',{value:.75,configurable:true});scene.resize();
+      Object.defineProperty(w,'devicePixelRatio',{value:1,configurable:true});scene.resize();
+      assert(ratios.includes(.75));assert.equal(ratios.at(-1),1);
+      Object.defineProperty(w,'devicePixelRatio',{value:previous,configurable:true});scene.renderer.setPixelRatio=original;
     });
     await t.test('no uncaught runtime errors. GPU rasterization was not tested.', async () => {
       controls.solverUnavailable = false;

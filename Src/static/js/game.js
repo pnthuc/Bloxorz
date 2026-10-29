@@ -15,10 +15,15 @@
   let scene=null,state=null,level=null,levelId='1',moveCount=0,epoch=0;
   let mode='loading',controller=null,pending=null,held=new Map(),repeatAt=0;
   let allLevels={},activeSolver=null;
+  let solverStatus={state:'ready',message:'Sẵn sàng  Giải từ trạng thái ban đầu'};
+  let replayMoves=[],snapshots=[],cursor=0,playing=false,replayBusy=false,wasAI=false;
+  B.ui={screen:'play'};
   function status(text,tone='neutral') {$('status-toast').textContent=text;$('status-toast').dataset.tone=tone;}
   function clearInput() {held.clear();pending=null;document.querySelectorAll('[data-action]').forEach(b=>b.classList.remove('is-pressed'));}
   function focusBoard() {$('canvas-container').focus({preventScroll:true});}
   function updateUI() {
+    document.body.dataset.mode=mode;document.body.dataset.level=levelId;
+    B.ui.update?.({mode,state,level,levelId,moveCount,allLevels,cursor,total:replayMoves.length,playing,wasAI,solverStatus});
     const manual=!!state&&(mode==='idle'||mode==='moving');
     document.querySelectorAll('[data-action]').forEach(button=>{button.disabled=!manual||(button.dataset.action==='SPACE'&&state.orientation!=='SPLIT');});
     document.querySelectorAll('[data-solver]').forEach(button=>{button.disabled=!state||!['idle','won','lost'].includes(mode);button.classList.toggle('is-active',button.dataset.solver===activeSolver);});
@@ -47,11 +52,12 @@
       return await response.json();
     } finally {clearTimeout(timeout);if(controller===localController)controller=null;}
   }
-  function invalidate() {epoch++;controller?.abort();controller=null;scene?.cancel();clearInput();}
+  function invalidate() {playing=false;epoch++;controller?.abort();controller=null;scene?.cancel();clearInput();}
   async function loadLevel(id,{focus=true}={}) {
     if(!scene)return false;
-    invalidate();const token=epoch;
-    mode='loading';$('game-overlay').hidden=true;resetMetrics();updateUI();
+    invalidate();playing=false;wasAI=false;replayMoves=[];snapshots=[];cursor=0;const token=epoch;
+    solverStatus={state:'ready',message:'Sẵn sàng  Giải từ trạng thái ban đầu'};
+    document.body.dataset.renderReady='false';mode='loading';$('game-overlay').hidden=true;resetMetrics();updateUI();
     try {
       const data=await api(`/api/level/${encodeURIComponent(id)}`);if(token!==epoch)return false;
       level=data.level;state=data.initial_state;levelId=String(level.id);moveCount=0;
@@ -63,19 +69,19 @@
       $('level-summary').textContent=text[1];
       const index=Object.keys(allLevels).indexOf(levelId)+1;
       $('stage-number').textContent=`MÀN ${String(index).padStart(2,'0')} / ${String(Object.keys(allLevels).length).padStart(2,'0')}`;
-      scene.build(level,state);mode='idle';status('Dùng mũi tên hoặc WASD để di chuyển.');updateUI();if(focus)focusBoard();return true;
+      scene.build(level,state);B.ui.appearance?.();await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));if(token!==epoch)return false;scene.render();document.body.dataset.renderReady='true';mode='idle';status('Dùng mũi tên hoặc WASD để di chuyển.');updateUI();if(focus&&B.ui.screen==='play')focusBoard();return true;
     } catch(error) {
       if(token!==epoch)return false;
       mode='error';status(error.name==='AbortError'?'Tải màn chơi quá lâu. Nhấn Chơi lại để thử lại.':`Không tải được màn chơi. ${error.message}`,'error');updateUI();return false;
     }
   }
   function endGame(won,reason=null) {
-    clearInput();mode=won?'won':'lost';
+    clearInput();playing=false;mode=won?'won':'lost';
     $('overlay-label').textContent=won?'MÀN CHƠI HOÀN TẤT':'THỬ LẠI';
     $('overlay-title').textContent=won?'Đã đến đích':'Khối đã rơi';
     const lossText=reason==='bridge_closed'?'Công tắc vừa đóng cầu đang đỡ khối. Hãy chọn vị trí nhấn công tắc khác.':'Hãy giữ khối trên sàn. Khối đứng thẳng sẽ làm vỡ gạch cam.';
-    $('overlay-description').textContent=won?`Bạn hoàn thành màn chơi sau ${moveCount} bước.`:lossText;
-    $('game-overlay').hidden=false;
+    $('overlay-description').textContent=won?`${wasAI?"AI replay":"Chơi tay"}  ${moveCount} bước.`:lossText;
+    $('game-overlay').hidden=false;$('overlay-restart').focus({preventScroll:true});
     status(won?'Hoàn thành. Nhấn R để chơi lại hoặc chọn màn khác.':reason==='bridge_closed'?'Cầu đã đóng do công tắc. Nhấn R để chơi lại.':'Khối không được đỡ hoàn toàn. Nhấn R để chơi lại.',won?'success':'error');updateUI();
   }
   async function performMove(action,token) {
@@ -85,7 +91,7 @@
     if(!data.valid&&action==='SPACE')return false;
     const completed=await scene.roll(previous,action,data.next_state,data.valid,data.failure_state);
     if(!completed||token!==epoch)return false;
-    moveCount++;
+    if(action!=='SPACE')moveCount++;
     if(!data.valid){if(data.failure_state)state=data.failure_state;endGame(false,data.failure_reason);return false;}
     state=data.next_state;updateUI();
     if(data.is_goal){
@@ -96,7 +102,7 @@
     return true;
   }
   async function manualMove(action) {
-    if(!state||!['idle','moving'].includes(mode))return;
+    if(B.ui.screen!=='play'||wasAI||!state||!['idle','moving'].includes(mode))return;
     if(action==='SPACE'&&state.orientation!=='SPLIT'){status('Space dùng để đổi khối sau khi khối được tách đôi.');return;}
     if(mode==='moving'){pending=action;return;}
     const token=epoch;mode='moving';updateUI();
@@ -117,7 +123,7 @@
     const token=epoch;activeSolver=algo;mode='solving';clearInput();
     const name=algo==='astar'?'A*':algo.toUpperCase();
     $('solver-name').textContent=name;$('playback-label').textContent=`Đang tìm bằng ${name}`;
-    status(`Đang chạy ${name} từ trạng thái đầu màn chơi.`);updateUI();focusBoard();
+    solverStatus={state:'solving',message:`Đang tìm lời giải bằng ${name}…`};status(`Đang chạy ${name} từ trạng thái đầu màn chơi.`);updateUI();focusBoard();
     try {
       const result=await api('/api/solve',{level_id:levelId,solver:algo});if(token!==epoch)return;
       $('m-time').textContent=`${result.search_time_ms} ms`;
@@ -125,36 +131,24 @@
       $('m-nodes').textContent=Number(result.expanded_nodes).toLocaleString('vi-VN');
       $('m-len').textContent=`${result.solution_length} bước`;
       $('m-cost').textContent=String(result.total_cost);
-      if(!result.found){mode='idle';status('Không tìm thấy lời giải cho màn chơi này.','error');updateUI();return;}
-      mode='replay';updateUI();
-      $('playback-progress').max=Math.max(1,result.moves.length);
-      status(`${name} tìm thấy lời giải ${result.solution_length} bước. Đang phát lại.`,'success');
-      for(let i=0;i<result.moves.length;i++) {
-        if(token!==epoch)return;
-        $('playback-label').textContent=`${name} · Bước ${i+1} / ${result.moves.length}`;
-        const valid=await performMove(result.moves[i],token);
-        if(token!==epoch)return;
-        $('playback-progress').value=i+1;
-        if(!valid)return;
-        if(mode==='won')break;
-        await new Promise(resolve=>setTimeout(resolve,65));
-      }
-      if(token!==epoch)return;
-      if(mode==='replay'){
-        mode='idle';status('Đã phát xong lời giải.');updateUI();
-      }
+      if(!result.found){solverStatus={state:'empty',message:'Không tìm thấy lời giải cho màn này.'};mode='idle';status('Không tìm thấy lời giải cho màn chơi này.','error');updateUI();return;}
+      wasAI=true;playing=false;replayMoves=result.moves;snapshots=[JSON.parse(JSON.stringify(state))];cursor=0;
+      mode='idle';$('playback-progress').max=Math.max(1,replayMoves.length);
+      solverStatus={state:'found',message:`${name}  Đã tìm thấy lời giải`};status(name+' đã tìm thấy lời giải. Nhấn Phát để xem.','success');updateUI();B.ui.result?.();
     } catch(error) {
       if(token!==epoch)return;
-      mode='idle';scene.showState(state);status(`Không chạy được thuật toán. ${error.name==='AbortError'?'Quá thời gian chờ.':error.message}`,'error');updateUI();
+      mode='idle';scene.showState(state);solverStatus={state:'error',message:`Không chạy được ${name}. ${error.name==='AbortError'?'Quá thời gian chờ.':error.message} Hãy thử lại.`};status(`Không chạy được thuật toán. ${error.name==='AbortError'?'Quá thời gian chờ.':error.message}`,'error');updateUI();
     }
   }
   function stopSolver() {
     if(!['solving','replay'].includes(mode))return;
-    invalidate();scene.showState(state);mode='idle';status('Đã dừng. Bạn có thể tiếp tục chơi bằng bàn phím.');updateUI();focusBoard();
+    invalidate();scene.showState(state);mode='idle';solverStatus={state:'ready',message:'Đã ngừng chờ  Có thể tìm lại lời giải'};status('Đã ngừng chờ ở giao diện. Tác vụ máy chủ có thể vẫn đang chạy.');updateUI();focusBoard();
   }
   function isEditable(target) {return target instanceof Element&&!!target.closest('input,textarea,select,[contenteditable="true"],[role="textbox"]');}
   function bindInput() {
     document.addEventListener('keydown',e=>{
+      const outcomeRestart=e.code==='KeyR'&&!$('game-overlay').hidden&&['won','lost'].includes(mode);
+      if(B.ui.screen!=='play'&&!outcomeRestart)return;
       if(e.altKey||e.ctrlKey||e.metaKey||e.isComposing||isEditable(e.target))return;
       if(e.code==='KeyR'||e.code==='KeyC') {
         e.preventDefault();if(e.repeat)return;
@@ -175,19 +169,59 @@
     });
     // Repeat is based on completed moves, independent of OS keyboard repeat rate.
     setInterval(()=>{
-      if(mode!=='idle'||!held.size||performance.now()<repeatAt)return;
+      if(B.ui.screen!=='play'||mode!=='idle'||!held.size||performance.now()<repeatAt)return;
       const action=Array.from(held.values()).at(-1);repeatAt=performance.now()+275;void manualMove(action);
     },35);
     window.addEventListener('blur',clearInput);
     document.addEventListener('visibilitychange',()=>{if(document.hidden)clearInput();});
     document.addEventListener('focusin',e=>{if(isEditable(e.target))clearInput();});
     document.querySelectorAll('[data-action]').forEach(button=>button.addEventListener('click',()=>{void manualMove(button.dataset.action);focusBoard();}));
-    document.querySelectorAll('[data-solver]').forEach(button=>button.addEventListener('click',()=>void runSolver(button.dataset.solver)));
+
     ['restart','restart-top','new-game','overlay-restart'].forEach(id=>$(id).addEventListener('click',()=>void loadLevel(levelId)));
     $('level-select').addEventListener('change',e=>void loadLevel(e.target.value));
     $('view-reset').addEventListener('click',()=>{scene?.resetCamera();focusBoard();});
     $('stop-solver').addEventListener('click',stopSolver);
   }
+  async function stepReplay() {
+    if(replayBusy||cursor>=replayMoves.length)return;
+    replayBusy=true;const token=epoch;mode='replay';updateUI();
+    try {
+      const ok=await performMove(replayMoves[cursor],token);
+      if(token!==epoch)return;
+      if(ok){cursor++;snapshots[cursor]=JSON.parse(JSON.stringify(state));}
+      if(mode==='replay')mode='idle';
+      if(!ok)playing=false;
+    } catch(error){if(token===epoch){playing=false;mode='idle';status(error.message,'error');}}
+    finally{replayBusy=false;updateUI();}
+  }
+  async function playReplay(){
+    if(replayBusy&&!playing)return;
+    if(playing){playing=false;updateUI();return;}
+    if(cursor>=replayMoves.length)await seekReplay(0);
+    playing=true;const playToken=epoch;updateUI();
+    while(playing&&playToken===epoch&&cursor<replayMoves.length){await stepReplay();if(mode==='won'||mode==='lost')break;}
+    playing=false;updateUI();
+  }
+  async function seekReplay(index){
+    playing=false;if(replayBusy)return;
+    index=Math.max(0,Math.min(replayMoves.length,Number(index)));
+    const token=epoch;replayBusy=true;
+    try{
+      while(snapshots.length<=index){
+        const last=snapshots.at(-1),action=replayMoves[snapshots.length-1];
+        const data=await api('/api/move',{level_id:levelId,state:last,action});
+        if(token!==epoch)return;if(!data.valid)throw new Error('Replay không hợp lệ.');
+        snapshots.push(data.next_state);
+      }
+      state=JSON.parse(JSON.stringify(snapshots[index]));cursor=index;moveCount=index;
+      scene.cancel();scene.rotation.copy(scene.canonicalRotation(state.orientation));
+      scene.showState(state);mode='idle';$('game-overlay').hidden=true;
+    }catch(e){status(e.message,'error');}finally{replayBusy=false;updateUI();}
+  }
+  B.ui.actions={prepareSolver:()=>loadLevel(levelId,{focus:false}),loadLevel,runSolver,stopSolver,stepReplay,playReplay,seekReplay,
+    pause:()=>{clearInput();playing=false;},scene:()=>scene,
+    inspect:()=>JSON.parse(JSON.stringify({state,levelId,moveCount,mode})),
+    restart:()=>loadLevel(levelId),next:()=>{const ids=Object.keys(allLevels),next=ids[ids.indexOf(levelId)+1];if(next)return loadLevel(next);}};
   async function init() {
     bindInput();updateUI();
     try {

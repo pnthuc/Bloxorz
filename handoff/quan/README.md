@@ -21,9 +21,9 @@ Tập trung công cụ đo, số liệu gốc, CSV tổng hợp và phương ph�
 
 | Đã bàn giao | Mã | Nhiệm vụ |
 | --- | --- | --- |
-| [ ] | `Q01` | Viết phần DFS sát với bản cài đặt |
-| [ ] | `Q02` | Mở rộng script thực nghiệm từ experiments.py |
-| [ ] | `Q03` | Lập danh mục và phân nhóm bộ màn |
+| [x] | `Q01` | Viết phần DFS sát với bản cài đặt |
+| [x] | `Q02` | Mở rộng script thực nghiệm từ experiments.py |
+| [x] | `Q03` | Lập danh mục và phân nhóm bộ màn |
 | [ ] | `Q04` | Chạy và kiểm chứng bộ số liệu chính thức |
 | [ ] | `Q05` | Tổng hợp CSV và viết phương pháp đo |
 | [ ] | `Q06` | Bàn giao gói tái lập thực nghiệm |
