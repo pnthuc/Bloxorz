@@ -130,11 +130,11 @@
     return target;
   };
   // Rounded cuboids have real beveled silhouettes and shared face materials.
-  B.roundedBox = (w, h, d, radius = .035) => {
+  B.roundedBox = (w, h, d, radius = .035, segments = 6) => {
     // Thin caps/strips used to have a radius larger than half their thickness,
     // inverting the inner box and producing invalid normals/highlight artifacts.
     radius = Math.max(.00001, Math.min(radius, Math.min(w,h,d) / 2 - .00001));
-    const g = new THREE.BoxGeometry(w, h, d, 6, 6, 6);
+    const g = new THREE.BoxGeometry(w, h, d, segments, segments, segments);
     const p = g.attributes.position, n = g.attributes.normal;
     const inner = new THREE.Vector3(w / 2 - radius, h / 2 - radius, d / 2 - radius);
     const v = new THREE.Vector3(), q = new THREE.Vector3(), normal = new THREE.Vector3();

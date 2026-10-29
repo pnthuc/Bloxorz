@@ -15,7 +15,7 @@
   let scene=null,state=null,level=null,levelId='1',moveCount=0,epoch=0;
   let mode='loading',controller=null,pending=null,held=new Map(),repeatAt=0;
   let allLevels={},activeSolver=null;
-  let solverStatus={state:'ready',message:'Sẵn sàng · Giải từ trạng thái ban đầu'};
+  let solverStatus={state:'ready',message:'Sẵn sàng  Giải từ trạng thái ban đầu'};
   let replayMoves=[],snapshots=[],cursor=0,playing=false,replayBusy=false,wasAI=false;
   B.ui={screen:'play'};
   function status(text,tone='neutral') {$('status-toast').textContent=text;$('status-toast').dataset.tone=tone;}
@@ -56,7 +56,7 @@
   async function loadLevel(id,{focus=true}={}) {
     if(!scene)return false;
     invalidate();playing=false;wasAI=false;replayMoves=[];snapshots=[];cursor=0;const token=epoch;
-    solverStatus={state:'ready',message:'Sẵn sàng · Giải từ trạng thái ban đầu'};
+    solverStatus={state:'ready',message:'Sẵn sàng  Giải từ trạng thái ban đầu'};
     document.body.dataset.renderReady='false';mode='loading';$('game-overlay').hidden=true;resetMetrics();updateUI();
     try {
       const data=await api(`/api/level/${encodeURIComponent(id)}`);if(token!==epoch)return false;
@@ -80,7 +80,7 @@
     $('overlay-label').textContent=won?'MÀN CHƠI HOÀN TẤT':'THỬ LẠI';
     $('overlay-title').textContent=won?'Đã đến đích':'Khối đã rơi';
     const lossText=reason==='bridge_closed'?'Công tắc vừa đóng cầu đang đỡ khối. Hãy chọn vị trí nhấn công tắc khác.':'Hãy giữ khối trên sàn. Khối đứng thẳng sẽ làm vỡ gạch cam.';
-    $('overlay-description').textContent=won?`${wasAI?"AI replay":"Chơi tay"} · ${moveCount} bước.`:lossText;
+    $('overlay-description').textContent=won?`${wasAI?"AI replay":"Chơi tay"}  ${moveCount} bước.`:lossText;
     $('game-overlay').hidden=false;$('overlay-restart').focus({preventScroll:true});
     status(won?'Hoàn thành. Nhấn R để chơi lại hoặc chọn màn khác.':reason==='bridge_closed'?'Cầu đã đóng do công tắc. Nhấn R để chơi lại.':'Khối không được đỡ hoàn toàn. Nhấn R để chơi lại.',won?'success':'error');updateUI();
   }
@@ -134,7 +134,7 @@
       if(!result.found){solverStatus={state:'empty',message:'Không tìm thấy lời giải cho màn này.'};mode='idle';status('Không tìm thấy lời giải cho màn chơi này.','error');updateUI();return;}
       wasAI=true;playing=false;replayMoves=result.moves;snapshots=[JSON.parse(JSON.stringify(state))];cursor=0;
       mode='idle';$('playback-progress').max=Math.max(1,replayMoves.length);
-      solverStatus={state:'found',message:`${name} · Đã tìm thấy lời giải`};status(name+' đã tìm thấy lời giải. Nhấn Phát để xem.','success');updateUI();B.ui.result?.();
+      solverStatus={state:'found',message:`${name}  Đã tìm thấy lời giải`};status(name+' đã tìm thấy lời giải. Nhấn Phát để xem.','success');updateUI();B.ui.result?.();
     } catch(error) {
       if(token!==epoch)return;
       mode='idle';scene.showState(state);solverStatus={state:'error',message:`Không chạy được ${name}. ${error.name==='AbortError'?'Quá thời gian chờ.':error.message} Hãy thử lại.`};status(`Không chạy được thuật toán. ${error.name==='AbortError'?'Quá thời gian chờ.':error.message}`,'error');updateUI();
@@ -142,7 +142,7 @@
   }
   function stopSolver() {
     if(!['solving','replay'].includes(mode))return;
-    invalidate();scene.showState(state);mode='idle';solverStatus={state:'ready',message:'Đã ngừng chờ · Có thể tìm lại lời giải'};status('Đã ngừng chờ ở giao diện. Tác vụ máy chủ có thể vẫn đang chạy.');updateUI();focusBoard();
+    invalidate();scene.showState(state);mode='idle';solverStatus={state:'ready',message:'Đã ngừng chờ  Có thể tìm lại lời giải'};status('Đã ngừng chờ ở giao diện. Tác vụ máy chủ có thể vẫn đang chạy.');updateUI();focusBoard();
   }
   function isEditable(target) {return target instanceof Element&&!!target.closest('input,textarea,select,[contenteditable="true"],[role="textbox"]');}
   function bindInput() {
@@ -220,6 +220,7 @@
   }
   B.ui.actions={prepareSolver:()=>loadLevel(levelId,{focus:false}),loadLevel,runSolver,stopSolver,stepReplay,playReplay,seekReplay,
     pause:()=>{clearInput();playing=false;},scene:()=>scene,
+    inspect:()=>JSON.parse(JSON.stringify({state,levelId,moveCount,mode})),
     restart:()=>loadLevel(levelId),next:()=>{const ids=Object.keys(allLevels),next=ids[ids.indexOf(levelId)+1];if(next)return loadLevel(next);}};
   async function init() {
     bindInput();updateUI();

@@ -17,6 +17,10 @@ def qa():
     if request.args.get('version') == 'before':
         for name in ['scene', 'garden', 'materials', 'game', 'shell']:
             page = page.replace('/static/js/'+name+'.js', '/qa-baseline/'+name+'.js')
+    if request.args.get('version') == 'reported-before':
+        page=page.replace('/static/js/garden.js','/qa-baseline/reported_water_before.js')
+    if request.args.get('version') == 'water-before':
+        page=page.replace('/static/js/garden.js','/qa-baseline/water_before.js')
     return page.replace('</body>', '<script src="/qa-runner.js"></script></body>')
 
 @app.get('/qa-baseline/<path:name>')
@@ -69,5 +73,4 @@ def cases():
     return found
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1',port=5056,debug=False,use_reloader=False)
-
+    app.run(host='127.0.0.1',port=5057,debug=False,use_reloader=False)
