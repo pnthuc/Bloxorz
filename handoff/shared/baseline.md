@@ -1,50 +1,50 @@
-# Bản code và cách đo dùng chung
+# Phiên bản và cách đo dùng chung
 
-**Trạng thái: CHƯA CHỐT.** Đây là mẫu để nhóm điền trước lượt đo chính thức, không phải xác nhận code đã pass.
+**CHƯA CHỐT.** File này là giao ước cần nhóm xác nhận trước thực nghiệm chính thức,
+không phải xác nhận báo cáo/video hoặc gói nộp đã hoàn tất.
 
-Thức tổng hợp; Phúc xác nhận cost; Thiện xác nhận heuristic; Quân xác nhận bộ màn/cách đo.
+Thức tổng hợp; Phúc xác nhận cost; Thiện xác nhận heuristic; Quân xác nhận bộ màn và phép đo.
 
-## Thông tin đã biết khi tạo bộ khung
+## Căn cứ từ source hiện tại
 
-- Repo: https://github.com/pnthuc/Bloxorz
-- Nhánh tham chiếu khi chuẩn bị: `origin/main`.
-- Commit đã đọc: `2596e597c28d9f53811dc3da2d85850ba13e2fd4` — chỉ là căn cứ lập khung.
-- Đã có 33 màn trong `Src/levels/`; 43 ca trong `Src/tests/test_cases.json` (10 ca T và 33 ca màn).
-- Có sẵn profiler ở `Src/solvers/base.py`, replay ở `Src/tests/helpers.py` và script ban đầu `Src/experiments.py`.
+- 33 màn JSON trong `Src/levels/`; 43 ca kiểm thử gồm 33 màn và 10 ca biên.
+- Engine: `Src/core/board.py`; replay: `Src/core/replay.py`.
+- Cost: `Src/solvers/costs.py`, mỗi cạnh `1 + 0.5 × số ô fragile ở trạng thái đến`.
+- Tìm kiếm dùng `UP LEFT RIGHT DOWN SUP SLEFT SRIGHT SDOWN`; tiền tố S đổi cube rồi lăn.
+  SPACE chỉ chọn cube khi chơi tay. `solution_length = len(moves)`.
+- Heuristic: `Src/solvers/member4_astar.py`, gồm khoảng cách/ghép cube và đường qua split switch.
+  Thiện phải đối chiếu công thức với code thực sự dùng trong lượt đo.
+- Profiler: `Src/solvers/base.py`. Thời gian ms; đỉnh cấp phát Python KiB, không phải tổng RAM/GPU.
+- `expanded_nodes` đếm lượt mở rộng để sinh successor, không phải tổng state đã phát hiện;
+  mô tả đúng cách từng solver bỏ qua goal và entry lỗi thời khi diễn giải kết quả.
+- CLI: `Src/benchmarks/cli.py`. Timeout ngoài tiến trình gồm thời gian khởi động worker;
+  `search_time_ms` trong profiler không gồm khởi động, giao tiếp, replay hoặc vẽ hình.
+- CLI giữ `total_cost` gốc và tính lại `path_cost` chung. GUI benchmark tính lại cost chung
+  trong `total_cost`, giữ số gốc ở `solver_reported_cost`; không trộn hai schema khi làm bảng.
 
-## Nhóm điền khi chốt
+## Nhóm xác nhận
 
-| Nội dung | Giá trị thống nhất | Người xác nhận |
+| Nội dung | Giá trị | Người xác nhận |
 | --- | --- | --- |
-| Commit thực sự dùng để đo | CHƯA CHỐT — chạy `git rev-parse HEAD` trên bản đã được chọn | Thức + Quân |
+| Commit dùng để đo | Chưa chốt; ghi hash sau khi các thay đổi cần đo đã commit | Thức, Quân |
 | Ngày chốt | Chưa điền | Thức |
-| Policy cost | Dẫn file công thức và lý do chọn, đúng code cuối | Phúc |
-| Heuristic | Dẫn công thức/giả thiết, cùng cost với UCS | Thiện |
-| Bộ màn | Đề xuất ID 1–33, cùng bộ cho bốn solver | Quân |
+| Cost và lý do chọn | Công thức trên; chờ xác nhận P01 | Phúc |
+| Heuristic và giả thiết | Chờ xác nhận H01/H02 trên commit được chọn | Thiện |
+| Bộ màn | Đề xuất ID 1–33, cùng bộ cho bốn thuật toán | Quân |
 | Số lần lặp | Đề xuất 3 lần/trường hợp | Quân |
-| Giới hạn | Đề xuất 120 giây/lượt, ghi TIMEOUT khi hết hạn | Quân |
-| Môi trường | CPU/RAM/OS/Python; dùng cùng máy khi so sánh | Quân |
-| Quy ước số đo | Thời gian ms; peak Python KiB; số lần mở rộng; số hành động kể cả SPACE | Quân + chủ solver |
-| Chi phí để so chéo | Giữ `total_cost` gốc; replay tính thêm `path_cost` theo cùng step_cost | Phúc + Quân |
-| Lệnh kiểm tra và kết quả | Điền lệnh đã chạy, ngày, kết quả thực tế và lỗi còn lại nếu có | Thức |
+| Timeout | Đề xuất 120 giây/lượt, giữ riêng TIMEOUT | Quân |
+| Môi trường | CPU, RAM, OS, Python; cùng máy/cấu hình | Quân |
+| Tổng hợp | Ghi số mẫu, tỷ lệ thành công, trung vị và cách xử lý timeout/lỗi | Quân |
+| Kiểm tra phiên bản | Ghi lệnh, kết quả, ngày chạy và giới hạn kiểm tra | Thức |
 
-## Cách ghi mã commit
+33 màn, 3 lần lặp và 120 giây là kế hoạch nhóm, không phải số bắt buộc của đề.
+Lấy commit bằng `git rev-parse HEAD` trên đúng checkout đã chọn; không coi HEAD là đủ
+nếu còn sửa code chưa commit. Mỗi đợt dùng thư mục riêng để không trộn dữ liệu/metadata.
 
-Từ thư mục repo ở bản đã chọn:
+- [ ] Phúc xác nhận cost và diễn giải.
+- [ ] Thiện xác nhận heuristic và giả thiết.
+- [ ] Quân xác nhận cấu hình, schema, đơn vị và cách tổng hợp.
+- [ ] Thức xác nhận snapshot và kết quả kiểm tra.
 
-```bash
-git rev-parse HEAD
-```
-
-Sao chép mã Git trả về vào dòng “Commit thực sự dùng để đo”. Đây là mã phiên bản tự có trong Git; không cần tự đặt một mã mới.
-
-Metadata của từng đợt benchmark phải ghi đúng commit đã chạy. Nếu thêm/sửa code sau khi chốt, xác định lại bản chạy và phần dữ liệu chịu ảnh hưởng trước khi dùng vào report.
-
-## Xác nhận cuối bước chuẩn bị
-
-- [ ] Phúc xác nhận cost khớp code, README và diễn giải.
-- [ ] Thiện xác nhận heuristic và giả thiết khớp cost/code.
-- [ ] Quân xác nhận bộ màn, môi trường, cách đo và định dạng xuất.
-- [ ] Thức xác nhận bản code và kết quả kiểm tra thực tế.
-
-Khi bốn mục đã được xác nhận, đổi trạng thái đầu file thành **ĐÃ CHỐT** và ghi ngày/commit. Những phần đang thiếu tiếp tục để rõ ràng, không điền kết quả mẫu như kết quả thật.
+Sau khi đủ xác nhận, ghi commit/ngày thật và đổi trạng thái thành ĐÃ CHỐT.
+Nếu đổi engine, solver, cost, heuristic hoặc cách đo, tạo mốc mới và xác định dữ liệu cần chạy lại.

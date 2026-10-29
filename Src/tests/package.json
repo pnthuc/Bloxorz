@@ -2,7 +2,7 @@
   "name": "bloxorz-ui-regression",
   "private": true,
   "scripts": {
-    "test": "node --test test_ui.cjs"
+    "test": "node --test test_ui.cjs test_audio.cjs"
   },
   "devDependencies": {
     "jsdom": "26.1.0",

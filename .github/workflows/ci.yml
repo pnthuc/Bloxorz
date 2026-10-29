@@ -109,10 +109,9 @@ jobs:
         run: npm ci
       - name: Check JavaScript syntax
         run: |
-          node --check Src/static/js/materials.js
-          node --check Src/static/js/scene.js
-          node --check Src/static/js/game.js
-          node --check Src/tests/test_ui.cjs
+          for file in Src/static/js/*.js Src/tests/*.cjs; do
+            node --check "$file"
+          done
       - name: Test input, API replay and 3D transforms
         working-directory: Src/tests
         run: npm test

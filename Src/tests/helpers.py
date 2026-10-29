@@ -8,15 +8,15 @@ from dataclasses import dataclass
 import json
 import math
 from pathlib import Path
-from typing import Any, Dict, FrozenSet, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
-from game_logic import BloxorzBoard, GOAL, State
+from core.board import BloxorzBoard, GOAL, State, SEARCH_ACTIONS
 from solvers import heuristic
 from solvers.member4_astar import precompute_switch_costs_from_goal
-from solvers.costs import step_cost
+from core.replay import replay_solution
 
 ROOT = Path(__file__).resolve().parents[1]
-ACTIONS = {"UP", "DOWN", "LEFT", "RIGHT", "SPACE"}
+ACTIONS = set(SEARCH_ACTIONS)
 EPSILON = 1e-6
 
 
@@ -59,15 +59,6 @@ class Case:
     def make_board(self) -> BloxorzBoard:
         # Solver và replay có board riêng, tránh làm thay đổi dữ liệu ca sau.
         return BloxorzBoard(deepcopy(self.level))
-
-
-@dataclass(frozen=True)
-class Replay:
-    valid: bool
-    reason: str
-    cost: float
-    state: State
-    visited: FrozenSet[Any]
 
 
 def load_levels() -> Dict[str, dict]:
@@ -119,7 +110,7 @@ def _parse_case(case_id: str, data: dict, levels: dict) -> Case:
             and all(isinstance(action, str) and action in ACTIONS for action in moves),
             f"{case_id}: walkthrough chứa hành động sai",
         )
-        check(sum(1 for m in moves if m != "SPACE") == length, f"{case_id}: walkthrough phải có bfs_moves bước lăn")
+        check(len(moves) == length, f"{case_id}: walkthrough phải có bfs_moves bước lăn")
         check(
             finite_number(walk_cost) and walk_cost >= cost,
             f"{case_id}: walkthrough_cost phải >= ucs_cost",
@@ -179,43 +170,6 @@ def select_cases(cases: List[Case], ids: Optional[List[str]]) -> List[Case]:
     return [case for case in cases if case.id in ids]
 
 
-def replay_solution(board: BloxorzBoard, moves: List[str]) -> Replay:
-    state = board.get_initial_state()
-    cost = 0.0
-    visited = {state.orientation}
-    visited.update(board.grid[r][c] for r, c in state.get_occupied_cells())
-    for index, action in enumerate(moves, start=1):
-        if not isinstance(action, str) or action not in ACTIONS:
-            return Replay(
-                False,
-                f"Hành động thứ {index} không hợp lệ: {action!r}",
-                cost,
-                state,
-                frozenset(visited),
-            )
-        child = board.apply_move(state, action)
-        if child is None:
-            return Replay(
-                False,
-                f"Bước thứ {index} ({action}) vi phạm luật bàn chơi",
-                cost,
-                state,
-                frozenset(visited),
-            )
-        cost += step_cost(board, child)
-        state = child
-        visited.add(state.orientation)
-        visited.update(board.grid[r][c] for r, c in state.get_occupied_cells())
-    valid = board.is_goal(state)
-    reason = "Hợp lệ" if valid else f"Đi hết {len(moves)} hành động nhưng chưa tới GOAL"
-    return Replay(valid, reason, cost, state, frozenset(visited))
-
-
-def verify_solution_walk(board: BloxorzBoard, moves: List[str]) -> Tuple[bool, str, float]:
-    result = replay_solution(board, moves)
-    return result.valid, result.reason, result.cost
-
-
 REQUIRED_FIELDS = {
     "found",
     "moves",
@@ -240,8 +194,8 @@ def validate_schema(result: Any) -> None:
     for key in ("solution_length", "expanded_nodes"):
         check(type(result[key]) is int and result[key] >= 0, f"{key} phải là số nguyên không âm")
     check(
-        result["solution_length"] == sum(1 for m in result["moves"] if m != "SPACE"),
-        "solution_length phải bằng số bước lăn (không tính SPACE)",
+        result["solution_length"] == len(result["moves"]),
+        "solution_length phải bằng số hành động lăn trong tập 8 hướng",
     )
     for key in ("search_time_ms", "memory_kb", "total_cost"):
         check(finite_number(result[key]), f"{key} phải là số hữu hạn, không âm")
@@ -285,7 +239,7 @@ def validate_result(name: str, case: Case, board: BloxorzBoard, result: Any) -> 
 
     replay = replay_solution(board, result["moves"])
     check(replay.valid, replay.reason)
-    path_cost = sum(1 for m in result["moves"] if m != "SPACE") if name in ("bfs", "dfs") else replay.cost
+    path_cost = len(result["moves"]) if name in ("bfs", "dfs") else replay.cost
     check(
         math.isclose(result["total_cost"], path_cost, rel_tol=0, abs_tol=EPSILON),
         f"total_cost={result['total_cost']:g}, replay tính được {path_cost:g}",

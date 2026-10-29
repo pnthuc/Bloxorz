@@ -32,7 +32,7 @@
     const heights = new Float32Array(count), colors = new Uint8ClampedArray(count * 4);
     const rough = new Uint8ClampedArray(count * 4), normals = new Uint8ClampedArray(count * 4);
     const isMetal = kind === 'copper' || kind === 'steel';
-    const bases = {stone:[220,191,145], fragile:[185,105,46], copper:[154,85,47], steel:[74,100,112]};
+    const bases = {stone:[220,191,145], masonry:[211,185,141], fragile:[185,105,46], copper:[154,85,47], steel:[74,100,112], ice:[177,217,229], snow:[235,243,246]};
     const base = bases[kind];
     for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
       const i = y * w + x, u = x / w, v = y / w;
@@ -42,7 +42,7 @@
       let shade = (coarse - .5) * 22 + (mid - .5) * 12 + (grain - .5) * 13;
       const edge = Math.min(x, y, w - 1 - x, h - 1 - y);
       const groove = edge > 13 && edge < 16;
-      if (groove) { height -= .13; shade -= 20; }
+      if (groove && kind !== 'masonry' && kind !== 'snow') { height -= .13; shade -= 20; }
       if (isMetal) {
         const brushing = hash(0, y, seed + 3);
         height = mid * .035 + grain * .008 + brushing * .012;
@@ -58,6 +58,22 @@
         if((seam<.0035&&v>.53)||(branch<.0025&&u>.60)){height-=.19;shade-=46;}
         if(edge<5){height-=.035+grain*.045;shade-=8+grain*9;}
       }
+      if(kind==='masonry') {
+        // Architectural stone has sediment, pores and fractures, rather than
+        // the inset rectangular motif used to distinguish playable slabs.
+        const strata=noise(u*3,v*21,seed+4),pit=noise(u*100,v*100,seed+6);
+        shade+=(strata-.5)*17-Math.max(0,.24-pit)*100;
+        height+=strata*.045-Math.max(0,.24-pit)*.27;
+        const fracture=Math.abs(u-.36-Math.sin(v*7+seed)*.07-Math.sin(v*23)*.011);
+        if(fracture<.004&&v>.12&&v<.82){height-=.17;shade-=34;}
+      }
+      if(kind==='ice'){
+        const vein=Math.abs(u-.38-Math.sin(v*8+seed)*.045),vein2=Math.abs(v-.64-Math.sin(u*6+seed)*.055);
+        shade=(coarse-.5)*14+(fine-.5)*8;
+        if((vein<.004&&v>.25)||(vein2<.003&&u>.5)){height-=.09;shade+=18;}
+        height=height*.3; // Cold slabs have broad crystal planes, not sandstone grit.
+      }
+      if(kind==='snow'){height=fine*.018+grain*.008;shade=(coarse-.5)*4+(grain-.5)*3;}
       if (kind === 'fragile') {
         const crack = Math.abs(u - .28 - Math.sin(v * 13) * .07 - Math.sin(v * 38) * .015);
         const crack2 = Math.abs(v - .68 - Math.sin(u * 11) * .055);
@@ -85,10 +101,28 @@
       map: textureFromPixels(colors, w, h, renderer, true),
       normalMap: textureFromPixels(normals, w, h, renderer, false),
       roughnessMap: textureFromPixels(rough, w, h, renderer, false),
-      normalScale: new THREE.Vector2(isMetal ? .42 : .7, isMetal ? .42 : .7), roughness:1,
+      normalScale: new THREE.Vector2(isMetal ? .42 : .7, isMetal ? .42 : .7), roughness:kind==='ice'?.58:kind==='snow'?.96:1,
       metalness:isMetal ? .58 : .02, envMapIntensity:isMetal ? .65 : .3
     });
   }
+  B.createSurface=surface;
+  // Seamless height/slope field. Two advected samples supply small waves without
+  // evaluating a long noise function at every screen pixel on every frame.
+  B.createWaterField=renderer=>{
+    const size=512,heights=new Float32Array(size*size),data=new Uint8Array(size*size*4);
+    const waves=[[3,11,.34,.2],[1,19,.24,1.6],[5,23,.17,2.8],[7,31,.10,.8],[13,35,.065,2.1],[9,43,.035,4.4]];
+    for(let y=0;y<size;y++)for(let x=0;x<size;x++){
+      const u=x/size*Math.PI*2,v=y/size*Math.PI*2,warp=.55*Math.sin(u*2+v*3)+.28*Math.cos(u*3-v*2);
+      let h=0;for(const [kx,ky,a,phase] of waves)h+=a*Math.sin(u*kx+v*ky+phase+warp);
+      heights[y*size+x]=h;
+    }
+    for(let y=0;y<size;y++)for(let x=0;x<size;x++){
+      const i=y*size+x,k=i*4,dx=(heights[y*size+(x+1)%size]-heights[y*size+(x+size-1)%size])*5.6,dz=(heights[((y+1)%size)*size+x]-heights[((y+size-1)%size)*size+x])*5.6;
+      data[k]=clamp((dx*.5+.5)*255,0,255);data[k+1]=clamp((dz*.5+.5)*255,0,255);data[k+2]=clamp((heights[i]*.5+.5)*255,0,255);data[k+3]=255;
+    }
+    const texture=new THREE.DataTexture(data,size,size,THREE.RGBAFormat);
+    texture.wrapS=texture.wrapT=THREE.RepeatWrapping;texture.magFilter=THREE.LinearFilter;texture.minFilter=THREE.LinearMipmapLinearFilter;texture.generateMipmaps=true;texture.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());texture.needsUpdate=true;return texture;
+  };
   B.createMaterials = renderer => {
     const m = {
       stone: [1, 2, 3, 4].map(seed => surface(renderer, 'stone', seed)),
@@ -103,11 +137,15 @@
       bottom: new THREE.MeshBasicMaterial({color:0x070e14}),
       marker: new THREE.MeshBasicMaterial({color:0x9ce6d0})
     };
+    const masonry=surface(renderer,'masonry',19);
+    m.architecture=[masonry,...[.94,1.06,.85].map(value=>{const mat=masonry.clone();mat.color.setScalar(value);return mat;})];
     // A wet band is tied to world water elevation, so scaled ruins do not float above it.
-    for(const material of m.stone){material.onBeforeCompile=shader=>{
+    m.underwaterTint={value:new THREE.Color(0x086879).convertSRGBToLinear()};
+    for(const material of [...m.stone,...m.architecture,m.dark]){material.onBeforeCompile=shader=>{
+      shader.uniforms.underwaterTint=m.underwaterTint;
       shader.vertexShader='varying float masonryY;\n'+shader.vertexShader.replace('#include <worldpos_vertex>','#include <worldpos_vertex>\nvec4 wetPosition=vec4(transformed,1.0);\n#ifdef USE_INSTANCING\nwetPosition=instanceMatrix*wetPosition;\n#endif\nmasonryY=(modelMatrix*wetPosition).y;');
-      shader.fragmentShader='varying float masonryY;\n'+shader.fragmentShader;
-      shader.fragmentShader=shader.fragmentShader.replace('#include <color_fragment>','#include <color_fragment>\nfloat wet=1.0-smoothstep(-.87,-.72,masonryY);diffuseColor.rgb*=mix(vec3(1.),vec3(.53,.68,.65),wet);');
+      shader.fragmentShader='varying float masonryY;uniform vec3 underwaterTint;\n'+shader.fragmentShader;
+      shader.fragmentShader=shader.fragmentShader.replace('#include <color_fragment>','#include <color_fragment>\nfloat wet=1.0-smoothstep(-.87,-.72,masonryY);diffuseColor.rgb*=mix(vec3(1.),vec3(.53,.68,.65),wet);float submerged=1.-smoothstep(-2.6,-.95,masonryY);diffuseColor.rgb=mix(diffuseColor.rgb,underwaterTint,submerged*.78);');
       shader.fragmentShader=shader.fragmentShader.replace('#include <roughnessmap_fragment>','#include <roughnessmap_fragment>\nroughnessFactor=mix(roughnessFactor,.44,wet);');
     };}
     return m;
