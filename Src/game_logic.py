@@ -8,6 +8,11 @@ HORIZONTAL = "HORIZONTAL"     # Nằm ngang: chiếm 2 ô (r, c) và (r, c+1)
 VERTICAL = "VERTICAL"         # Nằm dọc: chiếm 2 ô (r, c) và (r+1, c)
 SPLIT = "SPLIT"               # Tách đôi thành 2 khối 1x1x1 tại (r, c) và (r2, c2)
 
+# Mỗi hành động tìm kiếm là đúng một bước lăn. S = đổi khối trước khi lăn.
+MOVE_ACTIONS = ("UP", "LEFT", "RIGHT", "DOWN")
+SWITCH_MOVE_ACTIONS = ("SUP", "SLEFT", "SRIGHT", "SDOWN")
+SEARCH_ACTIONS = MOVE_ACTIONS + SWITCH_MOVE_ACTIONS
+
 # Mã các loại ô trên bàn cờ (Tile Types)
 VOID = 0          # Ô trống (rơi xuống vực)
 FLOOR = 1         # Ô sàn đá thường
@@ -116,7 +121,7 @@ class BloxorzBoard:
 
     def _move_candidate(self, state: State, action: str) -> Optional[State]:
         """
-        Thực hiện hành động: 'UP', 'DOWN', 'LEFT', 'RIGHT', hoặc 'SPACE' (đổi khối đơn).
+        Thực hiện một trong 8 SEARCH_ACTIONS; SPACE chỉ chọn khối khi chơi tay.
         Trả ứng viên sau hiệu ứng switch; evaluate_move quyết định còn được đỡ hay không.
         Trả None nếu ngay phép lăn đã không hợp lệ.
         """
@@ -127,6 +132,14 @@ class BloxorzBoard:
                     state.r2, state.c2, 1 - state.active_cube
                 )
             return None
+
+        if action in SWITCH_MOVE_ACTIONS:
+            if state.orientation != SPLIT:
+                return None
+            # Chọn khối không tạo tiếp xúc mới hay kích hoạt switch.
+            state = State(state.r, state.c, SPLIT, state.bridges,
+                          state.r2, state.c2, 1 - state.active_cube)
+            action = action[1:]
 
         dr_map = {"UP": -1, "DOWN": 1, "LEFT": 0, "RIGHT": 0}
         dc_map = {"UP": 0, "DOWN": 0, "LEFT": -1, "RIGHT": 1}
@@ -263,9 +276,7 @@ class BloxorzBoard:
 
     def get_successors(self, state: State) -> List[Tuple[str, State]]:
         """Trả về danh sách các cặp (action, next_state) hợp lệ từ state hiện tại."""
-        actions = ["UP", "DOWN", "LEFT", "RIGHT"]
-        if state.orientation == SPLIT:
-            actions.append("SPACE")
+        actions = SEARCH_ACTIONS if state.orientation == SPLIT else MOVE_ACTIONS
         results = []
         for act in actions:
             nxt = self.apply_move(state, act)

@@ -10,13 +10,13 @@ import math
 from pathlib import Path
 from typing import Any, Dict, FrozenSet, List, Optional, Tuple
 
-from game_logic import BloxorzBoard, GOAL, State
+from game_logic import BloxorzBoard, GOAL, State, SEARCH_ACTIONS
 from solvers import heuristic
 from solvers.member4_astar import precompute_switch_costs_from_goal
 from solvers.costs import step_cost
 
 ROOT = Path(__file__).resolve().parents[1]
-ACTIONS = {"UP", "DOWN", "LEFT", "RIGHT", "SPACE"}
+ACTIONS = set(SEARCH_ACTIONS)
 EPSILON = 1e-6
 
 
@@ -119,7 +119,7 @@ def _parse_case(case_id: str, data: dict, levels: dict) -> Case:
             and all(isinstance(action, str) and action in ACTIONS for action in moves),
             f"{case_id}: walkthrough chứa hành động sai",
         )
-        check(sum(1 for m in moves if m != "SPACE") == length, f"{case_id}: walkthrough phải có bfs_moves bước lăn")
+        check(len(moves) == length, f"{case_id}: walkthrough phải có bfs_moves bước lăn")
         check(
             finite_number(walk_cost) and walk_cost >= cost,
             f"{case_id}: walkthrough_cost phải >= ucs_cost",
@@ -240,8 +240,8 @@ def validate_schema(result: Any) -> None:
     for key in ("solution_length", "expanded_nodes"):
         check(type(result[key]) is int and result[key] >= 0, f"{key} phải là số nguyên không âm")
     check(
-        result["solution_length"] == sum(1 for m in result["moves"] if m != "SPACE"),
-        "solution_length phải bằng số bước lăn (không tính SPACE)",
+        result["solution_length"] == len(result["moves"]),
+        "solution_length phải bằng số hành động lăn trong tập 8 hướng",
     )
     for key in ("search_time_ms", "memory_kb", "total_cost"):
         check(finite_number(result[key]), f"{key} phải là số hữu hạn, không âm")
@@ -285,7 +285,7 @@ def validate_result(name: str, case: Case, board: BloxorzBoard, result: Any) -> 
 
     replay = replay_solution(board, result["moves"])
     check(replay.valid, replay.reason)
-    path_cost = sum(1 for m in result["moves"] if m != "SPACE") if name in ("bfs", "dfs") else replay.cost
+    path_cost = len(result["moves"]) if name in ("bfs", "dfs") else replay.cost
     check(
         math.isclose(result["total_cost"], path_cost, rel_tol=0, abs_tol=EPSILON),
         f"total_cost={result['total_cost']:g}, replay tính được {path_cost:g}",

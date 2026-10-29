@@ -24,7 +24,7 @@ Thức tổng hợp; Phúc xác nhận cost; Thiện xác nhận heuristic; Quâ
 | Số lần lặp | Đề xuất 3 lần/trường hợp | Quân |
 | Giới hạn | Đề xuất 120 giây/lượt, ghi TIMEOUT khi hết hạn | Quân |
 | Môi trường | CPU/RAM/OS/Python; dùng cùng máy khi so sánh | Quân |
-| Quy ước số đo | Thời gian ms; peak Python KiB; số lần mở rộng; số hành động kể cả SPACE | Quân + chủ solver |
+| Quy ước số đo | Thời gian ms; peak Python KiB; số lần mở rộng; số bước lăn theo 8 hành động (S = đổi khối rồi lăn; SPACE chơi tay miễn phí) | Quân + chủ solver |
 | Chi phí để so chéo | Giữ `total_cost` gốc; replay tính thêm `path_cost` theo cùng step_cost | Phúc + Quân |
 | Lệnh kiểm tra và kết quả | Điền lệnh đã chạy, ngày, kết quả thực tế và lỗi còn lại nếu có | Thức |
 

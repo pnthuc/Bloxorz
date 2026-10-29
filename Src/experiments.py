@@ -192,7 +192,7 @@ def run_single_solver(solver_name: str, level_data: dict, timeout_sec: float) ->
             err_msg = ""
 
         sol_len = len(moves) if found else ""
-        roll_steps = sum(1 for m in moves if m != "SPACE") if found else ""
+        roll_steps = len(moves) if found else ""
 
         return {
             "status": status,

@@ -157,7 +157,7 @@ async function createUI() {
           JSON.stringify({
             found: sample.solvable,
             moves: actions,
-            solution_length: actions.filter((a) => a !== 'SPACE').length,
+            solution_length: actions.length,
             expanded_nodes: 10,
             search_time_ms: 1,
             memory_kb: 1,
@@ -546,7 +546,7 @@ test('Bloxorz UI', async (t) => {
       await wait(() => !el('game-overlay').hidden, 'stage 4 A* victory', 18000);
       assert.equal(el('overlay-title').textContent, 'Đã đến đích');
       assert.equal(count(), 16);
-      assert(moves.some((m) => m.request.action === 'SPACE'));
+      assert(moves.some((m) => ['SUP', 'SLEFT', 'SRIGHT', 'SDOWN'].includes(m.request.action)));
     });
     await t.test(
       'video 2 bridge disappears BEFORE fall, correct loss reason and final orientation',
