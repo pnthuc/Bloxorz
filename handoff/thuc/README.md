@@ -24,7 +24,7 @@ Kế thừa engine, UI, levels và test đã làm. Cung cấp ghi chú/tư liệ
 | [ ] | `T04` | Nghiệm thu tích hợp và xác nhận đóng góp |
 | [ ] | `T05` | Tạo và kiểm tra gói nộp cuối |
 
-Các đường dẫn đầu ra dưới đây là nơi sẽ tạo file khi thực hiện nhiệm vụ. Thư mục hiện tại mới có README, chưa có kết quả hay báo cáo giả lập.
+Tài liệu T01–T02 được gom trong [Phan_Ngoc_Thuc.docx](Phan_Ngoc_Thuc.docx), gồm mô hình, kiến trúc và ghi chú demo. Các bản sao có tên riêng đã được bỏ khỏi GitHub để tránh trùng nội dung; ảnh minh họa nằm trong `screenshots/`. Các đầu ra cho nhiệm vụ chưa hoàn thành vẫn là đường dẫn dự kiến.
 
 ## T01 — Ghi chú engine và mô hình để người khác viết tiếp
 
@@ -34,14 +34,14 @@ Các đường dẫn đầu ra dưới đây là nơi sẽ tạo file khi thực
 
 **Yêu cầu thực hiện**
 
-- Viết model-notes.docx: State(r,c,orientation,bridges,r2,c2,active_cube), ý nghĩa từng trường và ví dụ phân biệt state.
+- Viết phần ghi chú mô hình trong Phan_Ngoc_Thuc.docx: State(r,c,orientation,bridges,r2,c2,active_cube), ý nghĩa từng trường và ví dụ phân biệt state.
 - Mô tả get_initial_state(), get_successors(), apply_move(), evaluate_move() và is_goal(); chỉ ra solver dùng luật từ engine chung.
 - Giải thích ngắn trigger switch ở lần chạm mới, SPACE đổi khối, split/teleport, ghép khi sát cạnh và cầu đóng gây rơi.
 - Viết phần kiến trúc: browser → Flask API → engine/solver → dữ liệu JSON → scene/replay. Nêu profiler riêng, frontend chịu trách nhiệm hiển thị.
 
 **Đầu ra cần đẩy lên hoặc bàn giao**
 
-- `handoff/thuc/model-notes.docx`, `architecture.docx`, một sơ đồ hoặc bảng thành phần.
+- [Phan_Ngoc_Thuc.docx](Phan_Ngoc_Thuc.docx): phần mô hình và kiến trúc, kèm sơ đồ hoặc bảng thành phần.
 
 **Tiêu chí hoàn thành**
 
@@ -66,7 +66,7 @@ Các đường dẫn đầu ra dưới đây là nơi sẽ tạo file khi thực
 
 **Đầu ra cần đẩy lên hoặc bàn giao**
 
-- `handoff/thuc/demo-notes.docx`, `screenshots/` các ảnh được chọn.
+- [Phan_Ngoc_Thuc.docx](Phan_Ngoc_Thuc.docx): phần ghi chú demo; `screenshots/` chứa các ảnh được chọn.
 
 **Tiêu chí hoàn thành**
 

@@ -58,7 +58,7 @@ Các đường dẫn đầu ra dưới đây là nơi sẽ tạo file khi thực
 
 **Đầu vào**
 
-- `game_logic.py`; model-notes.docx và sơ đồ/tư liệu từ Thức; cost policy của Phúc.
+- `game_logic.py`; [Phan_Ngoc_Thuc.docx](../thuc/Phan_Ngoc_Thuc.docx) (phần mô hình) và sơ đồ/tư liệu từ Thức; cost policy của Phúc.
 
 **Yêu cầu thực hiện**
 
