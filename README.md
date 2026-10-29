@@ -58,9 +58,10 @@ Game chơi tay vẫn hoạt động song song với các solver. Bấm solver ch
 Các thành viên dùng chung:
 
 - `get_initial_state()`, `is_goal(state)`, `get_successors(state)` và `apply_move(state, action)` của engine.
+- Tập hành động tìm kiếm: `UP LEFT RIGHT DOWN SUP SLEFT SRIGHT SDOWN`. Tiền tố `S` là đổi khối rồi lăn một bước, chỉ hợp lệ khi `SPLIT`; khối vừa di chuyển tiếp tục được chọn. Mỗi hành động tính một bước, `solution_length = len(moves)`.
 - `State` bất biến, hash được, gồm tọa độ, hướng, trạng thái cầu và khối đang điều khiển.
 - `solvers/base.py`: wrapper đo thời gian và bộ nhớ đỉnh; không chứa thuật toán tìm kiếm.
-- `solvers/costs.py`: chi phí chung cho UCS/A*: 1 + 0.5 cho mỗi ô cam bị chiếm ở trạng thái tiếp theo, kể cả Space. BFS/DFS dùng số hành động làm total_cost.
+- `solvers/costs.py`: chi phí chung cho UCS/A*: 1 + 0.5 cho mỗi ô cam bị chiếm ở trạng thái tiếp theo. SPACE chọn khối miễn phí và không sinh cạnh tìm kiếm. BFS/DFS dùng số hành động làm total_cost.
 
 Đổi schema, State hoặc cost phải trao đổi với nhóm và cập nhật test tương ứng. Toàn bộ kỳ vọng và đường đi mẫu nằm trong **một file** `Src/tests/test_cases.json`. Board của map thật được tham chiếu theo ID từ `Src/levels/`; các board nhỏ chỉ phục vụ test được khai báo ngay trong ca tương ứng.
 
@@ -94,3 +95,5 @@ UI cần Node.js 18+ và `npm ci` trong `Src/tests` một lần. Sau đó, từ 
 ```bash
 python run_tests.py --ui
 ```
+
+Kết quả benchmark dùng SPACE riêng trước đây cần đo lại theo tập 8 hành động; không so trực tiếp cost và số node với kết quả mới.

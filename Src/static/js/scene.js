@@ -255,6 +255,9 @@
     }
     async roll(prev,action,next,valid,failureState=null) {
       if(action==='SPACE'){B.sound?.();this.showState(next);return true;}
+      if(['SUP','SLEFT','SRIGHT','SDOWN'].includes(action)){
+        prev={...prev,active_cube:1-prev.active_cube};action=action.slice(1);
+      }
       const objects=this.blocks.children.slice();
       const index=prev.orientation==='SPLIT'?prev.active_cube:0;
       const obj=this.blocks.children[index],pos=this.placements(prev)[index];

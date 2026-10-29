@@ -21,6 +21,41 @@ def board_with(tiles=None, switches=None, bridges=()):
     )
 
 
+class CompoundMoveTests(unittest.TestCase):
+    def test_eight_successors_and_both_selected_cubes(self):
+        b = board_with()
+        for active in (0, 1):
+            st = State(2, 2, SPLIT, (), 7, 7, active)
+            successors = dict(b.get_successors(st))
+            self.assertEqual(set(successors), {
+                "UP", "LEFT", "RIGHT", "DOWN", "SUP", "SLEFT", "SRIGHT", "SDOWN"
+            })
+            for direction in ("UP", "LEFT", "RIGHT", "DOWN"):
+                selected = b.apply_move(st, "SPACE")
+                self.assertEqual(successors["S" + direction], b.apply_move(selected, direction))
+                self.assertEqual(successors["S" + direction].active_cube, 1 - active)
+
+    def test_compound_moves_require_split(self):
+        for orient in (STANDING, HORIZONTAL, VERTICAL):
+            st = State(4, 4, orient, ())
+            for action in ("SUP", "SLEFT", "SRIGHT", "SDOWN"):
+                self.assertIsNone(board_with().apply_move(st, action))
+            self.assertFalse(any(a.startswith("S") for a, _ in board_with().get_successors(st)))
+
+    def test_compound_merge_and_failed_move(self):
+        b = board_with()
+        st = State(3, 3, SPLIT, (), 3, 5)
+        self.assertEqual(b.apply_move(st, "SLEFT"), State(3, 3, HORIZONTAL, ()))
+        st = State(3, 3, SPLIT, (), 0, 0)
+        self.assertIsNone(b.apply_move(st, "SUP"))
+        self.assertEqual(st.active_cube, 0)
+
+    def test_selection_does_not_repress_parked_switch(self):
+        b = board_with({(2, 2): 3}, {"2,2": {"targets": [0]}}, (True,))
+        st = State(2, 2, SPLIT, (True,), 7, 7)
+        self.assertEqual(b.apply_move(st, "SUP").bridges, (True,))
+
+
 class MovementTests(unittest.TestCase):
     def test_all_twelve_roll_transitions(self):
         cases = [
@@ -423,7 +458,7 @@ class CaseDataTests(unittest.TestCase):
                     continue
                 replay = replay_solution(case.make_board(), case.walkthrough)
                 self.assertTrue(replay.valid, replay.reason)
-                self.assertEqual(sum(1 for m in case.walkthrough if m != "SPACE"), case.bfs_moves)
+                self.assertEqual(len(case.walkthrough), case.bfs_moves)
                 self.assertAlmostEqual(replay.cost, case.walkthrough_cost)
                 self.assertGreaterEqual(replay.cost, case.ucs_cost)
                 self.assertTrue(set(case.visits) <= replay.visited, (case.visits, replay.visited))

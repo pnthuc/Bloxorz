@@ -38,7 +38,7 @@ Các đường dẫn đầu ra dưới đây là nơi sẽ tạo file khi thực
 
 - Tạo khung Report.docx theo mục lục đề xuất ở dưới; đặt tiêu đề, caption, cách trích dẫn thống nhất.
 - Viết BFS: queue FIFO, đánh dấu lúc phát hiện, goal test, parent và truy vết; đưa giả mã sát code và ví dụ nhỏ.
-- Giải thích ít hành động nhất khi mỗi hành động tính một bước, bao gồm SPACE; phân biệt với tối ưu theo cost chung.
+- Giải thích ít hành động nhất khi mỗi hành động tính một bước, bao gồm SUP/SLEFT/SRIGHT/SDOWN (đổi khối rồi lăn); phân biệt với tối ưu theo cost chung.
 - Mở sẵn chỗ nhận các phần DFS, UCS, A*, mô hình hóa, kết quả và phụ lục.
 
 **Đầu ra cần đẩy lên hoặc bàn giao**
@@ -63,7 +63,7 @@ Các đường dẫn đầu ra dưới đây là nơi sẽ tạo file khi thực
 **Yêu cầu thực hiện**
 
 - Định nghĩa state tuple đúng trường, trạng thái ban đầu, actions, transition, goal test và hàm chi phí.
-- Nêu rõ STANDING/HORIZONTAL/VERTICAL/SPLIT; SPACE chỉ có khi split; bridge tuple và active_cube ảnh hưởng việc phân biệt state.
+- Nêu rõ STANDING/HORIZONTAL/VERTICAL/SPLIT; các hướng S chỉ có khi split; SPACE chỉ chọn khối khi chơi tay; bridge tuple và active_cube ảnh hưởng việc phân biệt state.
 - Dùng bảng để mô tả luật và ví dụ hai state cùng vị trí nhưng khác cầu; chỉ trình bày cơ chế đang có trong code.
 - Tách mô hình tìm kiếm khỏi phần kiến trúc Flask/Three.js do Thức viết để tránh lặp nội dung.
 
