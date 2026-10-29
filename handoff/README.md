@@ -52,7 +52,7 @@ ghi phiên bản mới và xác định dữ liệu cần đo lại. Không tr�
 
 - Quân đã có `dfs.docx`, `level-groups.csv` và một đợt chạy thử 8 lượt trên màn 1, 4.
   Chưa có `summary.csv` và `methodology.docx` trong repo.
-- Nam đã có `BFS.docx` và `Report.docx` bản thảo; chưa có `Report.pdf`.
+- Nam đã có `BFS.docx`, `Report.docx` bản thảo và `video-outline.docx`; chưa có `Report.pdf`.
   Bìa bản thảo hiện thiếu Quân và cần bổ sung đủ năm thành viên.
 - Thiện đã có năm DOCX A*/heuristic; phần kết quả còn dẫn tới CSV tổng hợp/hình chưa có trong repo.
 - Thức đã có `Phan_Ngoc_Thuc.docx`, ảnh demo và JSON kiểm tra phiên bản trước.

@@ -9,6 +9,7 @@ Nam viết BFS, mô hình hóa, phân tích và ghép báo cáo; Phúc phụ tr�
 - Nhận DFS/phương pháp/số liệu từ Quân, A* từ Thiện, UCS/cost và hình từ Phúc,
   kiến trúc/demo từ Thức. Dùng cùng [baseline](../shared/baseline.md).
 - Đã có [BFS.docx](BFS.docx) và [Report.docx](Report.docx) bản thảo.
+  Đã có [video-outline.docx](video-outline.docx) từ bàn giao mới trên main.
   Bìa Report hiện thiếu Nguyễn Lê Minh Quân, MSSV 24120219; nội dung còn chỗ giữ chỗ.
   Chưa có `Report.pdf` và URL video cuối trong repo.
 - Số node, độ sâu và bộ nhớ nêu trong BFS.docx cần đối chiếu CSV đúng phiên bản;
@@ -18,11 +19,11 @@ Nam viết BFS, mô hình hóa, phân tích và ghép báo cáo; Phúc phụ tr�
 
 | Đã bàn giao | Mã | Công việc | Đầu ra |
 | --- | --- | --- | --- |
-| [ ] | `N01` | Khung báo cáo, BFS, giả mã và ví dụ | `Report.docx`, `BFS.docx` → cả nhóm |
+| [x] | `N01` | Khung báo cáo, BFS, giả mã và ví dụ | `Report.docx`, `BFS.docx` → cả nhóm |
 | [ ] | `N02` | Mô hình trạng thái, hành động, chuyển, đích và cost | `model.docx` hoặc mục tương ứng trong Report → Thức, Phúc, Thiện rà |
 | [ ] | `N03` | So sánh bốn thuật toán bằng dữ liệu thật | `discussion.docx` hoặc mục tương ứng trong Report → Quân, Phúc, Thiện rà |
 | [ ] | `N04` | Biên tập PDF hoàn chỉnh, nguồn và phụ lục | `Report.docx`, `Report.pdf` → Thức |
-| [ ] | `N05` | Đề cương nội dung video và rà bản nháp | `video-outline.docx` → Phúc; phản hồi video → Phúc, Thức |
+| [x] | `N05` | Đề cương nội dung video và rà bản nháp | `video-outline.docx` → Phúc; phản hồi video → Phúc, Thức |
 
 Có bản thảo chưa đồng nghĩa nhiệm vụ đã nghiệm thu; giữ trạng thái bàn giao hiện có.
 Không cần tạo thêm DOCX rời nếu nội dung đã có mục rõ ràng trong Report và người nhận sử dụng được.
