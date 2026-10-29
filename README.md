@@ -1,99 +1,114 @@
-# Bloxorz
+# Bloxorz Solver
 
-[![Bloxorz CI](https://github.com/pnthuc/Bloxorz/actions/workflows/ci.yml/badge.svg)](https://github.com/pnthuc/Bloxorz/actions/workflows/ci.yml)
+Game Bloxorz với GUI web, BFS, DFS, UCS, A* và chế độ so sánh/phát lại lời giải.
+Engine và thuật toán viết bằng Python; Flask phục vụ API, Three.js hiển thị bàn chơi.
 
-Repo gồm game Bloxorz, bốn solver và bộ kiểm thử. Phần việc thực nghiệm, báo cáo, video và quy trình bàn giao hiện tại nằm trong [handoff/README.md](handoff/README.md).
-
-## Phân công
-
-| Họ và tên | MSSV | Phạm vi | File chính |
-| --- | --- | --- | --- |
-| Phan Ngọc Thức | 24120228 | Game engine, UI, levels và testcase | `Src/game_logic.py`, `main.py`, `static/`, `templates/`, `levels/`, `tests/`, `run_tests.py` |
-| Nguyễn Lê Minh Quân | 24120219 | DFS | `Src/solvers/member2_dfs.py` |
-| Bùi Phương Nam | 24120502 | BFS | `Src/solvers/member3_bfs.py` |
-| Tống Phúc Thiện | 24120141 | A* và heuristic | `Src/solvers/member4_astar.py` |
-| Phan Gia Phúc | 24120503 | UCS | `Src/solvers/member5_ucs.py` |
-
-## Làm tiếp phần thực nghiệm, báo cáo và video
-
-Đọc [quy trình giao việc và đẩy nhánh](handoff/README.md). Mỗi thành viên có README ghi đầu vào, yêu cầu, đầu ra và tiêu chí hoàn thành:
-
-- [Quân — DFS, công cụ đo và CSV](handoff/quan/README.md).
-- [Nam — BFS, mô hình hóa và báo cáo tổng](handoff/nam/README.md).
-- [Thiện — A* và heuristic](handoff/thien/README.md).
-- [Phúc — UCS/cost, bảng/biểu đồ, video và source sạch](handoff/phuc/README.md).
-- [Thức — engine/UI, tư liệu và nghiệm thu](handoff/thuc/README.md).
-
-Trước khi đo chính thức, điền [bản code và cách đo dùng chung](handoff/shared/baseline.md). Các thư mục mới là khung bàn giao; chưa có kết quả thực nghiệm hoặc báo cáo được điền sẵn.
+- [Đề bài gốc](AI%20-%20Project%201.pdf).
+- [Phân công và bàn giao của nhóm](handoff/README.md).
 
 ## Chạy game
 
-Cần Python 3.10+ và trình duyệt có WebGL.
+Cần Python 3.10+ và trình duyệt hỗ trợ WebGL. Từ gốc repo:
 
 ```bash
 cd Src
 python -m venv .venv
 ```
 
-Kích hoạt trên Windows PowerShell: `.venv\Scripts\Activate.ps1`.
-Trên macOS/Linux: `source .venv/bin/activate`.
+Kích hoạt môi trường: PowerShell dùng `.venv\Scripts\Activate.ps1`,
+macOS/Linux dùng `source .venv/bin/activate`. Sau đó:
 
 ```bash
 python -m pip install -r requirements.txt
 python main.py
 ```
 
-Mở `http://127.0.0.1:5000` nếu trình duyệt không tự mở. Không mở HTML trực tiếp; game cần API Flask. Không cần Node.js để chơi. Three.js, font và vật liệu đi kèm, không cần CDN.
+Mở `http://127.0.0.1:5000`. Không mở HTML trực tiếp vì game cần API.
+Không cần Node.js để chơi; font, Three.js và âm thanh đã có sẵn trong source.
+Nhạc và hiệu ứng được phát từ file, không cần tạo lại.
 
-- Mũi tên hoặc WASD: lăn khối; giữ phím để lăn liên tục.
-- Space: đổi khối khi tách đôi.
-- R: chơi lại; C: đặt lại camera.
-- Kéo chuột: xoay; cuộn: thu phóng.
-- Hướng luôn theo hàng/cột của bàn, không đổi theo camera.
+| Thao tác | Điều khiển |
+| --- | --- |
+| Lăn khối | Mũi tên hoặc WASD; giữ phím để lăn liên tục |
+| Đổi khối sau khi tách | Space |
+| Chơi lại | R |
+| Góc nhìn toàn bàn / xem gần khối | C / F |
+| Menu | Esc |
+| Xoay / thu phóng | Kéo / cuộn chuột |
 
-## Trạng thái thuật toán
+Hướng di chuyển theo hàng/cột của bàn, không theo góc camera.
+Chọn màn, tùy chỉnh, trợ giúp và AI Solver nằm trong menu.
 
-Game chơi tay vẫn hoạt động song song với các solver. Bấm solver chưa làm xong sẽ hiện thông báo rõ ràng (API HTTP 501), không báo sai rằng màn vô nghiệm. Sau khi cài đặt đúng hàm, nút UI tự sử dụng thuật toán đó.
+## Cấu trúc
 
-Các thành viên dùng chung:
-
-- `get_initial_state()`, `is_goal(state)`, `get_successors(state)` và `apply_move(state, action)` của engine.
-- Tập hành động tìm kiếm: `UP LEFT RIGHT DOWN SUP SLEFT SRIGHT SDOWN`. Tiền tố `S` là đổi khối rồi lăn một bước, chỉ hợp lệ khi `SPLIT`; khối vừa di chuyển tiếp tục được chọn. Mỗi hành động tính một bước, `solution_length = len(moves)`.
-- `State` bất biến, hash được, gồm tọa độ, hướng, trạng thái cầu và khối đang điều khiển.
-- `solvers/base.py`: wrapper đo thời gian và bộ nhớ đỉnh; không chứa thuật toán tìm kiếm.
-- `solvers/costs.py`: chi phí chung cho UCS/A*: 1 + 0.5 cho mỗi ô cam bị chiếm ở trạng thái tiếp theo. SPACE chọn khối miễn phí và không sinh cạnh tìm kiếm. BFS/DFS dùng số hành động làm total_cost.
-
-Đổi schema, State hoặc cost phải trao đổi với nhóm và cập nhật test tương ứng. Toàn bộ kỳ vọng và đường đi mẫu nằm trong **một file** `Src/tests/test_cases.json`. Board của map thật được tham chiếu theo ID từ `Src/levels/`; các board nhỏ chỉ phục vụ test được khai báo ngay trong ca tương ứng.
-
-## Chạy kiểm thử
-
-Từ `Src`, chạy các test nền rồi gọi cả bốn solver trên toàn bộ 43 ca:
-
-```bash
-python run_tests.py
+```text
+Src/
+  main.py           Chạy game, export Flask app
+  run_tests.py      Lệnh kiểm thử chung
+  requirements.txt
+  core/             Board, State, nạp level và kiểm tra replay
+  web/              Flask API và chuyển State sang/từ JSON
+  solvers/          Bốn thuật toán, profiler và cost chung
+  benchmarks/       CLI thực nghiệm và worker đo cho GUI
+  levels/           level_01.json đến level_33.json
+  static/           JavaScript, CSS, texture tạo sẵn, font, âm thanh và thư viện local
+  templates/        HTML
+  tests/            Regression và dữ liệu ca kiểm thử
+handoff/            Giao việc, bản thảo và đầu ra của từng thành viên
 ```
 
-Chọn một solver hoặc một số ID:
+## Kiểm thử
 
-```bash
-python run_tests.py --solver bfs
-python run_tests.py --solver dfs
-python run_tests.py --solver ucs
-python run_tests.py --solver astar
-python run_tests.py --solver ucs --cases T5 T10 33
-```
-
-`--cases` lọc các lượt chạy solver; các kiểm tra nền vẫn chạy đầy đủ.
-Để chỉ chạy test nền, không tìm kiếm trên các map lớn:
+Từ `Src`, kiểm tra engine, API, dữ liệu và công cụ đo:
 
 ```bash
 python -m unittest discover -s tests -p "test_*.py" -v
 ```
 
-UI cần Node.js 18+ và `npm ci` trong `Src/tests` một lần. Sau đó, từ `Src`:
+Chạy solver thật trên một số ca, có kiểm chứng lời giải:
 
 ```bash
-python run_tests.py --ui
+python run_tests.py --cases 1 2 3 4
 ```
 
-Kết quả benchmark dùng SPACE riêng trước đây cần đo lại theo tập 8 hành động; không so trực tiếp cost và số node với kết quả mới.
+Bỏ `--cases` để chạy toàn bộ 43 ca, gồm 33 màn và 10 ca biên.
+Các màn stress có thể mất nhiều thời gian; lệnh này không giới hạn thời gian tìm kiếm.
+`--solver bfs|dfs|ucs|astar` chọn riêng một thuật toán.
+
+Test UI/audio cần Node.js 18+. Từ `Src/tests`:
+
+```bash
+npm ci
+npm test
+```
+
+`python run_tests.py --ui` chạy thêm UI/audio sau test nền và các solver đã chọn.
+Test UI mô phỏng GPU; kết quả này không thay cho kiểm tra hình ảnh trong trình duyệt.
+
+## Thực nghiệm
+
+Chạy thử nhỏ từ `Src`, xuất vào thư mục riêng để không trộn số đo cũ:
+
+```bash
+python -m benchmarks.cli --levels 1 4 --solvers bfs dfs ucs astar --repeats 1 --timeout 5 --output-dir ../handoff/quan/benchmarks/trial
+```
+
+CLI xuất `raw.csv`, `runs/*.json`, `environment.json` và `run-config.json`.
+Nó chưa tạo CSV tổng hợp hoặc biểu đồ. Chốt phiên bản và cách đo trong
+[baseline](handoff/shared/baseline.md) trước lượt thực nghiệm chính thức.
+Chế độ so sánh trong GUI là phép đo một lượt để minh họa, không thay bộ số liệu lặp của báo cáo.
+
+Quy ước hiện tại:
+
+- Tìm kiếm dùng `UP LEFT RIGHT DOWN SUP SLEFT SRIGHT SDOWN`. Tiền tố `S`
+  là đổi khối rồi lăn, chỉ hợp lệ khi SPLIT; mỗi hành động tính một bước.
+  SPACE chỉ đổi khối khi chơi tay, không sinh cạnh tìm kiếm.
+- `State(r,c,orientation,bridges,r2,c2,active_cube)` bất biến, hash được.
+- `solvers/costs.py`: mỗi cạnh có cost `1 + 0.5 × số ô fragile bị chiếm ở trạng thái đến`.
+  BFS/DFS trả `total_cost` bằng số hành động; UCS/A* trả cost có trọng số.
+  CLI lưu thêm `path_cost` tính lại bằng cùng công thức để so chéo.
+- Profiler đo thời gian tìm kiếm bằng ms và đỉnh cấp phát Python bằng KiB
+  (trường API tên `memory_kb`), không phải tổng RAM hay bộ nhớ GPU.
+
+Dữ liệu đo theo quy ước SPACE riêng trước đây cần đo lại trước khi dùng để so sánh bản này.
+Giữ kèm giấy phép [font](Src/static/fonts/OFL.txt) và [Three.js](Src/static/vendor/THREE-LICENSE.txt).

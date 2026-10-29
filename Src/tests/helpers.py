@@ -8,12 +8,12 @@ from dataclasses import dataclass
 import json
 import math
 from pathlib import Path
-from typing import Any, Dict, FrozenSet, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
-from game_logic import BloxorzBoard, GOAL, State, SEARCH_ACTIONS
+from core.board import BloxorzBoard, GOAL, State, SEARCH_ACTIONS
 from solvers import heuristic
 from solvers.member4_astar import precompute_switch_costs_from_goal
-from solvers.costs import step_cost
+from core.replay import replay_solution
 
 ROOT = Path(__file__).resolve().parents[1]
 ACTIONS = set(SEARCH_ACTIONS)
@@ -59,15 +59,6 @@ class Case:
     def make_board(self) -> BloxorzBoard:
         # Solver và replay có board riêng, tránh làm thay đổi dữ liệu ca sau.
         return BloxorzBoard(deepcopy(self.level))
-
-
-@dataclass(frozen=True)
-class Replay:
-    valid: bool
-    reason: str
-    cost: float
-    state: State
-    visited: FrozenSet[Any]
 
 
 def load_levels() -> Dict[str, dict]:
@@ -177,43 +168,6 @@ def select_cases(cases: List[Case], ids: Optional[List[str]]) -> List[Case]:
     unknown = sorted(set(ids) - {case.id for case in cases})
     check(not unknown, f"ID ca kiểm thử không tồn tại: {unknown}")
     return [case for case in cases if case.id in ids]
-
-
-def replay_solution(board: BloxorzBoard, moves: List[str]) -> Replay:
-    state = board.get_initial_state()
-    cost = 0.0
-    visited = {state.orientation}
-    visited.update(board.grid[r][c] for r, c in state.get_occupied_cells())
-    for index, action in enumerate(moves, start=1):
-        if not isinstance(action, str) or action not in ACTIONS:
-            return Replay(
-                False,
-                f"Hành động thứ {index} không hợp lệ: {action!r}",
-                cost,
-                state,
-                frozenset(visited),
-            )
-        child = board.apply_move(state, action)
-        if child is None:
-            return Replay(
-                False,
-                f"Bước thứ {index} ({action}) vi phạm luật bàn chơi",
-                cost,
-                state,
-                frozenset(visited),
-            )
-        cost += step_cost(board, child)
-        state = child
-        visited.add(state.orientation)
-        visited.update(board.grid[r][c] for r, c in state.get_occupied_cells())
-    valid = board.is_goal(state)
-    reason = "Hợp lệ" if valid else f"Đi hết {len(moves)} hành động nhưng chưa tới GOAL"
-    return Replay(valid, reason, cost, state, frozenset(visited))
-
-
-def verify_solution_walk(board: BloxorzBoard, moves: List[str]) -> Tuple[bool, str, float]:
-    result = replay_solution(board, moves)
-    return result.valid, result.reason, result.cost
 
 
 REQUIRED_FIELDS = {

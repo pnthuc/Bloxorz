@@ -1,0 +1,29 @@
+{
+  "id": "7",
+  "name": "Cửa mở một lần",
+  "description": "Chạm công tắc nhẹ để mở cầu vĩnh viễn.",
+  "difficulty": "Trung bình",
+  "start_pos": [
+    2,
+    1
+  ],
+  "initial_bridges": [
+    false
+  ],
+  "switches": {
+    "2,3": {
+      "behavior": "open",
+      "targets": [
+        0
+      ]
+    }
+  },
+  "grid": [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 1, 1, 1, 0, 0, 1, 1, 1, 1],
+    [1, 1, 1, 3, 0, 0, 1, 1, 1, 1],
+    [1, 1, 1, 1, 10, 10, 1, 1, 1, 1],
+    [1, 1, 1, 1, 0, 0, 1, 1, 9, 1],
+    [0, 0, 0, 0, 0, 0, 1, 1, 1, 1]
+  ]
+}

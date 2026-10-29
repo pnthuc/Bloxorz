@@ -1,94 +1,63 @@
-/* PBR surfaces authored in code: matching albedo, tangent normals and roughness.
- * Geometry supplies the silhouette; normals add only fine surface relief.
- * No network request, random asset dependency, or baked lighting is required. */
+/* Fixed PBR textures loaded from local assets; lighting and scene layout remain dynamic. */
 (() => {
   'use strict';
   const B = window.Bloxorz = window.Bloxorz || {};
   const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
-  function hash(x, y, seed) {
-    const n = Math.sin(x * 127.1 + y * 311.7 + seed * 73.13) * 43758.5453;
-    return n - Math.floor(n);
+  // Fixed surfaces are pre-rendered PNGs; images load once and GPU textures
+  // are reused per renderer. Geometry and level-dependent fields stay separate.
+  const surfaceNames = ['stone-1','stone-2','stone-3','stone-4','fragile-12','steel-23',
+    'copper-7-tall','copper-8','copper-7','masonry-19','ice-43','snow-11'];
+  const assetFiles = [...surfaceNames.flatMap(name => ['color','normal','roughness'].map(role => `${name}-${role}.png`)),
+    'water-field.png','environment.png'];
+  const images = new Map(), textureCaches = new WeakMap();
+  let preparing;
+  B.prepareRenderAssets = loadImage => {
+    if (preparing) return preparing;
+    const load = loadImage || (url => new Promise((resolve, reject) =>
+      new THREE.ImageLoader().load(url, resolve, undefined, reject)));
+    preparing = Promise.all(assetFiles.map(async file => {
+      try { images.set(file, await load('/static/textures/' + file)); }
+      catch { throw new Error('Không tải được tài nguyên đồ họa: ' + file); }
+    })).then(() => undefined).catch(error => { preparing = null; throw error; });
+    return preparing;
+  };
+  function image(file) {
+    if (!images.has(file)) throw new Error('Tài nguyên đồ họa chưa sẵn sàng: ' + file);
+    return images.get(file);
   }
-  function noise(x, y, seed) {
-    const ix = Math.floor(x), iy = Math.floor(y);
-    let fx = x - ix, fy = y - iy;
-    fx = fx * fx * (3 - 2 * fx); fy = fy * fy * (3 - 2 * fy);
-    const a = hash(ix, iy, seed), b = hash(ix + 1, iy, seed);
-    const c = hash(ix, iy + 1, seed), d = hash(ix + 1, iy + 1, seed);
-    return a * (1 - fx) * (1 - fy) + b * fx * (1 - fy) + c * (1 - fx) * fy + d * fx * fy;
-  }
-  function textureFromPixels(data, w, h, renderer, isColor) {
-    const canvas = document.createElement('canvas');
-    canvas.width = w; canvas.height = h;
-    const ctx = canvas.getContext('2d');
-    ctx.putImageData(new ImageData(data, w, h), 0, 0);
-    const tex = new THREE.CanvasTexture(canvas);
-    tex.encoding = isColor ? THREE.sRGBEncoding : THREE.LinearEncoding;
-    tex.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
-    return tex;
+  function texture(file, renderer, isColor, flipY = true) {
+    if (!textureCaches.has(renderer)) textureCaches.set(renderer, new Map());
+    const cache = textureCaches.get(renderer);
+    if (!cache.has(file)) {
+      const tex = new THREE.Texture(image(file));
+      tex.encoding = isColor ? THREE.sRGBEncoding : THREE.LinearEncoding;
+      tex.flipY = flipY;
+      tex.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+      tex.needsUpdate = true;
+      cache.set(file, tex);
+    }
+    return cache.get(file);
   }
   function surface(renderer, kind, seed = 1, tall = false) {
-    const w = 256, h = tall ? 512 : 256, count = w * h;
-    const heights = new Float32Array(count), colors = new Uint8ClampedArray(count * 4);
-    const rough = new Uint8ClampedArray(count * 4), normals = new Uint8ClampedArray(count * 4);
+    const key = kind + '-' + seed + (tall ? '-tall' : '');
     const isMetal = kind === 'copper' || kind === 'steel';
-    const bases = {stone:[220,191,145], fragile:[185,105,46], copper:[154,85,47], steel:[74,100,112]};
-    const base = bases[kind];
-    for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
-      const i = y * w + x, u = x / w, v = y / w;
-      const coarse = noise(u * 7, v * 7, seed), mid = noise(u * 34, v * 34, seed + 1);
-      const grain = hash(x, y, seed + 2), fine = noise(u * 90, v * 90, seed + 8);
-      let height = coarse * .35 + mid * .18 + fine * .08 + grain * .035;
-      let shade = (coarse - .5) * 22 + (mid - .5) * 12 + (grain - .5) * 13;
-      const edge = Math.min(x, y, w - 1 - x, h - 1 - y);
-      const groove = edge > 13 && edge < 16;
-      if (groove) { height -= .13; shade -= 20; }
-      if (isMetal) {
-        const brushing = hash(0, y, seed + 3);
-        height = mid * .035 + grain * .008 + brushing * .012;
-        shade = (coarse - .5) * 14 + (brushing - .5) * 9 + (grain - .5) * 5;
-        if (groove) {height -= .15; shade -= 30;}
-        if (edge < 7) shade += 16;
-        // Oxidation islands create rougher patches on otherwise brushed metal.
-        shade -= Math.max(0, .38 - coarse) * 30;
-      }
-      if(kind==='stone') {
-        const seam=Math.abs(u-(.22+seed*.11)-Math.sin(v*11+seed)*.025);
-        const branch=Math.abs(v-.73-Math.sin(u*8+seed)*.035);
-        if((seam<.0035&&v>.53)||(branch<.0025&&u>.60)){height-=.19;shade-=46;}
-        if(edge<5){height-=.035+grain*.045;shade-=8+grain*9;}
-      }
-      if (kind === 'fragile') {
-        const crack = Math.abs(u - .28 - Math.sin(v * 13) * .07 - Math.sin(v * 38) * .015);
-        const crack2 = Math.abs(v - .68 - Math.sin(u * 11) * .055);
-        if (crack < .006 || crack2 < .004) { height -= .24; shade -= 58; }
-      }
-      heights[i] = height;
-      const j = i * 4;
-      for (let k = 0; k < 3; k++) colors[j + k] = clamp(base[k] + shade, 0, 255);
-      colors[j + 3] = 255;
-      const r = isMetal ? 155 + coarse * 40 + grain * 8 : 190 + coarse * 43;
-      rough[j] = rough[j + 1] = rough[j + 2] = r; rough[j + 3] = 255;
-    }
-    const strength = isMetal ? 2.2 : 3.0;
-    for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
-      const i = y * w + x, j = i * 4;
-      const left = heights[y * w + Math.max(0, x - 1)], right = heights[y * w + Math.min(w - 1, x + 1)];
-      const up = heights[Math.max(0, y - 1) * w + x], down = heights[Math.min(h - 1, y + 1) * w + x];
-      const nx = (left - right) * strength, ny = (down - up) * strength;
-      const length = Math.hypot(nx, ny, 1);
-      normals[j] = (nx / length * .5 + .5) * 255;
-      normals[j + 1] = (ny / length * .5 + .5) * 255;
-      normals[j + 2] = (1 / length * .5 + .5) * 255; normals[j + 3] = 255;
-    }
     return new THREE.MeshStandardMaterial({
-      map: textureFromPixels(colors, w, h, renderer, true),
-      normalMap: textureFromPixels(normals, w, h, renderer, false),
-      roughnessMap: textureFromPixels(rough, w, h, renderer, false),
-      normalScale: new THREE.Vector2(isMetal ? .42 : .7, isMetal ? .42 : .7), roughness:1,
-      metalness:isMetal ? .58 : .02, envMapIntensity:isMetal ? .65 : .3
+      map: texture(key + '-color.png', renderer, true),
+      normalMap: texture(key + '-normal.png', renderer, false),
+      roughnessMap: texture(key + '-roughness.png', renderer, false),
+      normalScale: new THREE.Vector2(isMetal ? .42 : .7, isMetal ? .42 : .7),
+      roughness: kind === 'ice' ? .58 : kind === 'snow' ? .96 : 1,
+      metalness: isMetal ? .58 : .02, envMapIntensity: isMetal ? .65 : .3
     });
   }
+  B.createSurface = surface;
+  B.createWaterField = renderer => {
+    const tex = texture('water-field.png', renderer, false, false);
+    tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+    tex.magFilter = THREE.LinearFilter; tex.minFilter = THREE.LinearMipmapLinearFilter;
+    tex.generateMipmaps = true;
+    return tex;
+  };
   B.createMaterials = renderer => {
     const m = {
       stone: [1, 2, 3, 4].map(seed => surface(renderer, 'stone', seed)),
@@ -103,26 +72,22 @@
       bottom: new THREE.MeshBasicMaterial({color:0x070e14}),
       marker: new THREE.MeshBasicMaterial({color:0x9ce6d0})
     };
+    const masonry=surface(renderer,'masonry',19);
+    m.architecture=[masonry,...[.94,1.06,.85].map(value=>{const mat=masonry.clone();mat.color.setScalar(value);return mat;})];
     // A wet band is tied to world water elevation, so scaled ruins do not float above it.
-    for(const material of m.stone){material.onBeforeCompile=shader=>{
+    m.underwaterTint={value:new THREE.Color(0x086879).convertSRGBToLinear()};
+    for(const material of [...m.stone,...m.architecture,m.dark]){material.onBeforeCompile=shader=>{
+      shader.uniforms.underwaterTint=m.underwaterTint;
       shader.vertexShader='varying float masonryY;\n'+shader.vertexShader.replace('#include <worldpos_vertex>','#include <worldpos_vertex>\nvec4 wetPosition=vec4(transformed,1.0);\n#ifdef USE_INSTANCING\nwetPosition=instanceMatrix*wetPosition;\n#endif\nmasonryY=(modelMatrix*wetPosition).y;');
-      shader.fragmentShader='varying float masonryY;\n'+shader.fragmentShader;
-      shader.fragmentShader=shader.fragmentShader.replace('#include <color_fragment>','#include <color_fragment>\nfloat wet=1.0-smoothstep(-.87,-.72,masonryY);diffuseColor.rgb*=mix(vec3(1.),vec3(.53,.68,.65),wet);');
+      shader.fragmentShader='varying float masonryY;uniform vec3 underwaterTint;\n'+shader.fragmentShader;
+      shader.fragmentShader=shader.fragmentShader.replace('#include <color_fragment>','#include <color_fragment>\nfloat wet=1.0-smoothstep(-.87,-.72,masonryY);diffuseColor.rgb*=mix(vec3(1.),vec3(.53,.68,.65),wet);float submerged=1.-smoothstep(-2.6,-.95,masonryY);diffuseColor.rgb=mix(diffuseColor.rgb,underwaterTint,submerged*.78);');
       shader.fragmentShader=shader.fragmentShader.replace('#include <roughnessmap_fragment>','#include <roughnessmap_fragment>\nroughnessFactor=mix(roughnessFactor,.44,wet);');
     };}
     return m;
   };
   B.createEnvironment = renderer => {
-    const canvas = document.createElement('canvas'); canvas.width = 512; canvas.height = 256;
-    const ctx = canvas.getContext('2d');
-    const gradient = ctx.createLinearGradient(0, 0, 0, 256);
-    gradient.addColorStop(0,'#9daebd'); gradient.addColorStop(.46,'#d4e6de');
-    gradient.addColorStop(.53,'#253745'); gradient.addColorStop(1,'#10171e');
-    ctx.fillStyle = gradient; ctx.fillRect(0, 0, 512, 256);
-    // Large softbox reflections, kept out of the visible background.
-    ctx.fillStyle = '#f9e8d0'; ctx.fillRect(68, 35, 88, 58);
-    ctx.fillStyle = '#a1cce2'; ctx.fillRect(330, 40, 52, 90);
-    const tex = new THREE.CanvasTexture(canvas); tex.encoding = THREE.sRGBEncoding;
+    const tex = new THREE.Texture(image('environment.png'));
+    tex.encoding = THREE.sRGBEncoding; tex.needsUpdate = true;
     tex.mapping = THREE.EquirectangularReflectionMapping;
     const pmrem = new THREE.PMREMGenerator(renderer);
     const target = pmrem.fromEquirectangular(tex);

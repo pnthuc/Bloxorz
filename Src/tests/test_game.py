@@ -7,9 +7,10 @@ from tempfile import TemporaryDirectory
 import unittest
 from unittest.mock import patch
 
-from game_logic import BloxorzBoard, State, STANDING, HORIZONTAL, VERTICAL, SPLIT
-from main import app, serialize_state, deserialize_state
-from tests.helpers import ROOT, load_cases, load_levels, read_json, replay_solution
+from core.board import BloxorzBoard, State, STANDING, HORIZONTAL, VERTICAL, SPLIT
+from web.app import app, serialize_state, deserialize_state
+from tests.helpers import ROOT, load_cases, load_levels, read_json
+from core.replay import replay_solution
 
 
 def board_with(tiles=None, switches=None, bridges=()):
@@ -323,7 +324,7 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json), len(self.levels))
         self.assertEqual(set(response.json), set(self.levels))
-        self.assertEqual(response.json["12"]["display_name"], "Hành trình liên hoàn")
+        self.assertEqual(response.json["12"]["name"], "Hành trình liên hoàn")
         for id in self.levels:
             with self.subTest(level=id):
                 data = self.client.get("/api/level/" + id).json
@@ -359,10 +360,27 @@ class ApiTests(unittest.TestCase):
                 )
 
     def test_pending_solver_is_explicit_501(self):
-        with patch("main.solve_bfs", side_effect=NotImplementedError("BFS TODO")):
+        with patch("web.app.solve_bfs", side_effect=NotImplementedError("BFS TODO")):
             res = self.client.post("/api/solve", json=dict(level_id="1", solver="bfs"))
         self.assertEqual(res.status_code, 501)
         self.assertEqual(res.json["code"], "SOLVER_NOT_IMPLEMENTED")
+
+    def test_real_solver_api_answers_replay_to_goal(self):
+        for level_id in ("1", "3", "4"):
+            for solver in ("bfs", "dfs", "ucs", "astar"):
+                with self.subTest(level=level_id, solver=solver):
+                    response = self.client.post("/api/solve", json={
+                        "level_id": level_id, "solver": solver})
+                    self.assertEqual(response.status_code, 200)
+                    self.assertTrue(response.json["found"])
+                    state = self.client.get("/api/level/" + level_id).json["initial_state"]
+                    for action in response.json["moves"]:
+                        move = self.client.post("/api/move", json={
+                            "level_id": level_id, "state": state, "action": action}).json
+                        self.assertTrue(move["valid"])
+                        state = move["next_state"]
+                    self.assertTrue(BloxorzBoard(self.levels[level_id]).is_goal(
+                        deserialize_state(state)))
 
     def test_video2_failed_move_retains_closed_bridge(self):
         state = self.client.get("/api/level/11").json["initial_state"]

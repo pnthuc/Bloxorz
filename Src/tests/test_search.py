@@ -7,17 +7,16 @@ from io import StringIO
 import unittest
 from unittest.mock import Mock, patch
 
-from game_logic import BloxorzBoard, SPLIT, State
+from core.board import BloxorzBoard, SPLIT, State
 from tests.helpers import (
     Case,
     load_cases,
     load_levels,
-    replay_solution,
     select_cases,
     validate_result,
     validate_schema,
-    verify_solution_walk,
 )
+from core.replay import replay_solution, verify_solution_walk
 import run_tests
 from run_tests import run_case, run_selected, run_suite
 
@@ -298,7 +297,7 @@ class RunCommandTests(unittest.TestCase):
             ui.return_value.returncode = 0
             self.assertEqual(run_tests.main(["--solver", "bfs", "--cases", "T5", "--ui"]), 2)
             solve.assert_called_once_with("bfs", ["T5"])
-            self.assertEqual(ui.call_args.args[0], ["node", "--test", "test_ui.cjs"])
+            self.assertEqual(ui.call_args.args[0], ["node", "--test", "test_ui.cjs", "test_audio.cjs", "test_render_assets.cjs"])
             ui.return_value.returncode = 1
             self.assertEqual(run_tests.main(["--ui"]), 1)
 

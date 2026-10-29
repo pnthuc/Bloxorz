@@ -1,0 +1,100 @@
+[
+  {
+    "action": "UP",
+    "before": {
+      "active_cube": 0,
+      "bridges": [],
+      "c": 1,
+      "c2": -1,
+      "orientation": "STANDING",
+      "r": 1,
+      "r2": -1
+    },
+    "name": "edge",
+    "outcome": {
+      "failure_state": null,
+      "next_state": null,
+      "valid": false
+    },
+    "level_id": "1"
+  },
+  {
+    "action": "RIGHT",
+    "before": {
+      "active_cube": 0,
+      "bridges": [],
+      "c": 2,
+      "c2": -1,
+      "orientation": "HORIZONTAL",
+      "r": 2,
+      "r2": -1
+    },
+    "name": "fragile",
+    "outcome": {
+      "failure_state": null,
+      "next_state": null,
+      "valid": false
+    },
+    "level_id": "2"
+  },
+  {
+    "action": "RIGHT",
+    "before": {
+      "active_cube": 0,
+      "bridges": [
+        true,
+        false
+      ],
+      "c": 4,
+      "c2": -1,
+      "orientation": "STANDING",
+      "r": 3,
+      "r2": -1
+    },
+    "name": "bridge",
+    "outcome": {
+      "failure_state": {
+        "active_cube": 0,
+        "bridges": [
+          false,
+          false
+        ],
+        "c": 5,
+        "c2": -1,
+        "orientation": "HORIZONTAL",
+        "r": 3,
+        "r2": -1
+      },
+      "next_state": null,
+      "valid": false
+    },
+    "level_id": "11"
+  },
+  {
+    "action": "RIGHT",
+    "before": {
+      "active_cube": 0,
+      "bridges": [],
+      "c": 5,
+      "c2": -1,
+      "orientation": "HORIZONTAL",
+      "r": 4,
+      "r2": -1
+    },
+    "name": "goal",
+    "outcome": {
+      "failure_state": null,
+      "next_state": {
+        "active_cube": 0,
+        "bridges": [],
+        "c": 7,
+        "c2": -1,
+        "orientation": "STANDING",
+        "r": 4,
+        "r2": -1
+      },
+      "valid": true
+    },
+    "level_id": "1"
+  }
+]

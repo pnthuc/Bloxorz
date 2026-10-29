@@ -3,7 +3,7 @@
 Mỗi cạnh là một bước lăn, kể cả đổi khối rồi lăn (SUP/SLEFT/SRIGHT/SDOWN).
 SPACE chọn khối miễn phí khi chơi tay và không sinh cạnh tìm kiếm.
 """
-from game_logic import BloxorzBoard, State
+from core.board import BloxorzBoard, State
 
 
 def step_cost(board: BloxorzBoard, next_state: State) -> float:
