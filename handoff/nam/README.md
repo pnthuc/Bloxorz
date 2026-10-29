@@ -20,11 +20,11 @@ Tập trung mô hình hóa, phân tích và báo cáo tổng. Gửi đề cươn
 
 | Đã bàn giao | Mã | Nhiệm vụ |
 | --- | --- | --- |
-| [ ] | `N01` | Tạo khung báo cáo và viết phần BFS |
+| [x] | `N01` | Tạo khung báo cáo và viết phần BFS |
 | [ ] | `N02` | Viết mô hình hóa bài toán từ engine đã có |
 | [ ] | `N03` | Viết phân tích so sánh có dẫn chứng |
 | [ ] | `N04` | Tổng hợp và biên tập Report.pdf |
-| [ ] | `N05` | Chốt đề cương nội dung video với Phúc |
+| [x] | `N05` | Chốt đề cương nội dung video với Phúc |
 
 Các đường dẫn đầu ra dưới đây là nơi sẽ tạo file khi thực hiện nhiệm vụ. Thư mục hiện tại mới có README, chưa có kết quả hay báo cáo giả lập.
 
