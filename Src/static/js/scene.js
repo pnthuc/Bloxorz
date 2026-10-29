@@ -15,7 +15,7 @@
       this.renderer.outputEncoding = THREE.sRGBEncoding;
       this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
       this.renderer.toneMappingExposure = 1.12;
-      this.renderer.shadowMap.enabled = true;this.renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+      this.renderer.shadowMap.autoUpdate=false;this.renderer.shadowMap.enabled = true;this.renderer.shadowMap.type=THREE.PCFSoftShadowMap;
       this.renderer.localClippingEnabled = true;
       this.renderer.domElement.setAttribute('aria-hidden', 'true');
       container.prepend(this.renderer.domElement);
@@ -27,8 +27,8 @@
       this.markers = new THREE.Group();
       this.pivot = new THREE.Group();
       this.scene.add(this.board, this.blocks, this.pivot, this.markers);
-      this.scene.add(new THREE.HemisphereLight(0xddebf2, 0x233445, .65));
-      const key = new THREE.DirectionalLight(0xffe6ca, 1.15); key.position.set(-5, 12, 7);key.castShadow=true;key.shadow.mapSize.set(2048,2048);Object.assign(key.shadow.camera,{left:-20,right:20,top:20,bottom:-20});key.shadow.radius=2;key.shadow.bias=-.0003;this.scene.add(key);
+      this.scene.add(new THREE.HemisphereLight(0xddebf2, 0x233445, .52));
+      const key = new THREE.DirectionalLight(0xffe6ca, 1.28); key.position.set(-5, 12, 7);key.castShadow=true;key.shadow.mapSize.set(2048,2048);Object.assign(key.shadow.camera,{left:-20,right:20,top:20,bottom:-20});key.shadow.radius=2;key.shadow.bias=-.0003;this.scene.add(key);
       const fill = new THREE.DirectionalLight(0x8db5d7, .55); fill.position.set(8, 5, -5); this.scene.add(fill);
       const rim = new THREE.DirectionalLight(0xc7e9e7, .7); rim.position.set(-5, 4, -7); this.scene.add(rim);
       this.target = new THREE.Vector3(0, .15, 0);
@@ -40,6 +40,7 @@
       this.reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       this.bindCamera();
       this.observer = new ResizeObserver(() => this.resize()); this.observer.observe(container);
+      window.addEventListener('resize',()=>this.resize());
       this.resize();
     }
     geometry(key, make) {
@@ -60,11 +61,17 @@
         marker.userData.target.getWorldPosition(marker.position);
         marker.position.y += .65;
       });
+      const shadowSignature=[this.theme,...this.blocks.children.map(o=>o.matrixWorld.elements.join(',')),...this.pivot.children.map(o=>o.matrixWorld.elements.join(',')),...[...this.bridgeGroups.values()].flat().map(o=>o.visible+o.matrixWorld.elements.join(','))].join('|');
+      if(this.shadowDirty||this.shadowSignature!==shadowSignature){this.renderer.shadowMap.needsUpdate=true;this.shadowDirty=false;this.shadowSignature=shadowSignature;}
       this.renderer.render(this.scene, this.camera);
     }
     resize() {
       const w = Math.max(1, this.container.clientWidth), h = Math.max(1, this.container.clientHeight);
-      this.renderer.setSize(w, h, false); this.camera.aspect = w / h;
+      // Browser zoom and moving between monitors can change DPR after construction.
+      const pixelRatio=Math.min(window.devicePixelRatio||1,2);
+      if(this.renderer.getPixelRatio?.()!==pixelRatio)this.renderer.setPixelRatio(pixelRatio);
+      this.renderer.setSize(w, h, false);
+      this.renderer.domElement.dataset.resolution=JSON.stringify({css:[w,h],dpr:window.devicePixelRatio||1,renderRatio:pixelRatio,buffer:[this.renderer.domElement.width,this.renderer.domElement.height]}); this.camera.aspect = w / h;
       this.camera.updateProjectionMatrix(); this.fitCamera(); this.render();
     }
     setCamera() {
@@ -75,7 +82,7 @@
         const landscape=H<=500&&W>H,mobile=W<=700;
         let left=0,top=0,width=W,height=H-(mobile?240:150);
         if(landscape){width=W-185;height=H;}
-        if(['levels','settings','help'].includes(screen)&&!mobile&&!landscape){left=W*.32;width=W-left;height=H-180;top=100;}
+        if(['levels','settings','help'].includes(screen)&&!mobile&&!landscape){left=W*.32;width=W-left;top=screen==='help'?100:180;height=H-top-160;}
         if(['solver','results'].includes(screen)){top=150;height=H-top-(results?250:110);}
         height=Math.max(120,height);width=Math.max(180,width);
         this.safeRect={left,top,width,height,W,H};
@@ -109,7 +116,7 @@
       pts.push(new THREE.Vector3(start.x,2.2,start.z));
       for (let i=0;i<65;i++) {
         this.setCamera();
-        if (pts.every(v => {const p=v.clone().project(this.camera);const a=this.safeRect;const x=(p.x+1)*a.W/2,y=(1-p.y)*a.H/2;return x>a.left+a.width*.08&&x<a.left+a.width*.92&&y>a.top+a.height*.10&&y<a.top+a.height*.90&&p.z<1;})) break;
+        if (pts.every(v => {const p=v.clone().project(this.camera);const a=this.safeRect;const x=(p.x+1)*a.W/2,y=(1-p.y)*a.H/2;return x>a.left+a.width*.10&&x<a.left+a.width*.90&&y>a.top+a.height*.10&&y<a.top+a.height*.90&&p.z<1;})) break;
         this.distance *= 1.04;
       }
       this.zoom = oldZoom; this.setCamera();
@@ -137,7 +144,7 @@
     }
     world(r,c) {return {x:c-(this.level.grid[0].length-1)/2,z:r-(this.level.grid.length-1)/2};}
     build(level,state) {
-      this.cancel(); this.level=level;
+      this.cancel(); this.shadowDirty=true;this.level=level;
       this.board.clear();this.blocks.clear();this.pivot.clear();this.markers.clear();
       this.bridgeGroups.clear();this.tiles.clear();this.switches=[];
       this.rotation.identity();
@@ -230,6 +237,7 @@
       this.render();
     }
     updateBoard(st) {
+      this.shadowDirty=true;
       st.bridges.forEach((open,i)=>(this.bridgeGroups.get(i)||[]).forEach(g=>{g.visible=open;}));
       const cells=st.orientation==='SPLIT'?[[st.r,st.c],[st.r2,st.c2]]:st.orientation==='HORIZONTAL'?[[st.r,st.c],[st.r,st.c+1]]:st.orientation==='VERTICAL'?[[st.r,st.c],[st.r+1,st.c]]:[[st.r,st.c]];
       this.switches.forEach(sw=>{const pressed=cells.some(([r,c])=>r===sw.r&&c===sw.c)&&(sw.type===3||st.orientation==='STANDING');sw.button.position.y=pressed?-.018:.025;});

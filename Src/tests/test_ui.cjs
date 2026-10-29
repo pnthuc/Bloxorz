@@ -726,8 +726,44 @@ test('Bloxorz UI', async (t) => {
       assert(scene.decor.children.some(x=>x.material===scene.artMats.pine));
       assert(!scene.decor.children.some(x=>scene.artMats.leaf.includes(x.material)||x.material===scene.artMats.pink||x.material===scene.artMats.purple));
       assert.equal(JSON.stringify(scene.level.grid),grid);assert.equal(scene.tiles.size,tileCount);
+      for(const theme of ['ruins','garden','frost']){
+        scene.setAppearance('stone',theme);
+        for(const mesh of scene.decor.children){if(!mesh.isInstancedMesh)continue;mesh.geometry.computeBoundingBox();
+          for(let i=0;i<mesh.count;i++){const transform=new w.THREE.Matrix4();mesh.getMatrixAt(i,transform);const box=mesh.geometry.boundingBox.clone().applyMatrix4(transform);
+            if(box.max.y<=.025||box.min.y>=2.35)continue;
+            scene.level.grid.forEach((row,r)=>row.forEach((tile,c)=>{if(!tile)return;const p=scene.world(r,c);assert(!(box.max.x>p.x-.495&&box.min.x<p.x+.495&&box.max.z>p.z-.495&&box.min.z<p.z+.495),'scenery enters playable volume');}));
+          }
+        }
+      }
       assert.equal(scene.water.position.y,-.85);assert.equal(scene.seabed.position.y,-2.6);
       scene.setAppearance('stone','ruins');
+    });
+    await t.test('submerged shelves affect depth without emitting a surface contact outline', () => {
+      scene.makeWater([[0,0,1,true]],10,10,false);
+      const submerged=scene.shoreTexture.image.data;
+      assert([...submerged].filter((_,i)=>i%4===2).every(x=>x===255),'deep terrain must not generate a waterline');
+      assert([...submerged].filter((_,i)=>i%4===0).some(x=>x===0),'deep terrain still contributes shallow depth');
+      scene.makeWater([[0,0,1,false]],10,10,false);
+      assert([...scene.shoreTexture.image.data].filter((_,i)=>i%4===2).some(x=>x===0),'surface masonry retains its contact field');
+      scene.buildScenery(scene.level,scene.theme);
+    });
+    await t.test('water highlight patch reaches the bundled r128 shader output', () => {
+      const source=w.THREE.ShaderLib.standard;
+      const shader={uniforms:{},vertexShader:source.vertexShader,fragmentShader:source.fragmentShader};
+      scene.waterMaterial.onBeforeCompile(shader);
+      const bound=shader.fragmentShader.indexOf('min(reflectedLight.directSpecular,vec3(.018,.032,.040))');
+      const output=shader.fragmentShader.indexOf('gl_FragColor = vec4( outgoingLight, diffuseColor.a );');
+      assert(bound>=0&&bound<output,'highlight bound must execute before the actual bundled shader output');
+      assert.throws(()=>scene.waterMaterial.onBeforeCompile({uniforms:{},vertexShader:'',fragmentShader:''}),/output anchor missing/);
+    });
+    await t.test('resize updates raster scale when browser zoom changes', async()=>{
+      const ratios=[],original=scene.renderer.setPixelRatio;
+      scene.renderer.setPixelRatio=r=>ratios.push(r);
+      const previous=w.devicePixelRatio;
+      Object.defineProperty(w,'devicePixelRatio',{value:.75,configurable:true});scene.resize();
+      Object.defineProperty(w,'devicePixelRatio',{value:1,configurable:true});scene.resize();
+      assert(ratios.includes(.75));assert.equal(ratios.at(-1),1);
+      Object.defineProperty(w,'devicePixelRatio',{value:previous,configurable:true});scene.renderer.setPixelRatio=original;
     });
     await t.test('no uncaught runtime errors. GPU rasterization was not tested.', async () => {
       controls.solverUnavailable = false;

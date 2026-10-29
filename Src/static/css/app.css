@@ -54,3 +54,30 @@ body[data-settings-tab=map] .skin-row{gap:28px}
 body[data-settings-tab=map] #page-bottom{bottom:28px}
 body[data-settings-tab=map] .skin-option{border-radius:0}
 @media(max-width:700px){body[data-settings-tab=map] .skin-option img{width:90px;height:80px}body[data-settings-tab=map] .skin-row{gap:8px}}
+
+/* Help pages use a flowing two-column definition layout, with a single vertical scroll on small screens. */
+body[data-screen=help] #page-screen{overflow-y:auto;overflow-x:clip;pointer-events:auto}
+body[data-screen=help] #page-copy{width:100%;min-width:0}
+body[data-screen=help] .help-copy{position:relative;left:auto;top:auto;width:min(44%,640px);max-width:none;max-height:none;overflow:visible;margin:40px 0 40px 4%;padding:0;background:none;min-width:0}
+.help-copy h2{font-size:24px;margin:24px 0 16px}.help-row{display:grid;grid-template-columns:175px minmax(0,1fr);gap:20px;align-items:center;margin:14px 0;overflow-wrap:anywhere;min-width:0}.help-symbol{min-width:0}.key-group{display:grid;grid-template-columns:repeat(4,36px);gap:8px}kbd{display:inline-grid;place-items:center;min-width:40px;min-height:40px;padding:4px 10px;border:1px solid rgba(255,255,255,.85);border-radius:7px;font:inherit}.help-tile{width:68px;height:55px;stroke-width:1.2;fill:#b99f75;stroke:#f3dec0}.help-tile .tile-mark{fill:none;stroke:#fff;stroke-width:2}.help-tile.fragile{fill:#cb7a3b}.help-tile.goal .tile-mark{stroke:#77f4ff;fill:#174957}.help-tile.bridge{fill:#426f80}.mouse-icon{display:grid;place-items:center;width:42px;height:52px;border:1px solid white;border-radius:18px}
+@media(max-width:900px){body[data-screen=help] .help-copy{width:90%;margin:24px 5% 40px}.help-row{grid-template-columns:160px minmax(0,1fr);gap:12px}body[data-screen=help] #canvas-container{opacity:.20}}
+@media(max-width:500px){.help-row{grid-template-columns:115px minmax(0,1fr);font-size:14px}.key-group{grid-template-columns:repeat(4,24px);gap:4px}.key-group kbd{min-width:24px;min-height:30px;padding:0;font-size:13px}.help-copy h2{font-size:20px}.help-tile{width:58px}}
+
+body[data-screen=help] .help-copy:before{display:none}
+body[data-screen=help] #page-screen{background:linear-gradient(90deg,rgba(0,51,65,.94),rgba(0,51,65,.77) 39%,transparent 66%);overflow-x:auto}
+
+body[data-screen=settings] .side-copy{max-width:22%}
+body[data-screen=settings] .side-copy h2{font-size:clamp(24px,3vw,40px)}
+body[data-screen=settings] .side-copy p{font-size:14px}
+@media(max-width:700px){body[data-screen=settings] .side-copy{max-width:88%}}
+
+/* Shared scale for review controls and readable map renders. */
+:root{--review-circle:64px;--review-label:16px}
+#back .circle,#apply .circle{width:var(--review-circle);height:var(--review-circle);border-width:1.4px}
+#back,#apply{font-size:var(--review-label);line-height:1.5}
+body[data-settings-tab=map] .skin-option img{width:clamp(160px,18vw,240px);height:150px}
+body[data-settings-tab=map] .skin-row{gap:16px}
+body[data-screen=help] #page-screen{overflow-x:hidden}
+@media(max-width:700px){:root{--review-circle:48px;--review-label:13px}body[data-settings-tab=map] .skin-option img{width:clamp(80px,25vw,140px);height:100px}body[data-settings-tab=map] .skin-row{gap:4px}}
+
+@media(min-width:901px) and (min-height:650px){body[data-screen=help] .help-copy{margin-top:20px;margin-bottom:20px}.help-copy h2{margin:16px 0 10px}.help-row{margin:10px 0}}
