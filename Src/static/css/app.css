@@ -81,3 +81,5 @@ body[data-screen=help] #page-screen{overflow-x:hidden}
 @media(max-width:700px){:root{--review-circle:48px;--review-label:13px}body[data-settings-tab=map] .skin-option img{width:clamp(80px,25vw,140px);height:100px}body[data-settings-tab=map] .skin-row{gap:4px}}
 
 @media(min-width:901px) and (min-height:650px){body[data-screen=help] .help-copy{margin-top:20px;margin-bottom:20px}.help-copy h2{margin:16px 0 10px}.help-row{margin:10px 0}}
+
+.help-specimen{display:block;width:120px;height:90px;object-fit:contain;filter:drop-shadow(0 8px 6px rgba(0,20,30,.28))}.help-row:has(.help-specimen){min-height:84px;margin:6px 0}.help-copy:has(.help-specimen) h2{margin-top:12px}@media(max-width:500px){.help-specimen{width:100px;height:75px}.help-row:has(.help-specimen){min-height:75px}}

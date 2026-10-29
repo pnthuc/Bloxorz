@@ -152,7 +152,7 @@
       if(e.altKey||e.ctrlKey||e.metaKey||e.isComposing||isEditable(e.target))return;
       if(e.code==='KeyR'||e.code==='KeyC') {
         e.preventDefault();if(e.repeat)return;
-        if(e.code==='KeyR')void loadLevel(levelId);else scene?.resetCamera();return;
+        if(e.code==='KeyR')void loadLevel(levelId);else scene?.resetCamera(true);return;
       }
       const action=keyActions[e.code];if(!action)return;
       // Preserve keyboard activation of focused buttons and disclosure widgets.
@@ -179,7 +179,7 @@
 
     ['restart','restart-top','new-game','overlay-restart'].forEach(id=>$(id).addEventListener('click',()=>void loadLevel(levelId)));
     $('level-select').addEventListener('change',e=>void loadLevel(e.target.value));
-    $('view-reset').addEventListener('click',()=>{scene?.resetCamera();focusBoard();});
+    $('view-reset').addEventListener('click',()=>{scene?.resetCamera(true);focusBoard();});
     $('stop-solver').addEventListener('click',stopSolver);
   }
   async function stepReplay() {

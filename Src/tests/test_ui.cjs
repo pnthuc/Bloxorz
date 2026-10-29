@@ -738,6 +738,25 @@ test('Bloxorz UI', async (t) => {
       assert.equal(scene.water.position.y,-.85);assert.equal(scene.seabed.position.y,-2.6);
       scene.setAppearance('stone','ruins');
     });
+    await t.test('cinematic camera is gradual, cancellable, and respects reduced motion', async () => {
+      scene.azimuth=-1.7;scene.elevation=.35;scene.zoom=.8;scene.setCamera();
+      scene.resetCamera(true);
+      assert.equal(scene.azimuth,-1.7,'must not snap on C');
+      await sleep(180);assert(scene.azimuth>-1.7&&scene.azimuth<.45);
+      scene.stopCameraMotion();const stopped=scene.azimuth;await sleep(80);assert.equal(scene.azimuth,stopped);
+      scene.resetCamera(true);await sleep(1200);assert.equal(scene.azimuth,.45);assert.equal(scene.zoom,1);
+      scene.reducedMotion=true;scene.azimuth=2;scene.resetCamera(true);assert.equal(scene.azimuth,.45);assert.equal(scene.cameraFrame,0);scene.reducedMotion=false;
+    });
+    await t.test('water impact fires once at surface crossing and cleans transient effects', async () => {
+      const obj=scene.createBlock(true);obj.position.set(0,1,0);scene.blocks.add(obj);
+      const plan={obj},original=scene.splashAt;let calls=0;
+      scene.splashAt=()=>calls++;
+      scene.waterImpact(plan);assert.equal(calls,0);
+      obj.position.y=-.5;scene.waterImpact(plan);scene.waterImpact(plan);assert.equal(calls,1);
+      scene.splashAt=original;scene.blocks.remove(obj);
+      scene.splashAt(0,0);assert.equal(scene.splashes.length,1);scene.clearSplashes();assert.equal(scene.splashes.length,0);
+      scene.reducedMotion=true;scene.splashAt(0,0);await sleep(500);assert.equal(scene.splashes.length,0);scene.reducedMotion=false;
+    });
     await t.test('submerged shelves affect depth without emitting a surface contact outline', () => {
       scene.makeWater([[0,0,1,true]],10,10,false);
       const submerged=scene.shoreTexture.image.data;

@@ -277,4 +277,20 @@
   const cam=new THREE.OrthographicCamera(-span*1.33,span*1.33,span,-span,.1,150);cam.position.copy(center).add(new THREE.Vector3(12,13,17));cam.lookAt(center);this.previewRenderer.render(scene,cam);
   const result=this.previewRenderer.domElement.toDataURL('image/png');surfaces.forEach((x,i)=>x.visible=visibility[i]);this.blocks.visible=blocksVisible;this.setAppearance(skin,theme);this.previewCache.set(key,result);return result;
  };
+ P.helpIllustration=function(kind){
+  this.helpCache=this.helpCache||new Map();const key=kind+':'+this.theme;if(this.helpCache.has(key))return this.helpCache.get(key);
+  if(!this.helpRenderer){this.helpRenderer=new THREE.WebGLRenderer({alpha:true,antialias:true,preserveDrawingBuffer:true});this.helpRenderer.setSize(240,180);this.helpRenderer.outputEncoding=THREE.sRGBEncoding;this.helpRenderer.toneMapping=THREE.ACESFilmicToneMapping;}
+  const preview=new THREE.Scene();preview.environment=this.scene.environment;
+  preview.add(new THREE.HemisphereLight(0xe3f4ff,0x526c76,.9));const sun=new THREE.DirectionalLight(0xffebcc,1.3);sun.position.set(-3,6,4);preview.add(sun);
+  const specimen=new THREE.Group(),m=this.materials;preview.add(specimen);
+  if(kind==='goal'){this.addGoal(specimen);specimen.children.forEach(o=>{if(o.position.y<-.4){o.scale.y=.28;o.position.y=-.23;}});}else{
+   const mat=kind==='fragile'?m.fragile:kind==='bridge'?m.steel:m.stone[0];
+   const slab=this.box(.97,.24,.97,[m.dark,m.dark,mat,m.dark,m.dark,m.dark],.035);slab.position.y=-.12;specimen.add(slab);
+   if(kind==='bridge')for(let i=-3;i<=3;i++){const rib=this.box(.79,.024,.035,m.switch,.007);rib.position.set(0,.013,i*.11);specimen.add(rib);}
+   const type=kind==='soft'?3:kind==='heavy'?4:kind==='split'?5:0;
+   if(type){const count=this.switches.length;this.addSwitch(specimen,type,0,0);this.switches.length=count;}
+  }
+  const cam=new THREE.OrthographicCamera(-.91,.91,.68,-.68,.1,30);cam.position.set(2.6,2.8,3.8);cam.lookAt(0,-.12,0);this.helpRenderer.render(preview,cam);
+  const result=this.helpRenderer.domElement.toDataURL('image/png');this.helpCache.set(key,result);return result;
+ };
 })();

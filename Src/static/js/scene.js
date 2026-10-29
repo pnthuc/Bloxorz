@@ -121,11 +121,27 @@
       }
       this.zoom = oldZoom; this.setCamera();
     }
-    resetCamera() {this.azimuth=.45; this.elevation=.65; this.zoom=1; this.fitCamera(); this.render();}
+    stopCameraMotion(){if(this.cameraFrame)cancelAnimationFrame(this.cameraFrame);this.cameraFrame=0;}
+    resetCamera(animate=false) {
+      this.stopCameraMotion();
+      const from={azimuth:this.azimuth,elevation:this.elevation,zoom:this.zoom,distance:this.distance};
+      this.azimuth=.45;this.elevation=.65;this.zoom=1;this.fitCamera();
+      const to={azimuth:this.azimuth,elevation:this.elevation,zoom:this.zoom,distance:this.distance};
+      if(!animate||this.reducedMotion){this.render();return;}
+      Object.assign(this,from);this.setCamera();
+      const delta=Math.atan2(Math.sin(to.azimuth-from.azimuth),Math.cos(to.azimuth-from.azimuth)),start=performance.now();
+      const frame=now=>{const t=Math.min(1,(now-start)/1050),k=t*t*t*(t*(t*6-15)+10);
+        this.azimuth=from.azimuth+delta*k;this.elevation=from.elevation+(to.elevation-from.elevation)*k;
+        this.zoom=Math.exp(Math.log(from.zoom)*(1-k));this.distance=from.distance+(to.distance-from.distance)*k;
+        if(t===1){Object.assign(this,to);this.cameraFrame=0;}else this.cameraFrame=requestAnimationFrame(frame);
+        this.setCamera();this.render();
+      };this.cameraFrame=requestAnimationFrame(frame);
+    }
     bindCamera() {
       const canvas = this.renderer.domElement; let drag = null;
       canvas.addEventListener('pointerdown', e => {
         if (e.button !== 0 && e.button !== 2) return;
+        this.stopCameraMotion();
         this.container.focus({preventScroll:true});
         drag = {id:e.pointerId,x:e.clientX,y:e.clientY}; canvas.setPointerCapture(e.pointerId);
       });
@@ -139,12 +155,12 @@
       canvas.addEventListener('pointerup',end);canvas.addEventListener('pointercancel',end);canvas.addEventListener('lostpointercapture',end);
       canvas.addEventListener('contextmenu',e=>e.preventDefault());
       canvas.addEventListener('wheel',e=>{
-        e.preventDefault();this.zoom=THREE.MathUtils.clamp(this.zoom*Math.exp(e.deltaY*.0008),.65,1.65);this.setCamera();this.render();
+        e.preventDefault();this.stopCameraMotion();this.zoom=THREE.MathUtils.clamp(this.zoom*Math.exp(e.deltaY*.0008),.65,1.65);this.setCamera();this.render();
       },{passive:false});
     }
     world(r,c) {return {x:c-(this.level.grid[0].length-1)/2,z:r-(this.level.grid.length-1)/2};}
     build(level,state) {
-      this.cancel(); this.shadowDirty=true;this.level=level;
+      this.cancel();this.stopCameraMotion();this.clearSplashes();this.shadowDirty=true;this.level=level;
       this.board.clear();this.blocks.clear();this.pivot.clear();this.markers.clear();
       this.bridgeGroups.clear();this.tiles.clear();this.switches=[];
       this.rotation.identity();
@@ -302,6 +318,28 @@
       else pivot.z=(dz>0?Math.max(...supported.map(p=>p.z))+.5:Math.min(...supported.map(p=>p.z))-.5);
       return {pivot,axis:new THREE.Vector3(dz,0,-dx),fragile};
     }
+    clearSplashes(){for(const effect of this.splashes||[])effect.dispose();this.splashes=[];}
+    waterImpact(plan){
+      if(plan.waterHit||!this.water)return;
+      plan.obj.updateMatrixWorld(true);const box=new THREE.Box3().setFromObject(plan.obj);
+      if(box.min.y>this.water.position.y)return;
+      plan.waterHit=true;this.splashAt((box.min.x+box.max.x)/2,(box.min.z+box.max.z)/2,Math.min(1.3,Math.max(box.max.x-box.min.x,box.max.z-box.min.z)));
+    }
+    splashAt(x,z,size=1){
+      if(!this.water)return;this.splashes=this.splashes||[];
+      const group=new THREE.Group(),waterY=this.water.position.y+.025;group.position.set(x,waterY,z);this.scene.add(group);
+      const ringMat=new THREE.MeshBasicMaterial({color:0xc6f5ed,transparent:true,opacity:.7,depthWrite:false,side:THREE.DoubleSide});
+      const dropMat=new THREE.MeshBasicMaterial({color:0xace9ed,transparent:true,opacity:.82,depthWrite:false});
+      const rings=[0,1].map(()=>{const mesh=new THREE.Mesh(this.geometry('impact-ring',()=>new THREE.RingGeometry(.91,1,56)),ringMat);mesh.rotation.x=-Math.PI/2;mesh.renderOrder=3;group.add(mesh);return mesh;});
+      const drops=[];if(!this.reducedMotion)for(let i=0;i<12;i++){const a=i*Math.PI/6+.23,drop=new THREE.Mesh(this.geometry('impact-drop',()=>new THREE.SphereGeometry(1,7,5)),dropMat);drop.scale.set(.035,.075,.035);drop.renderOrder=3;group.add(drop);drops.push({mesh:drop,a,speed:.75+(i%3)*.25,up:1.8+(i%4)*.18});}
+      let raf=0,dead=false;const start=performance.now(),duration=this.reducedMotion?400:1450;
+      const effect={dispose:()=>{if(dead)return;dead=true;cancelAnimationFrame(raf);this.scene.remove(group);ringMat.dispose();dropMat.dispose();this.splashes=this.splashes.filter(x=>x!==effect);}};this.splashes.push(effect);
+      const frame=now=>{if(dead)return;const elapsed=(now-start)/1000,t=Math.min(1,(now-start)/duration);
+        rings.forEach((ring,i)=>{const k=Math.max(0,t-i*.14);ring.visible=k>0;ring.scale.setScalar(size*(.2+k*2.3));ring.position.y=i*.003;});ringMat.opacity=.65*(1-t)*(1-t);
+        for(const drop of drops){const r=drop.speed*elapsed*size,y=drop.up*elapsed-3.8*elapsed*elapsed;drop.mesh.position.set(Math.cos(drop.a)*r,Math.max(-.04,y),Math.sin(drop.a)*r);drop.mesh.visible=y>=-.04;drop.mesh.scale.y=.075*Math.max(.4,1-elapsed*.6);}dropMat.opacity=.82*(1-t);
+        this.render();if(t<1)raf=requestAnimationFrame(frame);else effect.dispose();
+      };raf=requestAnimationFrame(frame);return effect;
+    }
     async animateUnsupported(objects,bridges) {
       this.scene.updateMatrixWorld(true);
       objects.forEach(obj=>this.blocks.attach(obj));this.pivot.clear();this.markers.clear();
@@ -313,13 +351,13 @@
         if(!await this.tween(this.reducedMotion?100:420,t=>{
           for(const p of tipped){const q=new THREE.Quaternion().setFromAxisAngle(p.axis,Math.PI/2*t*t);
             p.obj.position.copy(p.position).sub(p.pivot).applyQuaternion(q).add(p.pivot);
-            p.obj.quaternion.copy(p.rotation).premultiply(q);
+            p.obj.quaternion.copy(p.rotation).premultiply(q);this.waterImpact(p);
           }
         }))return false;
       }
       const starts=plans.map(p=>({...p,position:p.obj.position.clone()}));
       const ok=await this.tween(this.reducedMotion?140:520,t=>{
-        for(const p of starts){p.obj.position.copy(p.position);p.obj.position.y-=7.5*t*t;
+        for(const p of starts){p.obj.position.copy(p.position);p.obj.position.y-=7.5*t*t;this.waterImpact(p);
           // A fragile slab breaks beneath the upright block, not through its neighbours.
           for(const tile of p.fragile||[])if(tile)tile.position.y=-7.5*t*t;
         }
