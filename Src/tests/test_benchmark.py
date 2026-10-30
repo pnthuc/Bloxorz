@@ -1,30 +1,21 @@
 """Actual solver results, bounded worker lifetime and benchmark request isolation."""
-import multiprocessing as mp
+from pathlib import Path
+import subprocess
+import sys
+from tempfile import TemporaryDirectory
 import time
 import unittest
 from unittest.mock import patch
 
-from benchmarks.worker import _run_worker
+from benchmarks.worker import _run_worker, measure_solver
 from core.board import BloxorzBoard
 from web.app import app, _BENCHMARK_SLOT
 from core.levels import load_all_levels
 from core.replay import verify_solution_walk
 
 
-def slow_worker(connection):
-    connection.send({"status": "ready"})
-    time.sleep(30)
-
-
-def large_answer_worker(connection):
-    connection.send({"status": "ready"})
-    connection.send({"status": "solved", "result": {"moves": ["RIGHT"] * 100000}})
-    connection.close()
-
-
-def failed_worker(connection):
-    connection.send({"status": "ready"})
-    connection.close()
+def worker_command(source):
+    return [sys.executable, "-u", "-c", source]
 
 
 class BenchmarkTests(unittest.TestCase):
@@ -92,20 +83,58 @@ class BenchmarkTests(unittest.TestCase):
             _BENCHMARK_SLOT.release()
 
     def test_timeout_really_terminates_child_and_has_no_fake_metrics(self):
-        before = {child.pid for child in mp.active_children()}
         started = time.perf_counter()
-        result = _run_worker(slow_worker, (), 50)
+        children = []
+        popen = subprocess.Popen
+
+        def track(*args, **kwargs):
+            child = popen(*args, **kwargs)
+            children.append(child)
+            return child
+
+        with patch("benchmarks.worker.subprocess.Popen", side_effect=track):
+            result = _run_worker(worker_command(
+                'import time; print(\'{"status":"ready"}\', flush=True); time.sleep(30)'), {}, 50)
         self.assertEqual(result, {"status": "timeout"})
         self.assertLess(time.perf_counter() - started, 10)
-        self.assertEqual({child.pid for child in mp.active_children()}, before)
+        self.assertEqual(len(children), 1)
+        self.assertIsNotNone(children[0].poll())
+        self.assertTrue(children[0].stdout.closed)
 
     def test_large_answer_is_read_before_join(self):
-        result = _run_worker(large_answer_worker, (), 2000)
+        result = _run_worker(worker_command(
+            'import json; print(\'{"status":"ready"}\', flush=True); '
+            'print(json.dumps({"status":"solved","result":{"moves":["RIGHT"]*100000}}), flush=True)'), {}, 2000)
         self.assertEqual(result["status"], "solved")
         self.assertEqual(len(result["result"]["moves"]), 100000)
 
     def test_unexpected_child_exit_reports_error(self):
-        self.assertEqual(_run_worker(failed_worker, (), 1000)["status"], "error")
+        self.assertEqual(_run_worker(worker_command(
+            'print(\'{"status":"ready"}\', flush=True)'), {}, 1000)["status"], "error")
+
+    def test_server_bootstrap_is_not_reimported_by_worker(self):
+        # Hosted entrypoints may start an HTTP loop at import time. A spawn
+        # child executes that loop instead of reaching its solver target.
+        with TemporaryDirectory() as directory:
+            marker = Path(directory) / "reimported"
+            bootstrap = Path(directory) / "server.py"
+            bootstrap.write_text(
+                f"from pathlib import Path\nPath({str(marker)!r}).touch()\n"
+                "import time\ntime.sleep(30)\n", encoding="utf-8")
+            with patch.object(sys.modules["__main__"], "__file__", str(bootstrap)), \
+                    patch.object(sys.modules["__main__"], "__spec__", None):
+                result = measure_solver(load_all_levels()["1"], "bfs", 5000)
+            self.assertEqual(result["status"], "solved")
+            self.assertFalse(marker.exists())
+
+    def test_worker_startup_timeout_and_early_exit_have_no_metrics(self):
+        result = _run_worker(worker_command('import time; time.sleep(30)'), {}, 1000,
+                             startup_seconds=.1)
+        self.assertEqual(result["status"], "error")
+        self.assertNotIn("result", result)
+        result = _run_worker(worker_command('raise SystemExit(1)'), {}, 1000)
+        self.assertEqual(result["status"], "error")
+        self.assertNotIn("result", result)
 
 
 if __name__ == "__main__":
