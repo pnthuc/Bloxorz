@@ -87,7 +87,7 @@ testcase/cost của source được chọn. Không trộn các policy giữa hai
 Các kiểm tra nền và UI phải qua trước khi chốt bộ đo. Thư mục output luôn phải mới,
 không append vào dữ liệu trước curation.
 
-Kết quả kiểm chứng ngày 31/10/2026 trên checkout hiện tại:
+Kết quả kiểm chứng ngày 31/10/2026 trước đồng bộ main, trên engine 6b7e3b5:
 
 - Python: 63/63 test nền PASS, gồm hai ca biên mới và tính toàn vẹn catalog.
 - UI: 16/16 PASS, gồm menu 25 màn và phát lời giải màn 36 đến chiến thắng.
@@ -101,3 +101,9 @@ comparison-study/curated-33-astar-retry-20261031. Không ghi đè dòng timeout 
 Đây là lượt kiểm chứng một lần, không phải bảng benchmark lặp chính thức; thời gian
 không được ghép vào trial 400 lượt trên main. Màn 33 cũng là một ví dụ đáng giữ:
 chi phí heuristic trên nhiều cổng có thể khiến A* chậm dù nó có định hướng tìm kiếm.
+
+Sau đó main d763322 đã được ghép tại 5e7a509: engine dùng tám hành động và SPACE
+miễn phí ngoài đồ thị. Testcase màn split đã lấy mốc mới từ main; các mốc cũ trong
+archive/trial vẫn là dữ liệu lịch sử. Tài liệu Q01 và công cụ Q02 đã cập nhật, xem
+[kết quả rà soát](Q01-Q03_REVIEW.md). Lượt kiểm chứng engine mới nằm ở
+comparison-study/curated-main-check-20261031, không trộn với các lượt trước.

@@ -1,0 +1,24 @@
+{
+  "case_id": "T11",
+  "family": "edge_case",
+  "angle": 0,
+  "solver": "astar",
+  "repeat": 1,
+  "status": "NO_SOLUTION",
+  "search_time_ms": 0.205,
+  "memory_kb": 2.01,
+  "expanded_nodes": 2,
+  "solution_length": 0,
+  "path_cost": null,
+  "total_cost": 0.0,
+  "error": "",
+  "solver_result": {
+    "found": false,
+    "moves": [],
+    "solution_length": 0,
+    "expanded_nodes": 2,
+    "search_time_ms": 0.205,
+    "memory_kb": 2.01,
+    "total_cost": 0.0
+  }
+}

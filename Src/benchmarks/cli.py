@@ -2,6 +2,8 @@
 import argparse
 import csv
 import json
+import hashlib
+import math
 import multiprocessing as mp
 import platform
 import subprocess
@@ -9,6 +11,7 @@ import sys
 import time
 from datetime import datetime
 from pathlib import Path
+from uuid import uuid4
 
 SRC_DIR = Path(__file__).resolve().parents[1]
 PROJECT_ROOT = SRC_DIR.parent
@@ -101,11 +104,23 @@ def save_environment_metadata(out_dir: Path, config: dict) -> None:
         "date": datetime.now().isoformat(),
         "timeout_sec": config.get("timeout_sec"),
         "repeats": config.get("repeats"),
+        "source_sha256": {
+            str(path.relative_to(SRC_DIR)).replace("\\", "/"): hashlib.sha256(path.read_bytes()).hexdigest()
+            for path in [SRC_DIR / "benchmarks" / "cli.py", SRC_DIR / "core" / "board.py", SRC_DIR / "core" / "replay.py",
+                         *sorted((SRC_DIR / "solvers").glob("*.py"))]
+        },
+        "level_set_sha256": config["level_set_sha256"],
     }
-    with open(out_dir / "environment.json", "w", encoding="utf-8") as f:
+    try:
+        env_info["git_dirty"] = bool(subprocess.check_output(
+            ["git", "status", "--porcelain", "--", "."], cwd=str(SRC_DIR), text=True,
+            stderr=subprocess.DEVNULL).strip())
+    except (OSError, subprocess.SubprocessError):
+        env_info["git_dirty"] = None
+    with open(out_dir / "environment.json", "x", encoding="utf-8") as f:
         json.dump(env_info, f, indent=2, ensure_ascii=False)
 
-    with open(out_dir / "run-config.json", "w", encoding="utf-8") as f:
+    with open(out_dir / "run-config.json", "x", encoding="utf-8") as f:
         json.dump(config, f, indent=2, ensure_ascii=False)
 
 
@@ -189,25 +204,35 @@ def run_benchmarks(
     selected_solvers=None,
     repeats=1,
     timeout=60.0,
-    output_dir=DEFAULT_OUTPUT_DIR,
+    output_dir=None,
 ):
+    if type(repeats) is not int or repeats < 1:
+        raise ValueError("Số lần lặp phải là số nguyên dương.")
+    if type(timeout) not in (int, float) or not math.isfinite(timeout) or timeout <= 0:
+        raise ValueError("Timeout phải là số hữu hạn lớn hơn 0.")
     all_levels = load_all_levels()
 
-    # Lọc danh sách màn chơi
-    if selected_levels and "all" not in selected_levels:
-        levels = {lid: data for lid, data in all_levels.items() if str(lid) in selected_levels}
-    else:
-        levels = all_levels
+    def select(requested, available, label):
+        names = list(dict.fromkeys(str(value).lower() for value in (requested or ["all"])))
+        if names == ["all"]:
+            return list(available)
+        unknown = set(names) - set(available)
+        if unknown:
+            raise ValueError(f"{label} không hợp lệ: {', '.join(sorted(unknown))}")
+        return names
 
-    # Lọc thuật toán
-    if selected_solvers and "all" not in selected_solvers:
-        solvers = [s.lower() for s in selected_solvers if s.lower() in SOLVER_MAP]
-    else:
-        solvers = list(SOLVER_MAP.keys())
+    level_ids = select(selected_levels, all_levels, "ID màn")
+    levels = {lid: all_levels[lid] for lid in level_ids}
+    solvers = select(selected_solvers, SOLVER_MAP, "Thuật toán")
+    if not levels:
+        raise ValueError("Bộ màn trống.")
 
-    out_path = Path(output_dir).resolve()
+    batch_name = datetime.now().strftime("run-%Y%m%d-%H%M%S-") + uuid4().hex[:8]
+    out_path = (Path(output_dir) if output_dir is not None else Path(DEFAULT_OUTPUT_DIR) / batch_name).resolve()
+    # Never append a new batch under old metadata, even for an empty existing directory.
+    out_path.mkdir(parents=True, exist_ok=False)
     runs_dir = out_path / "runs"
-    runs_dir.mkdir(parents=True, exist_ok=True)
+    runs_dir.mkdir()
 
     # Lưu metadata môi trường
     run_config = {
@@ -215,28 +240,32 @@ def run_benchmarks(
         "solvers": solvers,
         "repeats": repeats,
         "timeout_sec": timeout,
+        "level_set_sha256": hashlib.sha256(json.dumps(levels, sort_keys=True).encode()).hexdigest(),
     }
     save_environment_metadata(out_path, run_config)
 
-    # Thiết lập file CSV ghi lũy tiến
+    # One immutable batch per output directory; flush each completed row.
     raw_csv_path = out_path / "raw.csv"
-    csv_exists = raw_csv_path.exists() and raw_csv_path.stat().st_size > 0
-    csv_file = open(raw_csv_path, "a", newline="", encoding="utf-8")
+    csv_file = open(raw_csv_path, "x", newline="", encoding="utf-8")
     writer = csv.DictWriter(csv_file, fieldnames=CSV_HEADERS)
-    if not csv_exists:
-        writer.writeheader()
-        csv_file.flush()
+    writer.writeheader()
+    csv_file.flush()
 
     print("=" * 105)
     print(f"{'Stage':<24} | {'Algo':<5} | {'Status':<10} | {'Time (ms)':>10} | {'Mem (KB)':>9} | {'Expanded':>8} | {'Moves':>5} | {'PathCost':>8}")
     print("=" * 105)
 
+    failures = 0
     try:
         for lvl_id in sorted(levels.keys(), key=lambda x: int(x) if x.isdigit() else 999):
             lvl_data = levels[lvl_id]
             for rep in range(1, repeats + 1):
                 for solver_name in solvers:
-                    res = run_single_solver(solver_name, lvl_data, timeout_sec=timeout)
+                    try:
+                        res = run_single_solver(solver_name, lvl_data, timeout_sec=timeout)
+                    except Exception as exc:
+                        res = _empty_result("ERROR", f"Lượt đo bị lỗi: {type(exc).__name__}: {exc}")
+                    failures += res["status"] in ("ERROR", "INVALID_PATH")
 
                     run_id = f"lvl{lvl_id}_{solver_name}_rep{rep}_{int(time.time()*1000)}"
                     now_iso = datetime.now().isoformat()
@@ -288,26 +317,25 @@ def run_benchmarks(
         csv_file.close()
 
     print(f"\nĐã xuất kết quả vào: {out_path}")
+    return 1 if failures else 0
 
 
-def main():
+def main(argv=None):
     parser = argparse.ArgumentParser(description="Bloxorz Benchmarking CLI with Progressive Logging")
     parser.add_argument("--levels", nargs="+", default=["all"], help="Danh sách ID màn cần chạy")
     parser.add_argument("--solvers", nargs="+", default=["all"], help="Danh sách thuật toán: bfs dfs ucs astar")
     parser.add_argument("--repeats", type=int, default=1, help="Số lần lặp lại cho mỗi màn")
     parser.add_argument("--timeout", type=float, default=60.0, help="Giới hạn thời gian (giây), mặc định 60s")
-    parser.add_argument("--output-dir", type=str, default=DEFAULT_OUTPUT_DIR, help="Thư mục xuất CSV/JSON")
-    args = parser.parse_args()
+    parser.add_argument("--output-dir", type=str, help="Thư mục mới xuất CSV/JSON; mặc định tự tạo một đợt trong benchmarks/")
+    args = parser.parse_args(argv)
 
-    run_benchmarks(
-        selected_levels=args.levels,
-        selected_solvers=args.solvers,
-        repeats=args.repeats,
-        timeout=args.timeout,
-        output_dir=args.output_dir,
-    )
+    try:
+        return run_benchmarks(selected_levels=args.levels, selected_solvers=args.solvers,
+                              repeats=args.repeats, timeout=args.timeout, output_dir=args.output_dir)
+    except (ValueError, FileExistsError) as exc:
+        parser.error(str(exc))
 
 
 if __name__ == "__main__":
     mp.freeze_support()
-    main()
+    raise SystemExit(main())

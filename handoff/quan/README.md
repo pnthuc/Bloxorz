@@ -9,7 +9,7 @@ Quân đo và kiểm chứng số liệu; Phúc nhận CSV để làm bảng/bi�
 - Đo: `Src/benchmarks/cli.py`; profiler: `Src/solvers/base.py`;
   kiểm tra lời giải: `Src/core/replay.py`.
 - 25 màn trong `Src/levels/`, giữ ID không liên tiếp theo [bộ đã chọn](LEVEL_SELECTION.md).
-  `Src/tests/test_cases.json` gồm 25 ca màn và 12 ca biên, không phải 43 màn độc lập.
+  `Src/tests/test_cases.json` gồm 25 ca màn và 12 ca biên; 37 ca kiểm chứng không phải 37 màn độc lập.
 - Đã có [dfs.docx](dfs.docx), [level-groups.csv](level-groups.csv)
   và [dữ liệu chạy thử](benchmarks/run-config.json): màn 1, 4, bốn solver, một lần/lượt.
   Đây chưa phải bộ số liệu lặp chính thức. Chưa có CSV tổng hợp hoặc phương pháp đo.
@@ -25,7 +25,7 @@ Quân đo và kiểm chứng số liệu; Phúc nhận CSV để làm bảng/bi�
 | [ ] | `Q05` | Tổng hợp dữ liệu và viết phương pháp đo | `benchmarks/<đợt>/summary.csv`, `methodology.docx` → Phúc, Nam |
 | [ ] | `Q06` | Bàn giao lệnh tái lập, schema dữ liệu, nguồn và khai báo AI | README này và gói dữ liệu → Phúc, Nam |
 
-Dấu đã bàn giao được giữ từ trước; Q01 cần sửa nội dung theo tập hành động hiện tại.
+Q01 đã được cập nhật theo tập tám hành động hiện tại; Q02/Q03 đã được rà lại sau khi đồng bộ main.
 
 ## Tiêu chí kiểm tra
 
@@ -65,7 +65,9 @@ Lệnh cho toàn bộ kế hoạch đề xuất, chỉ chạy sau mốc chốt:
 python -m benchmarks.cli --levels all --solvers bfs dfs ucs astar --repeats 3 --timeout 120 --output-dir ../handoff/quan/benchmarks/official-run
 ```
 
-Mỗi đợt dùng thư mục riêng vì CLI nối thêm `raw.csv` nhưng ghi lại metadata.
+CLI yêu cầu thư mục mới và từ chối ghi vào thư mục đã tồn tại. Nếu bỏ --output-dir,
+CLI tự tạo một thư mục đợt đo mới trong benchmarks/. Metadata có fingerprint source,
+hash bộ màn và cờ git_dirty cho thay đổi trong Src; các cột CSV giữ nguyên.
 CLI chưa tạo `summary.csv` hay hình; Q05 tổng hợp dữ liệu, P05 của Phúc vẽ biểu đồ.
 Q06 phải bổ sung cách tái tạo CSV tổng hợp khi phần đó hoàn thành.
 

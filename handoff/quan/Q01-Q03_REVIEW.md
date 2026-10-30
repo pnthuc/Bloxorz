@@ -1,83 +1,55 @@
-# Rà soát Q01–Q03 trước lần bàn giao mới
+# Kết quả hoàn thiện Q01 đến Q03
 
-Ngày: 31/10/2026. Nhánh mới: work/quan-experiment.
-Nhánh được tạo từ checkout 6b7e3b5, giữ nguyên các thay đổi chưa commit của phiên làm việc.
-Chưa commit hoặc push trong bước rà soát này.
-
-## Kết luận theo nhiệm vụ
-
-| Nhiệm vụ | Có cần viết lại code? | Việc còn cần làm |
-| --- | --- | --- |
-| Q01 — DFS và phần viết | Không cần viết lại thuật toán DFS | Chốt phiên bản engine rồi đồng bộ phần hành động, đường dẫn source, ví dụ và phân tích với đúng phiên bản |
-| Q02 — Công cụ đo | Có các lỗi cần xử lý ở công cụ cũ; không cần viết lại từ đầu | Đồng bộ phần sửa đã có trên main, bổ sung bảo vệ metadata/đầu vào trước số liệu chính thức |
-| Q03 — Bộ màn/phân nhóm | Không cần viết lại phần chọn/phân nhóm | CSV đã khớp 25 màn; ghép mô tả nhóm và biến thể xoay vào methodology khi làm Q05 |
+Cập nhật 31/10/2026 trên nhánh work/quan-experiment. Bộ 25 màn đã được lưu ở c5d0bc3;
+main d763322 đã được ghép tại 5e7a509. Không còn dùng layout game_logic.py/experiments.py
+của nhánh cũ để bàn giao code mới.
 
 ## Q01
 
-member2_dfs.py đang dùng stack LIFO, parent vừa đánh dấu khi phát hiện vừa lưu vết;
-kiểm tra đích khi sinh successor, có nhánh start=goal, trả found=False khi hết frontier.
-Phần viết dfs.docx đã mô tả đúng các đặc điểm này và phân biệt bộ nhớ graph-search
-O(V) với tree-DFS O(bm). Không có lý do đổi thuật toán chỉ để thay thứ hạng benchmark.
-
-Tuy nhiên hai phiên bản khác nhau:
-
-- Checkout hiện tại: game_logic.py; successor UP, DOWN, LEFT, RIGHT, thêm SPACE khi SPLIT.
-- origin/main d763322: core/board.py; UP, LEFT, RIGHT, DOWN và SUP/SLEFT/SRIGHT/SDOWN;
-  SPACE chỉ chọn cube khi chơi tay, không còn là cạnh tìm kiếm.
-
-Do đó không thể ghép nguyên phần thứ tự hành động của bản cũ vào báo cáo main mới.
-Core DFS gần như giữ nguyên, nhưng đường đi/thời gian có thể đổi vì engine đổi thứ tự
-và mô hình hành động. Cần cập nhật tài liệu sau khi chốt source, không đo lại chỉ vì sửa câu chữ.
+Không viết lại core DFS. Đã cập nhật dfs.docx theo core/board.py và tập
+UP LEFT RIGHT DOWN SUP SLEFT SRIGHT SDOWN. SPACE chỉ chọn cube khi chơi tay.
+Tài liệu mô tả đánh dấu khi phát hiện, early goal test, thứ tự pop so với thứ tự sinh,
+truy vết, graph-search O(V) bộ nhớ và giới hạn tối ưu. Ví dụ riêng hai bước đã khớp code.
+Tài liệu ba trang đã xuất và kiểm tra từng trang; có khai báo AI và nguồn code đối chiếu.
 
 ## Q02
 
-Các vấn đề xác nhận trên Src/experiments.py của checkout hiện tại:
+Điểm vào hiện tại là python -m benchmarks.cli, CSV giữ nguyên 16 cột và các trạng thái
+SOLVED, NO_SOLUTION, TIMEOUT, ERROR, INVALID_PATH.
 
-1. Dòng 138 join worker trước khi đọc pipe. Kết quả dài có thể lấp buffer, khiến worker
-   kẹt khi send và bị báo TIMEOUT dù đã tìm xong. Lỗi này đã được tái hiện trong lượt review trước.
-2. Dòng 188 dùng replay.message, trong khi Replay có trường reason.
-   Rà soát lần này tái hiện AttributeError khi worker trả đường đi không hợp lệ.
-3. Nhánh recv thiếu bắt EOFError/OSError và xử lý cleanup đầy đủ nếu worker chết đột ngột.
-4. environment.json/run-config.json ghi đè, trong khi raw.csv append. Dùng lại output-dir
-   có thể giữ số đo cũ dưới metadata mới; cần batch riêng hoặc kiểm tra cấu hình tương thích.
-5. ID màn/solver sai bị lọc âm thầm; cần báo lỗi, đặc biệt sau khi rút các ID cũ khỏi menu.
+- Đã lấy phần sửa từ main: đọc pipe trước join, replay.reason, bắt lỗi process/pipe và cleanup.
+- Đã thêm từ chối thư mục output tồn tại, kể cả thư mục trống. Mỗi batch mới có metadata riêng;
+  nếu bỏ --output-dir, CLI tự tạo batch trong benchmarks/. Không append vào dữ liệu cũ.
+- Đã kiểm tra ID màn/solver, số lần lặp và timeout hữu hạn dương trước khi tạo output.
+  Các ID đã archive bị báo lỗi thay vì bị lọc âm thầm.
+- Một exception ở lượt đo được ghi ERROR; các lượt tiếp theo vẫn chạy. CLI trả mã 1 khi có
+  ERROR/INVALID_PATH, không dùng thành công giả cho trường hợp đó.
+- Metadata có commit, trạng thái thay đổi trong Src, fingerprint source và hash bộ màn.
+  Thời gian/bộ nhớ vẫn lấy wrapper công khai; replay/path_cost ở ngoài profiler.
+- CSV lỗi/timeout giữ trống metric chưa đo, không dùng 0 thay số không có.
 
-Đây là các vấn đề sẵn có của công cụ cũ, không phải do giảm từ 33 xuống 25 màn.
-Định dạng cột CSV và khả năng đọc level mới vẫn tương thích, nhưng chưa đủ để kết luận
-mọi nhánh lỗi/timeout của công cụ đo đã an toàn cho Q04.
-
-Main d763322 đã chuyển code sang benchmarks/cli.py và đã sửa việc đọc pipe trước join,
-trường reason, lỗi tiến trình và cleanup. Nên đồng bộ các sửa này thay vì tạo lại một
-triển khai trùng với main. Vấn đề metadata append vẫn cần xử lý ở CLI main.
-
-comparison_study.py mới dùng output-dir mới, worker cô lập, đọc kết quả trước cleanup,
-đặt replay ngoài timeout tìm kiếm, lưu fingerprint và giữ log từng lượt.
-Nó đã dùng cho trial và kiểm chứng bộ màn, nhưng schema của nó khác experiments.py:
-case_id/repeat thay cho level_id/repeat_index và trạng thái INVALID thay vì INVALID_PATH.
-Không âm thầm thay dữ liệu Q04 bằng CSV của công cụ này nếu chưa thống nhất schema với Phúc/Nam.
+9 regression Q02 đã qua: kết quả lớn, invalid path, worker chết, timeout cleanup, câu trả lời
+solver thật, config sai, bảo vệ output cũ, metadata từng batch và tiếp tục sau exception.
+Schema comparison_study.py vẫn tách riêng; không dùng CSV của nó thay cho CSV Q04.
 
 ## Q03
 
-Đã tính lại các trường từ từng JSON và đối chiếu toàn bộ level-groups.csv:
+CSV level-groups.csv đã khớp toàn bộ JSON của 25 màn: 8 cơ bản, 6 gạch cam,
+7 công tắc–cầu, 4 tách/ghép. Stress là nhãn phụ cho 23, 30, 33.
+17 màn archive có checksum; Git được cấu hình giữ nguyên byte các JSON archive.
+Các nhóm xoay được ghi là đối chứng ghép cặp. Xem LEVEL_SELECTION.md và level-curation.json.
+T1–T12 là ca kiểm chứng, không cộng thành 12 màn benchmark độc lập.
 
-- 25 ID duy nhất, đúng bằng danh sách Src/levels.
-- Tên, kích thước, số ô có sàn, số cầu, switch, split switch và fragile đều khớp.
-- 8 cơ bản, 6 gạch cam, 7 công tắc–cầu, 4 tách/ghép.
-- Stress: 23, 30, 33; không suy độ khó từ khoảng ID.
-- 17 màn rút khỏi menu đã được lưu nguyên byte, có checksum và testcase cũ.
-- Các cặp/nhóm xoay phải được mô tả là biến thể ghép cặp, không coi là các bài toán độc lập.
+## Kiểm tra trước commit
 
-Đầu ra còn thiếu theo handoff là phần methodology.docx; nội dung lựa chọn/phân nhóm
-đã có ở LEVEL_SELECTION.md để ghép khi làm Q05. Không cần phát triển lại thuật toán phân nhóm.
+- Python regression: 87/87 PASS.
+- UI/audio/render-assets: 53/53 PASS, gồm menu 25 màn và replay màn mới.
+- Các mốc tối ưu/đường mẫu của màn split đã lấy từ main mới; ca 33 là 110 bước,
+  cost tối ưu 110,5, đường mẫu cost 111,0. Không giữ mốc 119 của mô hình SPACE cũ.
+- Các trial lịch sử được giữ nguyên source/metadata. Kết quả engine mới lưu ở thư mục mới.
+- Bốn solver trên 37 ca của engine mới: đủ 148 tổ hợp hoàn tất đúng kỳ vọng,
+  gồm 132 SOLVED và 16 NO_SOLUTION, không timeout/lỗi. Log ở comparison-study/curated-main-check-20261031.
 
-## Thứ tự chốt để tránh làm lại
-
-1. Lưu các thay đổi bộ 25 màn, testcase, archive và công cụ thử thành các commit có phạm vi rõ.
-   tmp/ là file tạm, không đưa vào commit chung.
-2. Đồng bộ origin/main và xử lý các đổi tên game_logic → core/board, experiments → benchmarks/cli;
-   giữ bộ màn mới và tái kiểm chứng testcase theo mô hình tám hành động của main.
-3. Hoàn thiện những lỗi Q02 còn lại, cùng schema CSV đã thống nhất, rồi cập nhật Q01 theo source đó.
-4. Chốt baseline/commit và mới chạy Q04 chính thức. Không gán các trial trên hai phiên bản engine
-   cho một snapshot; giữ nguyên dữ liệu lịch sử.
-
-Việc rà soát này không tự đánh dấu lại Q04/Q05/Q06 là hoàn thành và không thay nội dung dfs.docx.
+Đã hoàn tất cập nhật Q01–Q03 trong phạm vi code, dữ liệu và tài liệu của Quân.
+Q04 vẫn cần snapshot/cấu hình được nhóm chốt; Q05/Q06 không tự đánh dấu hoàn thành.
+Chưa push nhánh hoặc gửi nội dung cho thành viên khác.

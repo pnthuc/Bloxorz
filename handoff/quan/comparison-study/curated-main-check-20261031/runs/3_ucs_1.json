@@ -1,0 +1,40 @@
+{
+  "case_id": "3",
+  "family": "mechanisms",
+  "angle": 0,
+  "solver": "ucs",
+  "repeat": 1,
+  "status": "SOLVED",
+  "search_time_ms": 10.043,
+  "memory_kb": 39.21,
+  "expanded_nodes": 122,
+  "solution_length": 15,
+  "path_cost": 15.0,
+  "total_cost": 15.0,
+  "error": "",
+  "solver_result": {
+    "found": true,
+    "moves": [
+      "RIGHT",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "UP",
+      "RIGHT",
+      "DOWN",
+      "LEFT",
+      "UP",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "DOWN"
+    ],
+    "solution_length": 15,
+    "expanded_nodes": 122,
+    "search_time_ms": 10.043,
+    "memory_kb": 39.21,
+    "total_cost": 15.0
+  }
+}

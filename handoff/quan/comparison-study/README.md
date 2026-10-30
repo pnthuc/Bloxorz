@@ -6,7 +6,7 @@ Kết quả: **380 SOLVED, 20 NO_SOLUTION, không có TIMEOUT/ERROR/INVALID**.
 20 NO_SOLUTION thuộc một ca vô nghiệm × bốn thuật toán × năm lần.
 
 Đây là bộ ca chẩn đoán sự đánh đổi giữa thuật toán, chưa thay thế lượt thực nghiệm
-chính thức trên bộ màn đã chốt. Source trong checkout hiện tại vẫn là nhánh cũ
+chính thức trên bộ màn đã chốt. Khi chạy trial, checkout còn ở nhánh cũ
 `6b7e3b5`; lượt đo sử dụng snapshot main riêng, có đường dẫn và SHA-256 từng file
 trong metadata. Không trộn số liệu này với CSV cũ theo policy SPACE riêng.
 
@@ -162,3 +162,6 @@ python -m unittest tests.test_comparison_study -v
 Bốn test mới xác nhận đối chứng xoay, đánh đổi bước/cost, ca vô nghiệm và tọa độ
 teleport sau phép xoay. Toàn bộ test nền của checkout hiện tại: **60/60 PASS**.
 Không thay đổi code của bốn solver hay bộ level chính thức.
+
+Checkout sau đó đã ghép main tại 5e7a509 và dùng engine tám hành động. Các log trial
+vẫn giữ nguyên source, policy và dữ liệu lúc chạy, không bị ghi đè khi đồng bộ.

@@ -124,5 +124,8 @@
     30,
     33
   ],
-  "prior_trial": "comparison-study/trial-main-d763322"
+  "prior_trial": "comparison-study/trial-main-d763322",
+  "engine_reference": "main d763322 merged at 5e7a509",
+  "action_model": "UP LEFT RIGHT DOWN SUP SLEFT SRIGHT SDOWN; SPACE outside search",
+  "current_verification": "comparison-study/curated-main-check-20261031"
 }

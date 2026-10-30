@@ -9,7 +9,7 @@ có file hoặc test qua chưa đồng nghĩa nội dung đã khớp phiên bả
 
 | Thành viên | MSSV | Phạm vi và nơi bàn giao | Nhánh gợi ý |
 | --- | --- | --- | --- |
-| Nguyễn Lê Minh Quân | 24120219 | [DFS, bộ màn và thực nghiệm](quan/README.md) | `work/quan-experiments` |
+| Nguyễn Lê Minh Quân | 24120219 | [DFS, bộ màn và thực nghiệm](quan/README.md) | `work/quan-experiment` |
 | Bùi Phương Nam | 24120502 | [BFS, mô hình và báo cáo tổng](nam/README.md) | `work/nam-report` |
 | Tống Phúc Thiện | 24120141 | [A* và heuristic](thien/README.md) | `work/thien-astar-report` |
 | Phan Gia Phúc | 24120503 | [UCS/cost, biểu đồ, video và source nộp](phuc/README.md) | `work/phuc-charts-video` |
@@ -59,7 +59,7 @@ ghi phiên bản mới và xác định dữ liệu cần đo lại. Không tr�
   thao tác demo nằm trong tài liệu. JSON kiểm tra cũ vẫn thuộc phiên bản trước.
 - Phúc hiện có bản giao việc; chưa có gói cost/UCS, biểu đồ hoặc URL video trong repo.
 
-Các bản thảo DFS/BFS còn mô tả SPACE là cạnh tìm kiếm riêng.
+Phần DFS của Quân đã cập nhật theo tám hành động; bản thảo BFS còn cần đối chiếu SPACE.
 Đối chiếu lại tập tám hành động trong [README source](../README.md#thực-nghiệm)
 trước khi ghép báo cáo. Không tự thay số liệu cũ bằng số minh họa.
 
@@ -72,7 +72,7 @@ Ví dụ của Quân:
 ```bash
 git switch main
 git pull --ff-only origin main
-git switch -c work/quan-experiments
+git switch -c work/quan-experiment
 ```
 
 Trước khi bàn giao, xem `git status`, chỉ stage file mình sửa, commit và push nhánh.
