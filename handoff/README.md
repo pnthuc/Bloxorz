@@ -55,10 +55,11 @@ ghi phiên bản mới và xác định dữ liệu cần đo lại. Không tr�
 - Nam đã có `BFS.docx`, `Report.docx` bản thảo và `video-outline.docx`; chưa có `Report.pdf`.
   Bìa bản thảo hiện thiếu Quân và cần bổ sung đủ năm thành viên.
 - Thiện đã có năm DOCX A*/heuristic; phần kết quả còn dẫn tới CSV tổng hợp/hình chưa có trong repo.
-- Thức đã có `Phan_Ngoc_Thuc.docx`, ảnh demo và JSON kiểm tra phiên bản trước.
+- Thức đã cập nhật `Phan_Ngoc_Thuc.docx` thành bản bàn giao 3 trang để Nam ghép báo cáo;
+  thao tác demo nằm trong tài liệu. JSON kiểm tra cũ vẫn thuộc phiên bản trước.
 - Phúc hiện có bản giao việc; chưa có gói cost/UCS, biểu đồ hoặc URL video trong repo.
 
-Các bản thảo của Quân/Thức còn mô tả SPACE là cạnh tìm kiếm riêng.
+Các bản thảo DFS/BFS còn mô tả SPACE là cạnh tìm kiếm riêng.
 Đối chiếu lại tập tám hành động trong [README source](../README.md#thực-nghiệm)
 trước khi ghép báo cáo. Không tự thay số liệu cũ bằng số minh họa.
 
