@@ -12,6 +12,8 @@
   <script defer src="{{ url_for('static', filename='js/scene.js') }}"></script>
   <script defer src="{{ url_for('static', filename='js/garden.js') }}"></script>
   <script defer src="{{ url_for('static', filename='js/game.js') }}"></script>
+  <script defer src="{{ url_for('static', filename='js/comparison.js') }}"></script>
+  <script defer src="{{ url_for('static', filename='js/audio.js') }}"></script>
   <script defer src="{{ url_for('static', filename='js/shell.js') }}"></script>
 </head>
 <body>
@@ -20,11 +22,6 @@
     <symbol id="i-reset" viewBox="0 0 24 24"><path d="M4 10a8 8 0 1 1 1 7M4 4v6h6"/></symbol>
     <symbol id="i-view" viewBox="0 0 24 24"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Zm0 9 8-4.5M12 12 4 7.5M12 12v9"/></symbol>
   </svg>
-  <header class="topbar">
-    <a class="brand" href="/" aria-label="Bloxorz, trang chính"><svg class="brand-mark" aria-hidden="true"><use href="#i-view"/></svg><span>BLOXORZ<small>THE BLOCK PUZZLE</small></span></a>
-    <div class="topbar-middle"><span class="status-dot"></span>AI SEARCH LAB<span class="topbar-divider"></span>CSC14003</div>
-    <div class="topbar-end">3D EDITION<span class="edition-line"></span></div>
-  </header>
   <main class="workspace">
     <section class="play-area" aria-label="Bàn chơi Bloxorz">
       <div class="stage-heading">
@@ -33,12 +30,10 @@
       </div>
       <div id="canvas-container" tabindex="0" role="application" aria-label="Bàn chơi 3D. Dùng phím mũi tên hoặc W A S D để di chuyển. Space đổi khối, R chơi lại.">
         <div class="board-hud"><div class="move-counter"><span>SỐ BƯỚC</span><strong id="hud-moves">00</strong></div><div class="hud-divider"></div><div class="block-state"><span>TRẠNG THÁI</span><strong id="hud-orient">Đứng thẳng</strong></div></div>
-        <div class="view-hint">Kéo chuột để xoay <span>/</span> Cuộn để thu phóng</div>
         <div id="game-overlay" class="game-overlay" hidden><p class="eyebrow" id="overlay-label"></p><h2 id="overlay-title"></h2><p id="overlay-description"></p><button id="overlay-restart" class="primary">Chơi lại màn</button></div>
-        <div id="loading" class="loading"><span class="loading-line"></span>Đang chuẩn bị bàn chơi</div>
+        <div id="loading" class="loading" role="status" aria-live="polite"><svg class="loading-spinner" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="12"/></svg><span>Đang tải màn chơi…</span></div>
       </div>
       <div class="play-footer"><div id="status-toast" role="status" aria-live="polite" data-tone="neutral">Đang khởi tạo.</div><span class="input-badge" id="input-status">BÀN PHÍM SẴN SÀNG</span></div>
-      <div class="keyboard-guide"><div><kbd>WASD</kbd><span>hoặc mũi tên</span></div><div><kbd>SPACE</kbd><span>đổi khối</span></div><div><kbd>R</kbd><span>chơi lại</span></div><div><kbd>C</kbd><span>góc nhìn gốc</span></div></div>
     </section>
     <aside id="sidebar" aria-label="Điều khiển và thuật toán">
       <section class="panel-section">
@@ -49,7 +44,7 @@
       </section>
       <section class="panel-section controls-section">
         <div class="section-heading"><h2>Điều khiển</h2><span>THỦ CÔNG</span></div>
-        <div class="manual-controls"><div class="dpad" aria-label="Nút di chuyển"><button data-action="UP" class="dpad-up" aria-label="Di chuyển lên" title="Lên (W / Mũi tên lên)"><svg><use href="#i-arrow"/></svg></button><button data-action="LEFT" class="dpad-left" aria-label="Di chuyển trái" title="Trái (A / Mũi tên trái)"><svg><use href="#i-arrow"/></svg></button><button data-action="DOWN" class="dpad-down" aria-label="Di chuyển xuống" title="Xuống (S / Mũi tên xuống)"><svg><use href="#i-arrow"/></svg></button><button data-action="RIGHT" class="dpad-right" aria-label="Di chuyển phải" title="Phải (D / Mũi tên phải)"><svg><use href="#i-arrow"/></svg></button></div><div class="control-copy"><p>Mũi tên / WASD</p><span>Giữ phím để lăn liên tục</span><button id="switch-cube" data-action="SPACE" disabled>Đổi khối <kbd>SPACE</kbd></button></div></div>
+        <div class="manual-controls"><div class="dpad" aria-label="Nút di chuyển"><button data-action="UP" class="dpad-up" aria-label="Di chuyển lên" title="Lên (W / Mũi tên lên)"><svg><use href="#i-arrow"/></svg></button><button data-action="LEFT" class="dpad-left" aria-label="Di chuyển trái" title="Trái (A / Mũi tên trái)"><svg><use href="#i-arrow"/></svg></button><button data-action="DOWN" class="dpad-down" aria-label="Di chuyển xuống" title="Xuống (S / Mũi tên xuống)"><svg><use href="#i-arrow"/></svg></button><button data-action="RIGHT" class="dpad-right" aria-label="Di chuyển phải" title="Phải (D / Mũi tên phải)"><svg><use href="#i-arrow"/></svg></button></div><div class="control-copy"><button id="switch-cube" data-action="SPACE" disabled>Đổi khối <kbd>SPACE</kbd></button></div></div>
       </section>
       <section class="panel-section">
         <div class="section-heading"><h2>Thuật toán tìm kiếm</h2><span>AI</span></div>
@@ -60,8 +55,6 @@
         <div class="section-heading"><h2>Kết quả tìm kiếm</h2><span id="solver-name">CHƯA CHẠY</span></div>
         <dl class="metrics"><div><dt>Thời gian</dt><dd id="m-time">—</dd></div><div><dt>Bộ nhớ đỉnh</dt><dd id="m-mem">—</dd></div><div><dt>Nút mở rộng</dt><dd id="m-nodes">—</dd></div><div><dt>Độ dài lời giải</dt><dd id="m-len">—</dd></div><div><dt>Tổng chi phí</dt><dd id="m-cost">—</dd></div></dl>
       </section>
-      <details class="legend"><summary>Quy tắc &amp; loại ô</summary><div class="legend-content"><p><span class="swatch stone"></span><b>Đá:</b> sàn thông thường.</p><p><span class="swatch fragile"></span><b>Cam:</b> chỉ chịu khối nằm.</p><p><span class="swatch bridge"></span><b>Cầu:</b> mở bằng công tắc.</p><p><b>Vòng tròn:</b> chạm để kích hoạt.</p><p>Giữ khối trên công tắc không kích hoạt lại. Rời rồi chạm lại mới là lần nhấn mới.</p><p><b>Chữ X:</b> cần khối đứng thẳng.</p><p><b>Dấu ngoặc:</b> tách thành hai khối.</p><p><b>Ô đích:</b> đưa khối đứng vào lỗ.</p><p>Các phím chỉ hướng theo hàng và cột của bàn chơi. Nhấn C để về góc nhìn gốc.</p></div></details>
-      <p class="sidebar-footnote">BLOXORZ / INTRODUCTION TO AI</p>
     </aside>
   </main>
   <noscript>Vui lòng bật JavaScript để chơi Bloxorz.</noscript>

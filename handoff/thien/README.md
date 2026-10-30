@@ -1,136 +1,48 @@
-# Tống Phúc Thiện — Chịu trách nhiệm nội dung A*
+# Tống Phúc Thiện — A* và heuristic
 
-MSSV: **24120141** · Nhánh gợi ý: `work/thien-astar-report`
+MSSV **24120141**. Nhận/gửi việc theo [quy trình chung](../README.md).
+Thiện chịu trách nhiệm công thức, giải thích và kiểm chứng phần A*; Nam ghép báo cáo,
+Phúc đối chiếu cost và lời dẫn video.
 
-Tự viết và kiểm tra toàn bộ nội dung A*/heuristic theo code cuối; gửi nội dung chỉnh sửa được cho Nam và rà lời dẫn video của Phúc.
+## Đầu vào và hiện trạng
 
-[Quy trình làm việc chung](../README.md) 
+- `Src/solvers/member4_astar.py`, `Src/solvers/costs.py`, `Src/core/board.py`.
+- Nhận policy cost từ Phúc, số liệu A*/UCS từ Quân và bản nháp Report/video để rà.
+- Đã có [heuristic-policy.docx](heuristic-policy.docx), [astar.docx](astar.docx),
+  [astar-example.docx](astar-example.docx), [astar-results.docx](astar-results.docx)
+  và [review-notes.docx](review-notes.docx).
+- `astar-results.docx` đang dẫn `summary.csv` và hình P05 chưa có trong repo;
+  cần nhận nguồn từ Quân/Phúc và đối chiếu trước khi sử dụng số liệu.
+  Các kiểm tra/phiên bản ghi trong DOCX cũng cần cập nhật theo mốc chốt.
 
-## Nhận những gì để bắt đầu?
+## Nhiệm vụ
 
-- `Src/solvers/member4_astar.py`, `Src/solvers/costs.py` và `game_logic.py`.
-- Bản cost policy cuối từ Phúc; A* cần dùng cùng đơn vị cost.
-- Dữ liệu A* và UCS của Quân, đặc biệt các màn có split/teleport.
+| Đã bàn giao | Mã | Công việc | Đầu ra |
+| --- | --- | --- | --- |
+| [ ] | `H01` | Đặc tả từng nhánh heuristic, đơn vị và giả thiết | `heuristic-policy.docx` → Phúc, Quân, Nam |
+| [ ] | `H02` | A*, giả mã, heap, best_g, parent và lập luận tính chất | `astar.docx` → Nam; Phúc rà cost |
+| [ ] | `H03` | Ví dụ tính g/h/f và nhận xét A* so với UCS | `astar-example.docx`, `astar-results.docx` → Nam, Quân |
+| [ ] | `H04` | Rà nội dung A* trong báo cáo và video, bổ sung nguồn/AI | `review-notes.docx` và bản sửa → Nam, Phúc, Thức |
 
-## Danh sách nhiệm vụ
+Giữ trạng thái bàn giao trước đây; sự tồn tại của năm file không thay xác nhận nội dung.
 
-Đổi `[ ]` thành `[x]` sau khi có đủ đầu ra và người nhận xác nhận. Việc đánh dấu trong README được lưu qua commit.
+## Tiêu chí kiểm tra
 
-| Đã bàn giao | Mã | Nhiệm vụ |
-| --- | --- | --- |
-| [ ] | `H01` | Đặc tả heuristic đang dùng ở bản cuối |
-| [ ] | `H02` | Viết A*, giả mã và lập luận lý thuyết |
-| [ ] | `H03` | Ví dụ tính tay và nhận xét kết quả A* |
-| [ ] | `H04` | Rà phần A* trước khi bàn giao cuối |
+**H01:** Đối chiếu trực tiếp `heuristic()` và `precompute_switch_costs_from_goal()`.
+Mô tả khoảng cách tới goal, trường hợp đang chiếm goal, khoảng cách giữa hai cube
+và đường qua split switch. Cost hiện có mỗi cạnh ít nhất 1; không dùng giả định
+về cost bằng 0 hoặc policy khác khi giải thích bản này.
 
-Các đường dẫn đầu ra dưới đây là nơi sẽ tạo file khi thực hiện nhiệm vụ. Thư mục hiện tại mới có README, chưa có kết quả hay báo cáo giả lập.
+**H02:** Giải thích `g`, `h`, `f`, bộ đếm tie-break, cập nhật best_g,
+bỏ entry lỗi thời, mở lại đường tốt hơn và goal test khi lấy khỏi heap.
+Thảo luận admissible/consistent theo yêu cầu đề; ghi rõ lập luận, điều kiện và giới hạn,
+kể cả split/merge/teleport liên tiếp. Một số ví dụ hoặc test qua không thay cho chứng minh tổng quát.
 
-## H01 — Đặc tả heuristic đang dùng ở bản cuối
+**H03:** Ví dụ tính tay dùng state thật và code cùng phiên bản.
+Chọn màn cơ bản, màn split và màn stress để so A*/UCS nếu có số liệu;
+chỉ ra nguồn CSV của cost, node, thời gian và bộ nhớ. Không dùng số minh họa như kết quả đo.
 
-**Đầu vào**
-
-- Hàm heuristic(), cách tìm goal, luật SPLIT/teleport và policy cost cuối.
-
-**Yêu cầu thực hiện**
-
-- Viết rõ tham số đầu vào, đầu ra, công thức từng trường hợp và ý nghĩa từng thành phần.
-- Nêu cách xử lý goal, các hướng khối, khoảng cách giữa hai khối và đường đi qua split switch nếu bản cuối có dùng.
-- Ghi điều kiện hoặc hệ số liên hệ giữa khoảng cách/số bước và đơn vị cost; tự kiểm tra cả khả năng cost bằng 0 nếu policy cho phép.
-- Gửi công thức ngắn gọn cho Quân để ghi metadata và cho Nam dùng ký hiệu nhất quán.
-
-**Đầu ra cần đẩy lên hoặc bàn giao**
-
-- `handoff/thien/heuristic-policy.docx`: công thức và phạm vi áp dụng; ghi commit.
-
-**Tiêu chí hoàn thành**
-
-- Mỗi nhánh được đối chiếu với code cuối; không lấy nguyên chú thích cũ khi công thức đã thay đổi.
-- Phúc xác nhận cùng policy cost; không biến một công thức chưa kiểm chứng thành kết luận tối ưu toàn cục.
-
-**Gửi cho:** Phúc đối chiếu cost; Quân ghi metadata; Nam nhận nội dung.
-
-**Thực hiện khi:** Bắt đầu ngay; chốt cùng P01 tại M0.
-
-## H02 — Viết A*, giả mã và lập luận lý thuyết
-
-**Đầu vào**
-
-- H01, bản A* cuối, nội dung goal/successor và nguồn tham khảo.
-
-**Yêu cầu thực hiện**
-
-- Giải thích g, h, f; heap, tie-break, best_g, parent, entry lỗi thời, mở lại trạng thái khi tìm được g tốt hơn nếu code có hỗ trợ.
-- Đưa giả mã sát code; chỉ rõ kiểm tra goal tại lúc lấy khỏi frontier.
-- Phân tích admissible h(s) ≤ h*(s), consistent h(s) ≤ c(s,a,s′) + h(s′), h(goal)=0; nêu lập luận và giả thiết tương ứng.
-- Xét riêng split, ghép lại và teleport liên tiếp; phân biệt kiểm tra vài trạng thái với chứng minh cho toàn miền.
-
-**Đầu ra cần đẩy lên hoặc bàn giao**
-
-- `handoff/thien/astar.docx`: thuật toán, giả mã, tính chất, giả thiết và tài liệu tham khảo.
-
-**Tiêu chí hoàn thành**
-
-- Mọi khẳng định về tối ưu có điều kiện rõ; nội dung khớp code và cost cuối.
-- Nêu được điểm mạnh/hạn chế của heuristic bằng lời dễ hiểu; không chỉ chép công thức.
-
-**Gửi cho:** Nam tổng hợp; Phúc rà quan hệ cost–heuristic.
-
-**Thực hiện khi:** Sau H01 và P01.
-
-## H03 — Ví dụ tính tay và nhận xét kết quả A*
-
-**Đầu vào**
-
-- Các trạng thái thật từ màn đã chọn; CSV A*/UCS Q04–Q05 và hình P05.
-
-**Yêu cầu thực hiện**
-
-- Chọn một trạng thái, tính g, h và f; minh họa hai lựa chọn kế tiếp nếu giúp giải thích ưu tiên.
-- So sánh A* với UCS trên màn cơ bản, màn có split và một màn stress; chỉ rõ số liệu lấy từ dòng/hình nào.
-- Giải thích khác biệt cost, node, thời gian và bộ nhớ; gửi nhận xét có thể ghép trực tiếp vào discussion.
-
-**Đầu ra cần đẩy lên hoặc bàn giao**
-
-- `handoff/thien/astar-example.docx`, `astar-results.docx` và hình/bảng liên quan.
-
-**Tiêu chí hoàn thành**
-
-- Tính tay khớp hàm trên cùng snapshot; số liệu khớp CSV.
-- Nêu kết quả theo từng trường hợp; không suy từ vài màn thành bảo đảm chung.
-
-**Gửi cho:** Nam dùng trong báo cáo và lời dẫn video; Quân kiểm tra số liệu.
-
-**Thực hiện khi:** Ví dụ làm sớm; nhận xét thực nghiệm sau Q05 và P05.
-
-## H04 — Rà phần A* trước khi bàn giao cuối
-
-**Đầu vào**
-
-- Bản Report.docx/PDF, kịch bản video, các mục H01–H03.
-
-**Yêu cầu thực hiện**
-
-- Đọc lại mọi đoạn nói về A*, heuristic, tính tối ưu và quan hệ với UCS.
-- Kiểm tra hình/caption, ví dụ, ký hiệu, kết luận và nguồn tham khảo.
-- Gửi xác nhận nội dung hoặc danh sách chỉnh sửa cụ thể; bổ sung khai báo AI và prompt tiêu biểu cho phần đã dùng.
-
-**Đầu ra cần đẩy lên hoặc bàn giao**
-
-- `handoff/thien/review-notes.docx` và gói nội dung A* đã sửa cuối.
-
-**Tiêu chí hoàn thành**
-
-- Không còn nhận xét A* mâu thuẫn với dữ liệu hoặc công thức cuối.
-- Nam nhận được câu sửa cụ thể, không chỉ nhận “cần xem lại”.
-
-**Gửi cho:** Nam sửa report; Phúc sửa lời dẫn video; Thức nhận xác nhận để nghiệm thu.
-
-**Thực hiện khi:** Sau khi Nam gửi report và Phúc gửi kịch bản/video nháp.
-
-
-## Đẩy công việc lên repo
-
-1. Làm theo quy trình tạo nhánh trong [hướng dẫn chung](../README.md#tao-nhanh-va-day-cong-viec).
-2. Commit file trong `handoff/thien/`; nếu có sửa code, stage thêm đúng các file code đã sửa.
-3. Push nhánh, tạo Pull Request vào `main`, ghi mã task và đầu ra đã có. Gửi link PR cho Thức để xem và gộp.
-4. Mỗi người gửi nguồn tham khảo và phần sử dụng AI của mình cùng nội dung bàn giao; Nam tổng hợp vào báo cáo.
+**H04:** Đọc lại công thức, ký hiệu, caption, ví dụ và nhận xét trong Report/video.
+Gửi câu sửa cụ thể hoặc xác nhận có phạm vi; kèm tài liệu tham khảo và khai báo AI/prompt.
+Chốt H01 cùng P01 trước thực nghiệm; kết quả H03 chờ Q05/P05;
+H04 thực hiện sau bản nháp của Nam/Phúc.

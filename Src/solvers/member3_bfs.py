@@ -1,22 +1,16 @@
-"""Thành viên 3: tự cài đặt phần TODO; xem Giao_viec_Bloxorz.pdf.
-Không thay chữ ký solve_* hoặc schema kết quả. Không dùng walkthroughs để giải.
-Core trả found, moves, expanded_nodes, total_cost; wrapper đo thời gian/bộ nhớ.
+"""Thành viên 3: Breadth-First Search.
+Core dùng luật engine; wrapper đo thời gian, bộ nhớ và chuẩn hóa kết quả.
 """
 from typing import Any, Dict
-from game_logic import BloxorzBoard, State
+from core.board import BloxorzBoard
 from .base import run_with_profiler
 from collections import deque
 
 
 def _bfs_core(board: BloxorzBoard) -> Dict[str, Any]:
-    """TODO TV2: FIFO, chống lặp bằng State, đường ít hành động nhất.
-    Dùng get_initial_state(), is_goal(), get_successors(); không viết lại luật game.
-    Xử lý start=goal, vô nghiệm, dựng lại danh sách hành động và đếm expanded_nodes.
-    """
-    "Lấy trạng thái ban đầu"
+    """FIFO, đánh dấu khi phát hiện; tìm đường ít hành động nhất."""
     start_state = board.get_initial_state()
     
-    "Trường hợp bắt đầu ngay goal"
     if board.is_goal(start_state) :
         return {
             "found" : True,
@@ -51,7 +45,7 @@ def _bfs_core(board: BloxorzBoard) -> Dict[str, Any]:
                     "found" : True,
                     "moves" : moves,
                     "expanded_nodes" : expanded_nodes,
-                    "total_cost" : sum(1 for m in moves if m != "SPACE"),
+                    "total_cost" : len(moves),
                     
                 }
             queue.append(nxt)

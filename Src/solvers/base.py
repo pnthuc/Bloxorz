@@ -3,7 +3,7 @@ import time
 import tracemalloc
 from threading import Lock
 from typing import List, Dict, Any, Callable
-from game_logic import BloxorzBoard
+from core.board import BloxorzBoard
 
 
 # tracemalloc is process-wide; two browser requests must not reset one another.
@@ -21,7 +21,7 @@ def format_metrics(
     return {
         "found": bool(found),
         "moves": list(moves) if found else [],
-        "solution_length": sum(1 for m in moves if m != "SPACE") if found else 0,
+        "solution_length": len(moves) if found else 0,
         "expanded_nodes": int(expanded_nodes),
         "search_time_ms": round(elapsed_sec * 1000.0, 3),
         "memory_kb": round(peak_mem_bytes / 1024.0, 2),
@@ -46,5 +46,5 @@ def run_with_profiler(solver_core_fn: Callable[[BloxorzBoard], Dict[str, Any]], 
             expanded_nodes=raw.get("expanded_nodes", 0),
             elapsed_sec=elapsed,
             peak_mem_bytes=peak_bytes,
-            total_cost=raw.get("total_cost", sum(1 for m in raw.get("moves", []) if m != "SPACE"))
+            total_cost=raw.get("total_cost", len(raw.get("moves", [])))
         )
