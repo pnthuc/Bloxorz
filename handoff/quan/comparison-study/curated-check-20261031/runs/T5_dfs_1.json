@@ -1,0 +1,27 @@
+{
+  "case_id": "T5",
+  "family": "edge_case",
+  "angle": 0,
+  "solver": "dfs",
+  "repeat": 1,
+  "status": "SOLVED",
+  "search_time_ms": 0.554,
+  "memory_kb": 2.09,
+  "expanded_nodes": 2,
+  "solution_length": 2,
+  "path_cost": 2.0,
+  "total_cost": 2.0,
+  "error": "",
+  "solver_result": {
+    "found": true,
+    "moves": [
+      "RIGHT",
+      "RIGHT"
+    ],
+    "solution_length": 2,
+    "expanded_nodes": 2,
+    "search_time_ms": 0.554,
+    "memory_kb": 2.09,
+    "total_cost": 2.0
+  }
+}

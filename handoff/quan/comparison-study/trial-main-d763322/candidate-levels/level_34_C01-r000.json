@@ -1,0 +1,32 @@
+{
+  "grid": [
+    [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      9
+    ]
+  ],
+  "start_pos": [
+    0,
+    0
+  ],
+  "initial_bridges": [],
+  "switches": {},
+  "id": "34",
+  "name": "C01-r000 forced_corridor",
+  "description": "Control: a forced path leaves little useful search guidance; compare overhead.",
+  "difficulty": "Diagnostic"
+}

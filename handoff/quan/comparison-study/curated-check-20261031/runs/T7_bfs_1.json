@@ -1,0 +1,29 @@
+{
+  "case_id": "T7",
+  "family": "edge_case",
+  "angle": 0,
+  "solver": "bfs",
+  "repeat": 1,
+  "status": "SOLVED",
+  "search_time_ms": 0.409,
+  "memory_kb": 4.03,
+  "expanded_nodes": 6,
+  "solution_length": 4,
+  "path_cost": 4.0,
+  "total_cost": 4.0,
+  "error": "",
+  "solver_result": {
+    "found": true,
+    "moves": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT"
+    ],
+    "solution_length": 4,
+    "expanded_nodes": 6,
+    "search_time_ms": 0.409,
+    "memory_kb": 4.03,
+    "total_cost": 4.0
+  }
+}

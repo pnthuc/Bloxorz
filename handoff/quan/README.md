@@ -1,6 +1,6 @@
 # Nguyễn Lê Minh Quân — Đo, kiểm chứng và bàn giao số liệu
 
-MSSV: **24120219** · Nhánh gợi ý: `work/quan-experiments`
+MSSV: **24120219** · Nhánh đang chuẩn bị bàn giao lại: `work/quan-experiment`
 
 Tập trung công cụ đo, số liệu gốc, CSV tổng hợp và phương pháp thực nghiệm. Phúc nhận CSV để làm bảng trình bày/biểu đồ.
 
@@ -9,10 +9,11 @@ Tập trung công cụ đo, số liệu gốc, CSV tổng hợp và phương ph�
 ## Nhận những gì để bắt đầu?
 
 - `Src/solvers/member2_dfs.py`: bản DFS đã có; viết theo cách dùng stack và parent trong code.
-- `Src/experiments.py`: đã gọi bốn solver, in số liệu và vẽ một ảnh 2 × 2; tiếp tục mở rộng file này.
+- `Src/experiments.py`: công cụ đo CSV/JSON trên checkout cũ; chưa vẽ biểu đồ. Main mới đã chuyển công cụ này sang `Src/benchmarks/cli.py`.
 - `Src/solvers/base.py`: đã đo thời gian và bộ nhớ; dùng lại wrapper có sẵn.
 - `Src/tests/helpers.py`: đã có replay_solution(), load_cases(), load_levels().
-- `Src/levels/`: 33 màn; `Src/tests/test_cases.json`: 43 ca kiểm tra, gồm 10 ca T và 33 ca màn.
+- `Src/levels/`: 25 màn; `Src/tests/test_cases.json`: 37 ca kiểm tra, gồm 12 ca T và 25 ca màn.
+- [Bộ màn đã tinh gọn](LEVEL_SELECTION.md): giữ 16 màn cũ, thêm 9 màn phân hóa; 17 màn cũ nằm ngoài danh sách chơi trong archive.
 - Nhận policy cost từ Phúc, mô tả heuristic từ Thiện và snapshot cuối từ Thức.
 
 ## Danh sách nhiệm vụ
@@ -28,7 +29,9 @@ Tập trung công cụ đo, số liệu gốc, CSV tổng hợp và phương ph�
 | [ ] | `Q05` | Tổng hợp CSV và viết phương pháp đo |
 | [ ] | `Q06` | Bàn giao gói tái lập thực nghiệm |
 
-Các đường dẫn đầu ra dưới đây là nơi sẽ tạo file khi thực hiện nhiệm vụ. Thư mục hiện tại mới có README, chưa có kết quả hay báo cáo giả lập.
+Các dấu [x] ghi nhận lần bàn giao trước, không xác nhận mọi nội dung đã khớp main hiện tại.
+Đã có dfs.docx, danh mục 25 màn và các trial CSV/JSON; xem
+[rà soát Q01–Q03 ngày 31/10](Q01-Q03_REVIEW.md) trước khi chốt commit và đo chính thức.
 
 ## Q01 — Viết phần DFS sát với bản cài đặt
 
@@ -88,13 +91,13 @@ Các đường dẫn đầu ra dưới đây là nơi sẽ tạo file khi thực
 
 **Đầu vào**
 
-- 33 JSON trong levels/, mô tả màn, initial_bridges, switches và grid.
+- 25 JSON trong levels/, mô tả màn, initial_bridges, switches và grid.
 
 **Yêu cầu thực hiện**
 
 - Lập level-groups.csv: level_id, tên, số hàng/cột, số ô có sàn, số cầu, số split switch và nhóm chính.
-- Quy tắc nhóm đề xuất: có split → tách/ghép; còn lại có switch/cầu → công tắc–cầu; còn lại có fragile → gạch cam; phần còn lại → cơ bản. Thêm nhãn stress cho 23–33 hoặc các màn có độ lớn nổi bật và giải thích tiêu chí.
-- Nêu bộ thực nghiệm dùng 33 ID màn duy nhất. Các ca T1–T10 dùng kiểm chứng biên; một số tham chiếu lại màn thật nên không cộng thành 43 màn độc lập.
+- Quy tắc nhóm: có split → tách/ghép; còn lại có switch/cầu → công tắc–cầu; còn lại có fragile → gạch cam; phần còn lại → cơ bản. Bộ đã chọn gắn stress cho 23, 30, 33; không suy ra độ khó từ khoảng ID.
+- Nêu bộ thực nghiệm dùng 25 ID màn duy nhất trong level-groups.csv. Các ca T1–T12 dùng kiểm chứng biên; các biến thể xoay là mẫu ghép cặp, không phải bài toán độc lập.
 
 **Đầu ra cần đẩy lên hoặc bàn giao**
 
@@ -102,7 +105,7 @@ Các đường dẫn đầu ra dưới đây là nơi sẽ tạo file khi thực
 
 **Tiêu chí hoàn thành**
 
-- Mỗi ID 1–33 xuất hiện đúng một lần ở nhóm chính; có đủ bảng số lượng từng nhóm.
+- Mỗi ID đang hoạt động xuất hiện đúng một lần ở nhóm chính; có đủ bảng số lượng từng nhóm. ID không liên tiếp vì giữ nguyên tham chiếu lịch sử.
 - Phân nhóm có căn cứ từ dữ liệu màn, không chỉ dựa vào tên hoặc kết quả chạy nhanh/chậm.
 
 **Gửi cho:** Nam dùng mô tả và bảng nhóm; Thức kiểm tra ý nghĩa cơ chế game.
@@ -117,7 +120,7 @@ Các đường dẫn đầu ra dưới đây là nơi sẽ tạo file khi thực
 
 **Yêu cầu thực hiện**
 
-- Chạy cùng máy, cùng Python, cùng cấu hình trên 33 màn × 4 solver × 3 lần: 396 lượt theo kế hoạch.
+- Chạy cùng máy, cùng Python, cùng cấu hình trên 25 màn × 4 solver × 3 lần: 300 lượt theo kế hoạch mới. Giữ riêng các ca biên và trạng thái timeout; không gộp chúng như các màn độc lập.
 - Lưu cấu hình CPU/RAM/OS/Python, commit, ngày đo, timeout và số lần lặp vào environment.json.
 - Kiểm tra các lời giải SOLVED bằng replay, goal và số hành động. Giữ kết quả bất thường và báo chủ solver kiểm tra; nếu sửa code, xác định lại snapshot và đo lại các phần chịu ảnh hưởng.
 - Lưu total_cost gốc cùng path_cost tính bằng step_cost chung; tách hai cột vì BFS/DFS hiện dùng total_cost là số hành động.

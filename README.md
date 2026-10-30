@@ -66,7 +66,8 @@ Các thành viên dùng chung:
 
 ## Chạy kiểm thử
 
-Từ `Src`, chạy các test nền rồi gọi cả bốn solver trên toàn bộ 43 ca:
+Từ `Src`, chạy các test nền rồi gọi cả bốn solver trên toàn bộ 37 ca
+(25 màn chơi và 12 ca biên):
 
 ```bash
 python run_tests.py
@@ -94,3 +95,14 @@ UI cần Node.js 18+ và `npm ci` trong `Src/tests` một lần. Sau đó, từ 
 ```bash
 python run_tests.py --ui
 ```
+
+## Bộ ca so sánh bổ sung
+
+Bộ chơi hiện tại có **25 màn**: giữ 16 màn đại diện, thêm 9 màn gây phân hóa giữa
+các thuật toán. [Lý do chọn màn và danh sách archive](handoff/quan/LEVEL_SELECTION.md)
+ghi rõ các ID được giữ, thêm và rút khỏi danh sách chơi. ID được giữ ổn định nên có khoảng trống.
+
+[Benchmark thử và các ca chẩn đoán](handoff/quan/comparison-study/README.md)
+gồm bộ ca xoay để kiểm tra thứ tự duyệt DFS, đánh đổi số bước/cost, dữ liệu 400 lượt
+chạy trên snapshot main và lệnh tái lập. Chín biến thể đã được đưa vào bộ 25 màn;
+các ca đối chứng còn lại và ca vô nghiệm dùng riêng trong kiểm thử/benchmark.

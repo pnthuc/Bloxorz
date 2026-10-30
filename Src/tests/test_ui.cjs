@@ -611,6 +611,19 @@ test('Bloxorz UI', async (t) => {
       for (const bridge of scene.bridgeGroups.values())
         assert(bridge.every((group) => !group.visible));
     });
+    await t.test('curated level menu excludes archived maps and plays a new shallow goal', async () => {
+      controls.solverUnavailable = false;
+      controls.mockSolvers = true;
+      assert.equal(levelIds.length, 25);
+      assert(!levelIds.includes('29'));
+      assert(levelIds.includes('36') && levelIds.includes('45'));
+      await select('36');
+      assert.equal(el('stage-number').textContent, stageNumber('36'));
+      d.querySelector('[data-solver="bfs"]').click();
+      await wait(() => !el('game-overlay').hidden, 'new shallow goal victory');
+      assert.equal(count(), 2);
+      assert.equal(el('overlay-title').textContent, 'Đã đến đích');
+    });
     await t.test('no uncaught runtime errors. GPU rasterization was not tested.', async () => {
       controls.solverUnavailable = false;
       controls.mockSolvers = true;

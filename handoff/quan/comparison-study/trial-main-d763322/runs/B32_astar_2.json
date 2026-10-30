@@ -1,0 +1,31 @@
+{
+  "case_id": "B32",
+  "family": "baseline",
+  "angle": 0,
+  "solver": "astar",
+  "repeat": 2,
+  "status": "SOLVED",
+  "search_time_ms": 2.259,
+  "memory_kb": 10.95,
+  "expanded_nodes": 14,
+  "solution_length": 6,
+  "path_cost": 6.0,
+  "total_cost": 6.0,
+  "error": "",
+  "solver_result": {
+    "found": true,
+    "moves": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT"
+    ],
+    "solution_length": 6,
+    "expanded_nodes": 14,
+    "search_time_ms": 2.259,
+    "memory_kb": 10.95,
+    "total_cost": 6.0
+  }
+}

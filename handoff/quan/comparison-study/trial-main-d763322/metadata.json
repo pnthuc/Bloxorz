@@ -1,0 +1,34 @@
+{
+  "started_at": "2026-10-31T02:39:18.264790+07:00",
+  "source_root": "C:\\Users\\lemin\\.codex\\visualizations\\2026\\10\\30\\01a18dd5-4188-7c30-a73a-c4a438518988\\repo-d763322\\Src",
+  "source_commit_label": "d763322ddd8b41a33fc141b03e75d245cc3d24fa",
+  "source_sha256": {
+    "solvers\\__init__.py": "78044cd97373d7148aa22d789143b1851a460e504881f1a2b9f7697f8c708606",
+    "solvers\\base.py": "642d3af3c58c445a6e75740b36d7dd0e0fdc723c8e2663f52b1f0da51e7d30ea",
+    "solvers\\costs.py": "8f2fa054fd5f253b461e7d4905d26ac34969bb57b7b7f3b918e87dc23526f173",
+    "solvers\\member2_dfs.py": "542e65c7910229e5922d23ba79079875681243cd1da800d62048b358f107b127",
+    "solvers\\member3_bfs.py": "ef94d4067d044e06d3d912bf7f666e7fc9d221540528b4d90eb1a33062d81ad0",
+    "solvers\\member4_astar.py": "63c9a9e170434aaff502f2d8288f9b63d95cc0873b8658fa74280f78deee9da4",
+    "solvers\\member5_ucs.py": "0f707540356947b8235c055041c6369ebd683cbd18591ef9efebd9db52d3220e",
+    "core\\board.py": "e4a2642f2eb9dacb60b9e5be12f1a7d7996a21479d04e0fdc8d3ad7c13b73abf"
+  },
+  "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+  "os": "Windows-11-10.0.26200-SP0",
+  "cpu": "Intel64 Family 6 Model 151 Stepping 2, GenuineIntel",
+  "seed": 20261031,
+  "repeats": 5,
+  "search_timeout_seconds": 10.0,
+  "sequential": true,
+  "action_model": [
+    "UP",
+    "LEFT",
+    "RIGHT",
+    "DOWN",
+    "SUP",
+    "SLEFT",
+    "SRIGHT",
+    "SDOWN"
+  ],
+  "case_manifest_sha256": "b47f91a42a30ebbc754a5627529d6e14220e4b6e54c4acf471d750173e805230",
+  "method": "Fresh worker per run; public profiler; replay/validation in parent after result; randomized solver order per case/repeat; median and inclusive IQR; no parallel timing."
+}

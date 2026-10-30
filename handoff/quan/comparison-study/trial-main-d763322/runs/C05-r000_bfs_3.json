@@ -1,0 +1,41 @@
+{
+  "case_id": "C05-r000",
+  "family": "fragile_tradeoff",
+  "angle": 0,
+  "solver": "bfs",
+  "repeat": 3,
+  "status": "SOLVED",
+  "search_time_ms": 11.891,
+  "memory_kb": 31.03,
+  "expanded_nodes": 154,
+  "solution_length": 16,
+  "path_cost": 23.0,
+  "total_cost": 16.0,
+  "error": "",
+  "solver_result": {
+    "found": true,
+    "moves": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT"
+    ],
+    "solution_length": 16,
+    "expanded_nodes": 154,
+    "search_time_ms": 11.891,
+    "memory_kb": 31.03,
+    "total_cost": 16.0
+  }
+}

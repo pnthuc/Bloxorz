@@ -1,0 +1,27 @@
+{
+  "case_id": "C02-r180",
+  "family": "shallow_goal",
+  "angle": 180,
+  "solver": "ucs",
+  "repeat": 1,
+  "status": "SOLVED",
+  "search_time_ms": 1.288,
+  "memory_kb": 11.83,
+  "expanded_nodes": 12,
+  "solution_length": 2,
+  "path_cost": 2.0,
+  "total_cost": 2.0,
+  "error": "",
+  "solver_result": {
+    "found": true,
+    "moves": [
+      "RIGHT",
+      "RIGHT"
+    ],
+    "solution_length": 2,
+    "expanded_nodes": 12,
+    "search_time_ms": 1.288,
+    "memory_kb": 11.83,
+    "total_cost": 2.0
+  }
+}

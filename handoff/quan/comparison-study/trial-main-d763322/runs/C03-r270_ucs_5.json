@@ -1,0 +1,41 @@
+{
+  "case_id": "C03-r270",
+  "family": "open_field",
+  "angle": 270,
+  "solver": "ucs",
+  "repeat": 5,
+  "status": "SOLVED",
+  "search_time_ms": 63.254,
+  "memory_kb": 168.59,
+  "expanded_nodes": 617,
+  "solution_length": 16,
+  "path_cost": 16.0,
+  "total_cost": 16.0,
+  "error": "",
+  "solver_result": {
+    "found": true,
+    "moves": [
+      "UP",
+      "UP",
+      "UP",
+      "UP",
+      "UP",
+      "UP",
+      "UP",
+      "UP",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT"
+    ],
+    "solution_length": 16,
+    "expanded_nodes": 617,
+    "search_time_ms": 63.254,
+    "memory_kb": 168.59,
+    "total_cost": 16.0
+  }
+}

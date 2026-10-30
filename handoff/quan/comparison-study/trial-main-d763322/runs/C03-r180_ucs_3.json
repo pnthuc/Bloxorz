@@ -1,0 +1,41 @@
+{
+  "case_id": "C03-r180",
+  "family": "open_field",
+  "angle": 180,
+  "solver": "ucs",
+  "repeat": 3,
+  "status": "SOLVED",
+  "search_time_ms": 76.39,
+  "memory_kb": 168.7,
+  "expanded_nodes": 617,
+  "solution_length": 16,
+  "path_cost": 16.0,
+  "total_cost": 16.0,
+  "error": "",
+  "solver_result": {
+    "found": true,
+    "moves": [
+      "UP",
+      "UP",
+      "UP",
+      "UP",
+      "UP",
+      "UP",
+      "UP",
+      "UP",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT"
+    ],
+    "solution_length": 16,
+    "expanded_nodes": 617,
+    "search_time_ms": 76.39,
+    "memory_kb": 168.7,
+    "total_cost": 16.0
+  }
+}

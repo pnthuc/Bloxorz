@@ -390,6 +390,33 @@ class CaseDataTests(unittest.TestCase):
         self.assertEqual(canonical, set(load_levels()))
         self.assertEqual(len({case.id for case in self.cases}), len(self.cases))
 
+    def test_curated_menu_retains_mechanisms_and_excludes_archived_levels(self):
+        ids = set(self.levels)
+        self.assertEqual(len(ids), 25)
+        self.assertTrue({'35', '36', '37', '38', '39', '40', '43', '45', '46'} <= ids)
+        self.assertTrue(ids.isdisjoint({'5', '9', '10', '13', '14', '16', '17', '18',
+                                      '20', '21', '22', '24', '25', '26', '27', '28', '29'}))
+        self.assertTrue(all(case.solvable for case in self.cases if case.level_id))
+        tiles = {tile for level in self.levels.values() for row in level['grid'] for tile in row}
+        self.assertTrue({0, 1, 2, 3, 4, 5, 9, 10} <= tiles)
+
+    def test_edge_goal_can_be_touched_but_never_reached_upright(self):
+        case = next(case for case in self.cases if case.id == 'T11')
+        board = case.make_board()
+        lying = board.apply_move(board.get_initial_state(), 'RIGHT')
+        self.assertIsNotNone(lying)
+        self.assertIn((0, 2), lying.get_occupied_cells())
+        self.assertFalse(board.is_goal(lying))
+        self.assertFalse(case.solvable)
+
+    def test_two_new_soft_presses_toggle_the_same_bridge_twice(self):
+        case = next(case for case in self.cases if case.id == 'T12')
+        board = case.make_board()
+        lying = board.apply_move(board.get_initial_state(), 'RIGHT')
+        self.assertIsNotNone(lying)
+        self.assertEqual(lying.bridges, (False,))
+        self.assertTrue(board.is_goal(board.apply_move(lying, 'RIGHT')))
+
     def test_boards_and_switch_targets(self):
         for case in self.cases:
             with self.subTest(case=case.id):

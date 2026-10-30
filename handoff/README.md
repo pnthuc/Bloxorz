@@ -93,7 +93,7 @@ Nếu có conflict, đọc và xử lý từng file; phối hợp với người
 
 M0 chỉ là tên bước chuẩn bị. Điền [mẫu chung](shared/baseline.md), sau khi các phần cần chạy đã được gộp và kiểm tra.
 
-- Quân chốt bộ màn và cách đo. Đề xuất 33 ID 1–33, bốn solver, mỗi trường hợp 3 lần, timeout 120 giây/lượt; các con số này là phương án tổ chức của nhóm.
+- Quân chốt bộ màn và cách đo. Bộ hiện tại có 25 ID trong level-groups.csv; đề xuất bốn solver, mỗi trường hợp 3 lần, timeout 120 giây/lượt (300 lượt). Xem [lý do tinh gọn và các ca mới](quan/LEVEL_SELECTION.md); các con số đo là phương án tổ chức của nhóm.
 - Phúc ghi công thức cost thực sự dùng; Thiện ghi heuristic tương ứng.
 - Thức ghi mã commit và trạng thái kiểm tra. Mẫu hiện để **CHƯA CHỐT**, không tự coi commit đang có là bản đã đạt yêu cầu.
 - Chưa cần ép mọi người chờ M0 để viết tài liệu hoặc phát triển công cụ. Chỉ chạy số liệu chính thức sau khi bản code/cách đo đã thống nhất.

@@ -1,0 +1,41 @@
+{
+  "case_id": "C03-r090",
+  "family": "open_field",
+  "angle": 90,
+  "solver": "bfs",
+  "repeat": 5,
+  "status": "SOLVED",
+  "search_time_ms": 49.937,
+  "memory_kb": 130.91,
+  "expanded_nodes": 594,
+  "solution_length": 16,
+  "path_cost": 16.0,
+  "total_cost": 16.0,
+  "error": "",
+  "solver_result": {
+    "found": true,
+    "moves": [
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN"
+    ],
+    "solution_length": 16,
+    "expanded_nodes": 594,
+    "search_time_ms": 49.937,
+    "memory_kb": 130.91,
+    "total_cost": 16.0
+  }
+}

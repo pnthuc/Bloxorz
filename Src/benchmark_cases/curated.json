@@ -1,0 +1,228 @@
+{
+  "schema_version": 1,
+  "description": "25 playable levels and 12 edge fixtures; expectations read from the current source test catalog.",
+  "cases": [
+    {
+      "id": "T1",
+      "case_id": "T1",
+      "family": "edge_case",
+      "purpose": "Màn cơ bản"
+    },
+    {
+      "id": "T2",
+      "case_id": "T2",
+      "family": "edge_case",
+      "purpose": "Bẫy chi phí gạch cam"
+    },
+    {
+      "id": "T3",
+      "case_id": "T3",
+      "family": "edge_case",
+      "purpose": "Tách khối, đổi khối và mở cầu"
+    },
+    {
+      "id": "T4",
+      "case_id": "T4",
+      "family": "edge_case",
+      "purpose": "Đích bị cô lập"
+    },
+    {
+      "id": "T5",
+      "case_id": "T5",
+      "family": "edge_case",
+      "purpose": "Hành lang hai bước"
+    },
+    {
+      "id": "T6",
+      "case_id": "T6",
+      "family": "edge_case",
+      "purpose": "Gạch cam chặn vị trí đứng"
+    },
+    {
+      "id": "T7",
+      "case_id": "T7",
+      "family": "edge_case",
+      "purpose": "Soft switch mở cầu"
+    },
+    {
+      "id": "T8",
+      "case_id": "T8",
+      "family": "edge_case",
+      "purpose": "Heavy switch khi đứng"
+    },
+    {
+      "id": "T9",
+      "case_id": "T9",
+      "family": "edge_case",
+      "purpose": "Heavy switch khi nằm"
+    },
+    {
+      "id": "T10",
+      "case_id": "T10",
+      "family": "edge_case",
+      "purpose": "Xuất phát tại đích"
+    },
+    {
+      "id": "T11",
+      "case_id": "T11",
+      "family": "edge_case",
+      "purpose": "Chạm ô đích khi nằm chưa phải chiến thắng"
+    },
+    {
+      "id": "T12",
+      "case_id": "T12",
+      "family": "edge_case",
+      "purpose": "Hai soft switch cùng toggle một cầu trong một bước"
+    },
+    {
+      "id": "1",
+      "case_id": "1",
+      "family": "mechanisms",
+      "purpose": "Retained mechanism representative"
+    },
+    {
+      "id": "2",
+      "case_id": "2",
+      "family": "mechanisms",
+      "purpose": "Retained mechanism representative"
+    },
+    {
+      "id": "3",
+      "case_id": "3",
+      "family": "mechanisms",
+      "purpose": "Retained mechanism representative"
+    },
+    {
+      "id": "4",
+      "case_id": "4",
+      "family": "mechanisms",
+      "purpose": "Retained mechanism representative"
+    },
+    {
+      "id": "6",
+      "case_id": "6",
+      "family": "mechanisms",
+      "purpose": "Retained mechanism representative"
+    },
+    {
+      "id": "7",
+      "case_id": "7",
+      "family": "mechanisms",
+      "purpose": "Retained mechanism representative"
+    },
+    {
+      "id": "8",
+      "case_id": "8",
+      "family": "mechanisms",
+      "purpose": "Retained mechanism representative"
+    },
+    {
+      "id": "11",
+      "case_id": "11",
+      "family": "mechanisms",
+      "purpose": "Retained mechanism representative"
+    },
+    {
+      "id": "12",
+      "case_id": "12",
+      "family": "mechanisms",
+      "purpose": "Retained mechanism representative"
+    },
+    {
+      "id": "15",
+      "case_id": "15",
+      "family": "mechanisms",
+      "purpose": "Retained mechanism representative"
+    },
+    {
+      "id": "19",
+      "case_id": "19",
+      "family": "mechanisms",
+      "purpose": "Retained mechanism representative"
+    },
+    {
+      "id": "23",
+      "case_id": "23",
+      "family": "stress",
+      "purpose": "Retained mechanism representative"
+    },
+    {
+      "id": "30",
+      "case_id": "30",
+      "family": "stress",
+      "purpose": "Retained mechanism representative"
+    },
+    {
+      "id": "31",
+      "case_id": "31",
+      "family": "mechanisms",
+      "purpose": "Retained mechanism representative"
+    },
+    {
+      "id": "32",
+      "case_id": "32",
+      "family": "mechanisms",
+      "purpose": "Retained mechanism representative"
+    },
+    {
+      "id": "33",
+      "case_id": "33",
+      "family": "stress",
+      "purpose": "Retained mechanism representative"
+    },
+    {
+      "id": "35",
+      "case_id": "35",
+      "family": "shallow_goal",
+      "purpose": "A shallow goal beside a large open region; isolate DFS action-order sensitivity."
+    },
+    {
+      "id": "36",
+      "case_id": "36",
+      "family": "shallow_goal",
+      "purpose": "A shallow goal beside a large open region; isolate DFS action-order sensitivity."
+    },
+    {
+      "id": "37",
+      "case_id": "37",
+      "family": "shallow_goal",
+      "purpose": "A shallow goal beside a large open region; isolate DFS action-order sensitivity."
+    },
+    {
+      "id": "38",
+      "case_id": "38",
+      "family": "shallow_goal",
+      "purpose": "A shallow goal beside a large open region; isolate DFS action-order sensitivity."
+    },
+    {
+      "id": "39",
+      "case_id": "39",
+      "family": "open_field",
+      "purpose": "Many alternatives and a distant goal; compare guided search, breadth and long DFS answers."
+    },
+    {
+      "id": "40",
+      "case_id": "40",
+      "family": "open_field",
+      "purpose": "Many alternatives and a distant goal; compare guided search, breadth and long DFS answers."
+    },
+    {
+      "id": "43",
+      "case_id": "43",
+      "family": "manhattan_detour",
+      "purpose": "A nearby goal behind a wall; quantify how weak geometric distance can be."
+    },
+    {
+      "id": "45",
+      "case_id": "45",
+      "family": "fragile_tradeoff",
+      "purpose": "Short risky path versus longer safe path: BFS minimizes steps, UCS/A* minimize weighted cost."
+    },
+    {
+      "id": "46",
+      "case_id": "46",
+      "family": "fragile_tradeoff",
+      "purpose": "Short risky path versus longer safe path: BFS minimizes steps, UCS/A* minimize weighted cost."
+    }
+  ]
+}

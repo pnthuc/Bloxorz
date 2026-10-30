@@ -1,0 +1,27 @@
+{
+  "case_id": "35",
+  "family": "shallow_goal",
+  "angle": 0,
+  "solver": "ucs",
+  "repeat": 1,
+  "status": "SOLVED",
+  "search_time_ms": 1.792,
+  "memory_kb": 12.02,
+  "expanded_nodes": 13,
+  "solution_length": 2,
+  "path_cost": 2.0,
+  "total_cost": 2.0,
+  "error": "",
+  "solver_result": {
+    "found": true,
+    "moves": [
+      "LEFT",
+      "LEFT"
+    ],
+    "solution_length": 2,
+    "expanded_nodes": 13,
+    "search_time_ms": 1.792,
+    "memory_kb": 12.02,
+    "total_cost": 2.0
+  }
+}
