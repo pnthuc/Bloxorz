@@ -11,8 +11,9 @@ Quân đo và kiểm chứng số liệu; Phúc nhận CSV để làm bảng/bi�
 - 25 màn trong `Src/levels/`, giữ ID không liên tiếp theo [bộ đã chọn](LEVEL_SELECTION.md).
   `Src/tests/test_cases.json` gồm 25 ca màn và 12 ca biên; 37 ca kiểm chứng không phải 37 màn độc lập.
 - Đã có [dfs.docx](dfs.docx), [level-groups.csv](level-groups.csv)
-  và [dữ liệu chạy thử](benchmarks/run-config.json): màn 1, 4, bốn solver, một lần/lượt.
-  Đây chưa phải bộ số liệu lặp chính thức. Chưa có CSV tổng hợp hoặc phương pháp đo.
+  và [dữ liệu Q02 chạy lại](benchmarks/q02-recheck-20261031/run-config.json): màn 1, 4, bốn solver, một lần/lượt.
+  8/8 SOLVED, gắn source commit 1e07d6e. Đây chưa phải bộ số liệu lặp chính thức Q04;
+  phần tổng hợp và methodology chính thức Q05 vẫn chưa hoàn tất.
 
 ## Nhiệm vụ
 

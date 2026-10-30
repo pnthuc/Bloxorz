@@ -49,6 +49,9 @@ T1–T12 là ca kiểm chứng, không cộng thành 12 màn benchmark độc l�
 - Các trial lịch sử được giữ nguyên source/metadata. Kết quả engine mới lưu ở thư mục mới.
 - Bốn solver trên 37 ca của engine mới: đủ 148 tổ hợp hoàn tất đúng kỳ vọng,
   gồm 132 SOLVED và 16 NO_SOLUTION, không timeout/lỗi. Log ở comparison-study/curated-main-check-20261031.
+- Q02 chạy lại đúng CLI báo cáo trên màn 1, 4 với bốn solver: 8/8 SOLVED, CSV giữ nguyên
+  schema và JSON được replay/đối chiếu optimality. Log benchmarks/q02-recheck-20261031
+  gắn commit source 1e07d6e và git_dirty=false; dữ liệu thử cũ không bị thay đổi.
 
 Đã hoàn tất cập nhật Q01–Q03 trong phạm vi code, dữ liệu và tài liệu của Quân.
 Q04 vẫn cần snapshot/cấu hình được nhóm chốt; Q05/Q06 không tự đánh dấu hoàn thành.
