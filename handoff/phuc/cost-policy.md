@@ -6,9 +6,11 @@ date: ""
 lang: vi-VN
 ---
 
-Tài liệu này định nghĩa hàm chi phí dùng chung cho UCS và A* trong Bloxorz. Mỗi hành động hợp lệ có chi phí cơ bản bằng 1. Mỗi ô gạch cam mà khối chiếm giữ sau hành động làm tăng chi phí thêm 0,5. Cách tính này kết hợp mục tiêu giảm số hành động với mục tiêu hạn chế tiếp xúc với ô dễ vỡ.
+Tài liệu này định nghĩa hàm chi phí dùng chung cho UCS và A* trong Bloxorz. Mỗi hành động lăn hợp lệ có chi phí cơ bản bằng 1. Mỗi ô gạch cam mà khối chiếm giữ sau hành động làm tăng chi phí thêm 0,5. SPACE chỉ chọn khối khi chơi tay, miễn phí và không là cạnh tìm kiếm. Cách tính này kết hợp mục tiêu giảm số bước lăn với mục tiêu hạn chế tiếp xúc với ô dễ vỡ.
 
-Phiên bản đối chiếu ngày 29/10/2026 là commit `71c3a52bb7aba20f50160ce73d24305de92ff0d6` của repo `pnthuc/Bloxorz`, trên nhánh `work/phuc-charts-video`. Tài liệu mô tả code tại commit này và giữ nguyên hàm chi phí cùng các mốc kiểm thử. Người nhận gồm Quân, Thiện, Nam và Thức.
+Ngày đối chiếu là 30/10/2026. Bản cập nhật giữ nguyên công thức và áp dụng quy ước chọn khối miễn phí đã có trên main. Người nhận gồm Quân, Thiện, Nam và Thức.
+
+Commit đối chiếu là `721c198dfc2a6fff92d451a763015d974fa3b52a` của repo `pnthuc/Bloxorz`, trên nhánh `work/phuc-charts-video`. Source liên quan đã đồng bộ quy ước của main `087d65d`.
 
 # 1 Định nghĩa hàm chi phí
 
@@ -24,11 +26,11 @@ def step_cost(board: BloxorzBoard, next_state: State) -> float:
     )
 ```
 
-`board` là bàn chơi chứa lưới `grid`. Giá trị `2` trong lưới biểu thị ô gạch cam dễ vỡ, tương ứng với hằng `FRAGILE` của engine. `next_state` là trạng thái hợp lệ sau khi engine thực hiện hành động và xử lý công tắc, cầu, tách khối hoặc ghép khối. Hàm `get_occupied_cells()` trả các ô mà toàn bộ khối đang chiếm giữ, kể cả cả hai khối đơn khi tách đôi. [1][2]. Vì vậy, chi phí chỉ phụ thuộc vào bàn chơi và vùng chiếm giữ của trạng thái sau.
+`board` là bàn chơi chứa lưới `grid`. Giá trị `2` trong lưới biểu thị ô gạch cam dễ vỡ, tương ứng với hằng `FRAGILE` của engine. `next_state` là trạng thái hợp lệ sau một bước lăn và sau khi engine xử lý công tắc, cầu, tách khối hoặc ghép khối. Hàm `get_occupied_cells()` trả các ô mà toàn bộ khối đang chiếm giữ, kể cả cả hai khối đơn khi tách đôi. Vì vậy, chi phí chỉ phụ thuộc vào bàn chơi và vùng chiếm giữ của trạng thái sau. [1][2]
 
 ## 1.2 Công thức và miền giá trị
 
-Với chuyển trạng thái hợp lệ từ $s$ sang $s'$ qua hành động $a$, đặt $O(s')$ là tập ô mà khối chiếm giữ ở $s'$. Số ô gạch cam trong tập này là:
+Với một cạnh tìm kiếm hợp lệ từ $s$ sang $s'$ qua hành động lăn $a$, đặt $O(s')$ là tập ô mà khối chiếm giữ ở $s'$. Số ô gạch cam trong tập này là:
 
 $$
 k(s') = \sum_{(r,c)\in O(s')} \mathbf{1}[\mathrm{grid}[r][c]=2].
@@ -48,7 +50,7 @@ Một trạng thái hợp lệ chiếm một hoặc hai ô. Vì vậy, $k(s')\in
 | 1 | 1,5 | Chi phí cơ bản cộng một mức phạt |
 | 2 | 2,0 | Chi phí cơ bản cộng hai mức phạt |
 
-Mọi hành động hợp lệ đều có chi phí dương, với cận dưới bằng 1. Không có cạnh chi phí 0 hoặc âm. Kiểu kết quả là `float`.
+Mọi cạnh tìm kiếm đều có chi phí dương, với cận dưới bằng 1. Đồ thị mà solver duyệt không có cạnh chi phí 0 hoặc âm. Thao tác chọn khối miễn phí nằm ngoài đồ thị này. Kiểu kết quả của `step_cost()` là `float`.
 
 ## 1.3 Vì sao chi phí không âm
 
@@ -58,7 +60,7 @@ Số ô cam $k(s')$ luôn không âm, hệ số phạt 0,5 là số dương và 
 
 Ý nghĩa bài toán là một lý do độc lập với thuật toán. Chi phí đang biểu diễn công sức thực hiện hành động và mức phạt khi tiếp xúc gạch cam. Cả hai thành phần đều là phần phải trả. Nếu một cách thiết kế tạo chu trình có tổng chi phí âm trên đường tới đích, người giải có thể lặp chu trình để giảm chi phí mãi. Khi đó, bài toán không còn một chi phí tối ưu hữu hạn. Công thức hiện tại loại trừ tình huống này. [9]
 
-Dijkstra cho phép cạnh có chi phí 0, nên điều kiện dương không phải yêu cầu bắt buộc của thuật toán. Nhóm chọn cận dưới bằng 1 để mọi hành động, kể cả SPACE, đều có giá phải trả. Với lựa chọn này, mỗi chu trình làm tăng chi phí và việc đi vòng không thể cải thiện lời giải. Tổng chi phí 0 chỉ dành cho đường đi rỗng khi đã ở đích. [1][8]
+Dijkstra cho phép cạnh có chi phí 0, nên điều kiện dương không phải yêu cầu bắt buộc của thuật toán. Trong mô hình hiện tại, mỗi cạnh luôn gồm một bước lăn có cost ít nhất 1. Thao tác SPACE chọn khối miễn phí nhưng không sinh cạnh tìm kiếm. Vì vậy, mọi chu trình trong đồ thị tìm kiếm đều làm tăng cost. Một lời giải có tổng cost 0 chỉ khi đường đi rỗng và đã ở đích. [1][2][8]
 
 # 2 Lý do chọn chi phí không đồng nhất
 
@@ -74,7 +76,9 @@ Nếu mọi hành động đều có chi phí 1, UCS tối ưu số hành độn
 
 # 3 Quy ước cho các tình huống đặc biệt
 
-**SPACE.** Khi khối đang tách đôi, SPACE đổi khối đơn đang điều khiển. Hành động này có chi phí cơ bản bằng 1 dù không thay đổi tọa độ. Hàm tiếp tục đếm gạch cam dưới cả hai khối đơn. Nếu một khối đơn còn trên gạch cam, SPACE có chi phí 1,5. Nếu cả hai khối đơn còn trên gạch cam, SPACE có chi phí 2. Ngoài trạng thái tách đôi, engine không sinh SPACE hợp lệ. [1][2]
+**SPACE và chọn khối.** Khi khối đang tách đôi, SPACE chỉ đổi khối đơn đang điều khiển và giữ nguyên tọa độ, cầu. Đây là thao tác chơi tay miễn phí. `get_successors()` không sinh SPACE và `replay_solution()` không nhận SPACE trong lời giải solver. [2][4]
+
+**Đổi khối rồi lăn.** Tập hành động tìm kiếm gồm `UP`, `LEFT`, `RIGHT`, `DOWN`, `SUP`, `SLEFT`, `SRIGHT`, `SDOWN`. Tiền tố S có nghĩa là đổi khối đang điều khiển rồi lăn theo hướng còn lại. Một lệnh có tiền tố S là một cạnh, chỉ tính cost một lần trên trạng thái sau bước lăn. Khi chưa tách khối, engine chỉ sinh bốn hướng thường. [2]
 
 **Tiếp xúc lặp lại với gạch cam.** Công thức tính vùng chiếm giữ sau mỗi hành động, không chỉ tính ô vừa đi vào. Khi một khối đơn giữ nguyên vị trí trên gạch cam và khối còn lại di chuyển, hành động mới vẫn chịu mức phạt cho ô cam đó. Đây là cách tính mức tiếp xúc theo từng hành động, không phải đếm số ô cam khác nhau đã ghé qua.
 
@@ -90,7 +94,7 @@ Nếu mọi hành động đều có chi phí 1, UCS tối ưu số hành độn
 
 ## 4.1 Đường đi thật trên màn 2
 
-Màn 2 trong `Src/levels/level_2_fragile.json` có vị trí xuất phát `(2,1)`. Ca kiểm thử `2` cung cấp chuỗi hành động dưới đây. Chỉ số hàng và cột bắt đầu từ 0. Các tọa độ trong bảng là vùng chiếm giữ sau hành động. [4]
+Màn 2 trong `Src/levels/level_02.json` có vị trí xuất phát `(2,1)`. Ca kiểm thử `2` cung cấp chuỗi hành động dưới đây. Chỉ số hàng và cột bắt đầu từ 0. Các tọa độ trong bảng là vùng chiếm giữ sau hành động. [4]
 
 | Bước | Hành động | Các ô bị chiếm sau hành động | Số ô cam | Chi phí bước | Tích lũy |
 |---:|---|---|---:|---:|---:|
@@ -101,11 +105,13 @@ Màn 2 trong `Src/levels/level_2_fragile.json` có vị trí xuất phát `(2,1)
 | 5 | DOWN | (2,5), (2,6) | 1 | 1,5 | 6,5 |
 | 6 | RIGHT | (2,7), là đích | 0 | 1,0 | 7,5 |
 
-Chuỗi này có 6 hành động, không có SPACE và tổng chi phí bằng 7,5. Lần đối chiếu ngày 29/10/2026 bằng `replay_solution()` xác nhận đường đi hợp lệ và trả cùng chi phí. Trên màn này, BFS và UCS hiện trả cùng chuỗi hành động. BFS báo `total_cost=6.0`, còn UCS báo `total_cost=7.5`.
+Chuỗi này có 6 bước lăn và tổng chi phí bằng 7,5. Lần đối chiếu ngày 30/10/2026 bằng `replay_solution()` xác nhận đường đi hợp lệ và trả cùng chi phí. Trên màn này, BFS và UCS trả cùng chuỗi hành động. BFS báo `total_cost=6`, còn UCS báo `total_cost=7.5`.
 
-## 4.2 Ví dụ riêng cho SPACE
+## 4.2 Ví dụ chọn khối miễn phí rồi lăn
 
-Một board kiểm tra có hàng ô `[1, 2, 1, 1, 9]`. Trạng thái tách đôi có hai khối đơn tại `(0,1)` và `(0,3)`, với khối đơn 0 đang điều khiển. Sau SPACE, hai tọa độ giữ nguyên và `active_cube` chuyển sang 1. Trạng thái sau còn chiếm một ô cam nên chi phí bằng $1+0.5=1.5$. Phép tính trực tiếp bằng engine và `step_cost()` cho cùng kết quả.
+Một board kiểm tra có hàng ô `[1, 2, 1, 1, 9]`. Trạng thái tách đôi có hai khối đơn tại `(0,1)` và `(0,3)`, với khối đơn 0 đang điều khiển. Khi chơi tay, SPACE đổi `active_cube` sang 1, giữ nguyên hai tọa độ và không cộng cost. Việc còn một khối đơn trên gạch cam không làm thao tác chọn khối bị tính phí.
+
+Lệnh `SLEFT` từ trạng thái ban đầu chọn khối đơn 1 rồi lăn sang `(0,2)`. Hai khối đơn ghép thành khối nằm ngang, chiếm `(0,1)` và `(0,2)`. Trạng thái sau có một ô cam nên bước lăn này có cost $1+0.5=1.5$.
 
 ## 4.3 Minh họa sự đánh đổi giữa hành động và chi phí
 
@@ -128,21 +134,21 @@ $$
 =m+0.5\sum_{i=1}^{m}k(s_i).
 $$
 
-Trong công thức này, $m$ là số hành động, kể cả SPACE. Trạng thái xuất phát không chịu chi phí riêng. Mỗi hành động hợp lệ đóng góp đúng một lần, gồm hành động tới đích. Với lời giải rỗng hợp lệ, tổng bằng 0.
+Trong công thức này, $m=\operatorname{len}(moves)$ là số hành động lăn thuộc tập tám hướng. Lệnh có tiền tố S vẫn tính một hành động. SPACE không nằm trong `moves`. Trạng thái xuất phát không chịu chi phí riêng. Mỗi cạnh đóng góp đúng một lần, gồm cạnh tới đích. Với lời giải rỗng hợp lệ, tổng bằng 0.
 
-Quân tính `path_cost` bằng cách phát lại `moves` từ trạng thái xuất phát trên một board riêng. Mỗi lần `apply_move()` trả trạng thái hợp lệ, quy trình cộng `step_cost(board, next_state)`. Chỉ đường đi hợp lệ và kết thúc tại đích mới có `path_cost` của lời giải. `replay_solution()` đã thực hiện cách cộng này. [4]
+Quân tính `path_cost` bằng cách phát lại `moves` từ trạng thái xuất phát trên một board riêng. Danh sách chỉ chứa hành động thuộc `SEARCH_ACTIONS`. Mỗi lần `apply_move()` trả trạng thái hợp lệ, quy trình cộng `step_cost(board, next_state)`. Chỉ đường đi hợp lệ và kết thúc tại đích mới có `path_cost` của lời giải. `replay_solution()` trong `Src/core/replay.py` đã thực hiện cách cộng này. [4]
 
 | Trường | Ý nghĩa tại phiên bản đối chiếu |
 |---|---|
-| `path_cost` | Tổng chi phí có trọng số tính lại từ đường đi, dùng chung cho bốn solver |
-| `total_cost` của UCS và A* | Tổng chi phí có trọng số do solver trả, cần khớp replay khi tìm thấy lời giải |
-| `total_cost` của BFS và DFS | Số bước lăn do solver trả, loại SPACE |
-| `len(moves)` | Số hành động trong danh sách, kể cả SPACE |
-| `solution_length` trong API | Số bước lăn, loại SPACE |
-| `solution_length` trong script thực nghiệm | Số hành động, kể cả SPACE |
-| `rolling_steps` trong script thực nghiệm | Số bước lăn, loại SPACE |
+| `path_cost` trong CLI | Cost chung tính lại bằng replay cho cả bốn solver |
+| `total_cost` gốc của UCS/A* | Cost có trọng số, cần khớp replay khi có lời giải |
+| `total_cost` gốc của BFS/DFS | Số hành động lăn, bằng `len(moves)` |
+| `len(moves)` và `solution_length` | Số cạnh lăn trong lời giải, gồm cả lệnh có tiền tố S |
+| `rolling_steps` trong CLI | Bằng `len(moves)`, cùng ý nghĩa số bước lăn |
+| `total_cost` của GUI benchmark | Cost chung đã tính lại |
+| `solver_reported_cost` của GUI benchmark | Giá trị `total_cost` gốc mà solver trả |
 
-Benchmark giữ nguyên `total_cost` gốc trong cột riêng. Khi so sánh chất lượng đường đi giữa các solver, báo cáo dùng `path_cost`. Các bảng độ dài ghi rõ đang dùng số hành động hay số bước lăn. Hai đại lượng này khác nhau trên đường đi có SPACE. [3][5]
+CLI trong `Src/benchmarks/cli.py` giữ `total_cost` gốc và lưu thêm `path_cost`. GUI benchmark trong `Src/benchmarks/worker.py` tính lại cost chung vào `total_cost` và lưu số gốc ở `solver_reported_cost`. Khi ghép bảng, báo cáo ghi rõ nguồn schema và dùng cột cost chung tương ứng để so chéo. Trong lời giải solver hiện tại, số hành động và số bước lăn bằng nhau vì mỗi lệnh đều lăn đúng một bước. [3][5]
 
 Khi `found=False`, solver hiện trả `total_cost=0.0` để thống nhất cấu trúc kết quả. Với lượt vô nghiệm, timeout, lỗi hoặc đường đi không hợp lệ, bảng thực nghiệm để trống chi phí lời giải dùng chung và giữ trạng thái tương ứng.
 
@@ -150,32 +156,38 @@ Khi `found=False`, solver hiện trả `total_cost=0.0` để thống nhất c�
 
 UCS hiện dùng tổng chi phí $g(s)$ làm độ ưu tiên trong heap. Khi sinh trạng thái kế tiếp, thuật toán tính `next_g = current_g + step_cost(board, next_state)`. Thuật toán cập nhật đường tốt hơn qua `best_g`, bỏ mục heap lỗi thời và chỉ kết luận thành công khi lấy đích ra khỏi heap. [3]
 
-Vì mỗi cạnh có chi phí ít nhất 1, các đường nối dài không thể giảm tổng chi phí. Với việc lưu đầy đủ `State`, UCS trên đồ thị hữu hạn của màn chơi tìm lời giải có `path_cost` nhỏ nhất khi có đủ tài nguyên. Trường hợp mọi cạnh bằng 1 cho mục tiêu tối ưu giống BFS. Kết luận này không đồng nhất số bước lăn với số hành động có SPACE. [3][6]
+Vì mỗi cạnh có chi phí ít nhất 1, các đường nối dài không thể giảm tổng chi phí. Với việc lưu đầy đủ `State`, UCS trên đồ thị hữu hạn của màn chơi tìm lời giải có `path_cost` nhỏ nhất khi có đủ tài nguyên. Khi mọi cạnh bằng 1, UCS và BFS cùng tối ưu số bước lăn trong tập tám hướng. [2][3][6]
 
 A* nhập cùng hàm `step_cost()` và cộng hàm này vào $g(s)$. Do đó, UCS và A* dùng cùng đơn vị chi phí cho phần đường đã đi. Nếu Thiện xây dựng một cận dưới đúng cho số hành động còn lại, cận dưới đó cũng là cận dưới cho chi phí còn lại, vì mỗi hành động có chi phí ít nhất 1. [3]
-
-Điều kiện $c\geq1$ tự nó không chứng minh rằng heuristic hiện có là chấp nhận được hoặc nhất quán. Thiện vẫn cần kiểm tra công thức heuristic trên cơ chế tách, ghép và dịch chuyển, rồi xác nhận giả thiết dùng trong báo cáo. P01 chỉ xác định hàm chi phí và điều kiện cận dưới mà phần heuristic có thể sử dụng.
 
 # 7 Đối chiếu tài liệu và trạng thái bàn giao
 
 ## 7.1 Nội dung khớp và điểm cần thống nhất
 
-`costs.py`, cách cộng chi phí trong UCS/A* và `replay_solution()` cùng dùng vùng chiếm giữ của trạng thái sau. README gốc cũng ghi đúng công thức và cách tính SPACE. Docstring UCS ghi đúng cận dưới `step_cost >= 1`. `costs.py` hiện không có docstring riêng. Tài liệu này cung cấp đặc tả chi tiết cho hàm đó. [1][3][4]
+`costs.py`, cách cộng chi phí trong UCS/A* và `core/replay.py` cùng dùng vùng chiếm giữ của trạng thái sau bước lăn. README gốc và `handoff/shared/baseline.md` ghi cùng quy ước tám hướng, SPACE chọn khối miễn phí. Docstring UCS ghi cận dưới `step_cost >= 1`. Docstring của `costs.py` cũng nêu rõ SPACE không sinh cạnh tìm kiếm. [1][2][3][4][5]
 
-README gốc mô tả `total_cost` của BFS/DFS là số hành động. Code hiện tại thực tế loại SPACE. Tài liệu này dùng ý nghĩa đúng theo code và phân biệt rõ các cột trong mục 5. CSV chạy thử của Quân ghi BFS màn 4 có 17 hành động, 16 bước lăn và `total_cost=17.0`. Metadata của CSV ghi commit `c37fa0d96b4639eb4a6aa6e08197568d3a496e81`, khác phiên bản đối chiếu. Vì vậy, số liệu đó không đại diện cho `total_cost` mà code hiện tại trả. [5]
+README và code BFS/DFS hiện thống nhất `total_cost = len(moves)`. Sự khác nhau giữa cost gốc và cost có trọng số vẫn còn trên đường đi chiếm gạch cam. Dữ liệu đo theo mô hình SPACE riêng trước đây cần được giữ đúng phiên bản và đo lại trước khi so sánh với source hiện tại. Việc sửa tài liệu không chuyển số liệu cũ thành kết quả đo mới. [3][5]
 
 ## 7.2 Ảnh hưởng tới mốc kiểm thử
 
-P01 giữ nguyên công thức tại commit đối chiếu. Vì vậy, không có mốc kỳ vọng nào cần thay đổi do tài liệu này. Các mốc sau giúp Thức đối chiếu khi ghép bản nộp. Đây là dữ liệu kiểm thử, không phải số liệu hiệu năng của một đợt thực nghiệm chính thức. [4]
+Main đã cập nhật mô hình hành động và các mốc kiểm thử liên quan. Công thức vẫn giữ nguyên, nhưng bỏ cạnh SPACE riêng làm thay đổi cost của các màn có tách khối. Bảng dưới so mốc `ucs_cost` của phiên bản P01/P02 cũ với source hiện tại. Đây là dữ liệu kiểm thử, không phải số liệu hiệu năng của đợt thực nghiệm chính thức. [4]
 
-| Ca | Mốc hiện có | Ảnh hưởng của P01 |
-|---|---|---|
-| 2 và T2 | Chi phí tối ưu 7,5 | Giữ nguyên |
-| 4 | 16 bước lăn, 17 hành động trong đường mẫu, chi phí 17,5 | Giữ nguyên |
-| 33 | Chi phí tối ưu 119,5, đường mẫu có chi phí 120 | Giữ nguyên |
-| T10 | Xuất phát tại đích, lời giải rỗng, chi phí 0 | Giữ nguyên |
+| Ca | Cost cũ | Cost hiện tại | Ghi chú |
+|---|---:|---:|---|
+| 2 và T2 | 7,5 | 7,5 | Không đổi |
+| 4 | 17,5 | 16,5 | 16 hành động, có một lệnh SUP |
+| 10 | 22 | 20 | Đổi khối gộp với hướng lăn |
+| 17 | 24 | 22 | Đổi khối gộp với hướng lăn |
+| 20 | 21 | 19 | Đổi khối gộp với hướng lăn |
+| 22 | 24,5 | 22,5 | Đổi khối gộp với hướng lăn |
+| 25 | 57 | 55 | Đổi khối gộp với hướng lăn |
+| 28 | 58 | 57 | Đổi khối gộp với hướng lăn |
+| 29 | 48 | 47 | Đổi khối gộp với hướng lăn |
+| 33 | 119,5 | 110,5 | Đường mẫu trong test có cost 111,0 |
+| T3 | 17 | 16 | Ca chức năng tách khối |
+| T10 | 0 | 0 | Xuất phát tại đích |
 
-Nếu nhóm đổi hệ số phạt, cách tính SPACE hoặc vùng ô dùng để tính chi phí, nhóm cần cập nhật phiên bản policy. Khi đó, Thức kiểm tra lại các mốc chịu ảnh hưởng và Quân xác định dữ liệu cần đo lại. Các số theo policy cũ giữ nguyên nguồn gốc và không được đổi nhãn thành số liệu mới.
+Mốc đường mẫu của ca 33 cũng đổi từ 120 xuống 111. Mốc này khác cost 111,5 của đường BFS hiện trả trong lượt kiểm chứng P02. Nhóm cần phân biệt đường mẫu, kết quả solver và chi phí tối ưu khi dùng số liệu. Nếu tiếp tục đổi hệ số phạt, tập hành động hoặc vùng ô tính cost, Thức kiểm tra lại mốc và Quân xác định phần cần đo lại.
 
 ## 7.3 Xác nhận còn lại
 
@@ -188,15 +200,15 @@ Bản nội dung P01 đã có công thức, lý do chọn, ví dụ và commit �
 
 # 8 Nguồn đối chiếu và sử dụng AI
 
-[1] `Src/solvers/costs.py`. Công thức chi phí dùng chung. [Bản nguồn tại commit đối chiếu](https://github.com/pnthuc/Bloxorz/blob/71c3a52bb7aba20f50160ce73d24305de92ff0d6/Src/solvers/costs.py).
+[1] `Src/solvers/costs.py`. Công thức chi phí dùng chung. [Bản nguồn tại commit đối chiếu](https://github.com/pnthuc/Bloxorz/blob/721c198dfc2a6fff92d451a763015d974fa3b52a/Src/solvers/costs.py).
 
-[2] `Src/game_logic.py`. Biểu diễn State, vùng chiếm giữ, điều kiện thắng và xử lý hành động. [Bản nguồn tại commit đối chiếu](https://github.com/pnthuc/Bloxorz/blob/71c3a52bb7aba20f50160ce73d24305de92ff0d6/Src/game_logic.py).
+[2] `Src/core/board.py`. Biểu diễn State, vùng chiếm giữ, tập tám hướng và SPACE chơi tay. [Bản nguồn tại commit đối chiếu](https://github.com/pnthuc/Bloxorz/blob/721c198dfc2a6fff92d451a763015d974fa3b52a/Src/core/board.py).
 
-[3] `Src/solvers/member5_ucs.py`, `member4_astar.py`, `member3_bfs.py`, `member2_dfs.py` và `base.py`. Cách cộng và trả chi phí trong bốn solver. [Thư mục solver tại commit đối chiếu](https://github.com/pnthuc/Bloxorz/tree/71c3a52bb7aba20f50160ce73d24305de92ff0d6/Src/solvers).
+[3] `Src/solvers/member5_ucs.py`, `member4_astar.py`, `member3_bfs.py`, `member2_dfs.py` và `base.py`. Cách cộng và trả chi phí trong bốn solver. [Thư mục solver tại commit đối chiếu](https://github.com/pnthuc/Bloxorz/tree/721c198dfc2a6fff92d451a763015d974fa3b52a/Src/solvers).
 
-[4] `Src/tests/helpers.py`, `Src/tests/test_cases.json` và `Src/levels/level_2_fragile.json`. Replay, đường đi mẫu và mốc kiểm thử tại cùng commit. [Thư mục kiểm thử](https://github.com/pnthuc/Bloxorz/tree/71c3a52bb7aba20f50160ce73d24305de92ff0d6/Src/tests).
+[4] `Src/core/replay.py` kiểm tra lời giải. `Src/tests/helpers.py` nạp ca kiểm thử. Các mốc và đường mẫu nằm trong `Src/tests/test_cases.json`. Board ví dụ lấy từ `Src/levels/level_02.json`. [Thư mục source tại commit đối chiếu](https://github.com/pnthuc/Bloxorz/tree/721c198dfc2a6fff92d451a763015d974fa3b52a/Src).
 
-[5] README gốc, `Src/experiments.py`, `handoff/shared/baseline.md`, bộ CSV/metadata trong `handoff/quan/benchmarks/` và `handoff/thien/heuristic-policy.docx`. Nguồn đối chiếu quy ước bàn giao trong repo, đọc ngày 29/10/2026.
+[5] README gốc và `handoff/shared/baseline.md` ghi quy ước chung. CLI nằm trong `Src/benchmarks/cli.py`. Worker của GUI nằm trong `Src/benchmarks/worker.py`. Hai nguồn này xác định schema cost tương ứng, đọc ngày 30/10/2026.
 
 [6] UC Berkeley, CS 188, “1.3 Uninformed Search”, mục BFS và UCS. Nguồn lý thuyết về thứ tự tìm kiếm, tính tối ưu và trường hợp chi phí đồng nhất. [Tài liệu chính thức](https://inst.eecs.berkeley.edu/~cs188/textbook/search/uninformed.html). Truy cập ngày 29/10/2026.
 
@@ -206,4 +218,4 @@ Bản nội dung P01 đã có công thức, lý do chọn, ví dụ và commit �
 
 [9] MIT OpenCourseWare, 6.006 Introduction to Algorithms, Spring 2020, “Lecture 11: Weighted Shortest Paths”. Chu trình âm và trường hợp chi phí đường đi không có giá trị tối ưu hữu hạn. [Tài liệu chính thức](https://live.ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/aa57a9785adf925bc85c1920f53755a0_MIT6_006S20_lec11.pdf). Truy cập ngày 29/10/2026.
 
-ChatGPT Codex hỗ trợ đọc mã nguồn, đối chiếu phép tính, soạn nội dung tiếng Việt và kiểm tra bản chuyển đổi tài liệu. Người phụ trách đọc lại và xác nhận nội dung trước khi nhóm dùng làm giao ước tại M0.
+ChatGPT Codex hỗ trợ đọc mã nguồn, đối chiếu phép tính, dàn ý nội dung và kiểm tra bản chuyển đổi tài liệu. Người phụ trách đọc lại và xác nhận nội dung trước khi nhóm dùng làm giao ước tại M0.
