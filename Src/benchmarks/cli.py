@@ -1,9 +1,8 @@
-# Source/experiments.py
+"""Command-line benchmarking: python -m benchmarks.cli."""
 import argparse
 import csv
 import json
 import multiprocessing as mp
-import os
 import platform
 import subprocess
 import sys
@@ -11,11 +10,9 @@ import time
 from datetime import datetime
 from pathlib import Path
 
-SRC_DIR = Path(__file__).resolve().parent
+SRC_DIR = Path(__file__).resolve().parents[1]
 PROJECT_ROOT = SRC_DIR.parent
 DEFAULT_OUTPUT_DIR = str(PROJECT_ROOT / "handoff" / "quan" / "benchmarks")
-if str(SRC_DIR) not in sys.path:
-    sys.path.insert(0, str(SRC_DIR))
 
 if sys.stdout and hasattr(sys.stdout, "reconfigure"):
     try:
@@ -23,10 +20,10 @@ if sys.stdout and hasattr(sys.stdout, "reconfigure"):
     except Exception:
         pass
 
-from main import load_all_levels
-from game_logic import BloxorzBoard
+from core.levels import load_all_levels
+from core.board import BloxorzBoard
 from solvers import solve_bfs, solve_dfs, solve_ucs, solve_astar
-from tests.helpers import replay_solution
+from core.replay import replay_solution
 
 SOLVER_MAP = {
     "bfs": solve_bfs,
@@ -125,100 +122,65 @@ def _worker_solver_process(solver_name: str, level_data: dict, conn) -> None:
         conn.close()
 
 
-def run_single_solver(solver_name: str, level_data: dict, timeout_sec: float) -> dict:
-    """Điều phối 1 lượt chạy với cơ chế ngắt Timeout và kiểm chứng Replay."""
-    parent_conn, child_conn = mp.Pipe(duplex=False)
-    proc = mp.Process(
-        target=_worker_solver_process,
-        args=(solver_name, level_data, child_conn),
-    )
-    proc.start()
-    child_conn.close()
-
-    proc.join(timeout=timeout_sec)
-
-    # 1. Trường hợp bị TIMEOUT
-    if proc.is_alive():
-        proc.terminate()
-        proc.join(timeout=2.0)
-        if proc.is_alive():
-            proc.kill()
-        parent_conn.close()
-        return {
-            "status": "TIMEOUT",
-            "search_time_ms": "",
-            "memory_kb": "",
-            "expanded_nodes": "",
-            "solution_length": "",
-            "rolling_steps": "",
-            "total_cost": "",
-            "path_cost": "",
-            "error_message": f"Vượt quá giới hạn thời gian {timeout_sec}s",
-            "moves": [],
-        }
-
-    # 2. Trường hợp hoàn thành trong thời gian cho phép
-    if parent_conn.poll():
-        resp = parent_conn.recv()
-        parent_conn.close()
-        if not resp.get("success"):
-            return {
-                "status": "ERROR",
-                "search_time_ms": "",
-                "memory_kb": "",
-                "expanded_nodes": "",
-                "solution_length": "",
-                "rolling_steps": "",
-                "total_cost": "",
-                "path_cost": "",
-                "error_message": resp.get("error", "Lỗi không xác định trong solver"),
-                "moves": [],
-            }
-
-        solver_data = resp.get("data", {})
-        found = solver_data.get("found", False)
-        moves = solver_data.get("moves", [])
-
-        if found:
-            # Replay kiểm chứng đường đi và tính path_cost ngoài vùng đo profiler
-            board_verify = BloxorzBoard(level_data)
-            replay = replay_solution(board_verify, moves)
-            status = "SOLVED" if replay.valid else "INVALID_PATH"
-            path_cost = round(replay.cost, 2)
-            err_msg = "" if replay.valid else f"Đường đi không hợp lệ: {replay.message}"
-        else:
-            status = "NO_SOLUTION"
-            path_cost = ""
-            err_msg = ""
-
-        sol_len = len(moves) if found else ""
-        roll_steps = sum(1 for m in moves if m != "SPACE") if found else ""
-
-        return {
-            "status": status,
-            "search_time_ms": solver_data.get("search_time_ms", ""),
-            "memory_kb": solver_data.get("memory_kb", ""),
-            "expanded_nodes": solver_data.get("expanded_nodes", ""),
-            "solution_length": sol_len,
-            "rolling_steps": roll_steps,
-            "total_cost": solver_data.get("total_cost", ""),
-            "path_cost": path_cost,
-            "error_message": err_msg,
-            "moves": moves,
-        }
-
-    parent_conn.close()
+def _empty_result(status: str, message: str) -> dict:
     return {
-        "status": "ERROR",
-        "search_time_ms": "",
-        "memory_kb": "",
-        "expanded_nodes": "",
-        "solution_length": "",
-        "rolling_steps": "",
-        "total_cost": "",
-        "path_cost": "",
-        "error_message": f"Tiến trình kết thúc với mã {proc.exitcode} mà không có dữ liệu",
+        "status": status,
+        **{key: "" for key in ("search_time_ms", "memory_kb", "expanded_nodes",
+                               "solution_length", "rolling_steps", "total_cost", "path_cost")},
+        "error_message": message,
         "moves": [],
+    }
+
+
+def run_single_solver(solver_name: str, level_data: dict, timeout_sec: float) -> dict:
+    """Chạy cô lập; timeout gồm khởi động tiến trình, replay nằm ngoài profiler."""
+    parent_conn, child_conn = mp.Pipe(duplex=False)
+    proc = mp.Process(target=_worker_solver_process,
+                      args=(solver_name, level_data, child_conn))
+    try:
+        proc.start()
+        child_conn.close()
+        # Drain the pipe before joining: long answers can fill its buffer and
+        # prevent an otherwise completed worker from exiting.
+        if not parent_conn.poll(timeout_sec):
+            return _empty_result("TIMEOUT", f"Vượt quá giới hạn thời gian {timeout_sec}s")
+        resp = parent_conn.recv()
+    except (EOFError, OSError, RuntimeError) as exc:
+        return _empty_result("ERROR", f"Tiến trình đo bị gián đoạn: {exc}")
+    finally:
+        parent_conn.close()
+        child_conn.close()
+        if proc.pid is not None:
+            proc.join(.2)
+            if proc.is_alive():
+                proc.terminate()
+                proc.join(2)
+            if proc.is_alive():
+                proc.kill()
+                proc.join()
+            proc.close()
+
+    if not resp.get("success"):
+        return _empty_result("ERROR", resp.get("error", "Lỗi không xác định trong solver"))
+    solver_data = resp.get("data", {})
+    found = solver_data.get("found", False)
+    moves = solver_data.get("moves", [])
+    if found:
+        replay = replay_solution(BloxorzBoard(level_data), moves)
+        status = "SOLVED" if replay.valid else "INVALID_PATH"
+        path_cost = round(replay.cost, 2)
+        err_msg = "" if replay.valid else f"Đường đi không hợp lệ: {replay.reason}"
+    else:
+        status, path_cost, err_msg = "NO_SOLUTION", "", ""
+    return {
+        "status": status,
+        **{key: solver_data.get(key, "") for key in
+           ("search_time_ms", "memory_kb", "expanded_nodes", "total_cost")},
+        "solution_length": len(moves) if found else "",
+        "rolling_steps": len(moves) if found else "",
+        "path_cost": path_cost,
+        "error_message": err_msg,
+        "moves": moves,
     }
 
 

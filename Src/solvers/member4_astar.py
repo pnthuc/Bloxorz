@@ -1,7 +1,7 @@
 from typing import Any, Dict, List, Tuple, Optional
 import heapq
 import itertools
-from game_logic import BloxorzBoard, State, SPLIT, STANDING
+from core.board import BloxorzBoard, State, SPLIT
 from .base import run_with_profiler
 from .costs import step_cost
 

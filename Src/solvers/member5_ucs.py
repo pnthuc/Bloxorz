@@ -7,7 +7,7 @@ from heapq import heappop, heappush
 from itertools import count
 from typing import Any, Dict, List, Optional, Tuple
 
-from game_logic import BloxorzBoard, State
+from core.board import BloxorzBoard, State
 from .base import run_with_profiler
 from .costs import step_cost
 

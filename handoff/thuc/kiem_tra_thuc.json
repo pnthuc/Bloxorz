@@ -1,0 +1,2454 @@
+{
+  "date": "2026-10-26",
+  "purpose": "Functional validation of Thuc task; not the official repeated experiment",
+  "base_commit": "4a7d073",
+  "local_changes": [
+    "test_cases.json expected costs",
+    "test_search.py cost-dependent checks",
+    "game.js KiB display",
+    "documentation and images"
+  ],
+  "core_tests": {
+    "methods": 56,
+    "status": "PASS"
+  },
+  "ui_tests": {
+    "tests": 15,
+    "status": "PASS",
+    "gpu_mocked": true
+  },
+  "visual_browser": {
+    "viewport": "1600x1050",
+    "rendering": "Chromium + software WebGL SwiftShader",
+    "scenes": [
+      {
+        "file": "thuc_01_giao_dien.png",
+        "description": "Giao diện ban đầu, màn 1 và các nút điều khiển",
+        "stage": "1",
+        "status": "Dùng mũi tên hoặc WASD để di chuyển."
+      },
+      {
+        "file": "thuc_02_gach_cam.png",
+        "description": "Khối nằm ngang trên gạch cam, màn 2 sau RIGHT",
+        "stage": "2",
+        "status": "Tiếp tục lăn khối đến ô đích."
+      },
+      {
+        "file": "thuc_03_cong_tac_cau.png",
+        "description": "Màn 3 sau 11 bước, cả hai cầu đã mở, khối đứng trên heavy switch",
+        "stage": "3",
+        "status": "Tiếp tục lăn khối đến ô đích."
+      },
+      {
+        "file": "thuc_04_tach_doi.png",
+        "description": "Màn 4, khối 1 giữ soft switch, Space chuyển điều khiển sang khối 2",
+        "stage": "4",
+        "status": "Đang điều khiển khối 2. Nhấn Space để đổi khối."
+      },
+      {
+        "file": "thuc_05_ghep_khoi.png",
+        "description": "Màn 4 sau 16 bước, hai khối ghép thành VERTICAL",
+        "stage": "4",
+        "status": "Tiếp tục lăn khối đến ô đích."
+      },
+      {
+        "file": "thuc_06_thang_man.png",
+        "description": "Hoàn thành màn 1 bằng chơi tay với 7 hành động",
+        "stage": "1",
+        "status": "Hoàn thành. Nhấn R để chơi lại hoặc chọn màn khác."
+      },
+      {
+        "file": "thuc_07_cau_dong_roi.png",
+        "description": "Màn 11, công tắc đóng cầu đang đỡ khối, UI giải thích lý do thua",
+        "stage": "11",
+        "status": "Cầu đã đóng do công tắc. Nhấn R để chơi lại."
+      },
+      {
+        "file": "thuc_08_solver_metrics.png",
+        "description": "BFS thật chạy qua API, phát lại 7 bước và hiển thị các chỉ số",
+        "stage": "1",
+        "status": "Hoàn thành. Nhấn R để chơi lại hoặc chọn màn khác."
+      }
+    ],
+    "console_errors": [],
+    "solver_metrics": "Thời gian\n10.461 ms\nBộ nhớ đỉnh\n17.32 KiB\nNút mở rộng\n48\nĐộ dài lời giải\n7 bước\nTổng chi phí\n7"
+  },
+  "solver_time_limit_seconds": 15,
+  "solver_summary": {
+    "bfs": {
+      "PASS": 41,
+      "TIMEOUT": 2
+    },
+    "dfs": {
+      "PASS": 43
+    },
+    "ucs": {
+      "PASS": 39,
+      "TIMEOUT": 4
+    },
+    "astar": {
+      "PASS": 38,
+      "TIMEOUT": 4,
+      "FAIL": 1
+    }
+  },
+  "solver_checks": [
+    {
+      "solver": "bfs",
+      "case": "T1",
+      "status": "PASS",
+      "wall_seconds": 0.004,
+      "metrics": {
+        "found": true,
+        "solution_length": 7,
+        "expanded_nodes": 48,
+        "search_time_ms": 3.531,
+        "memory_kb": 13.75,
+        "total_cost": 7.0
+      }
+    },
+    {
+      "solver": "bfs",
+      "case": "T2",
+      "status": "PASS",
+      "wall_seconds": 0.003,
+      "metrics": {
+        "found": true,
+        "solution_length": 6,
+        "expanded_nodes": 31,
+        "search_time_ms": 2.585,
+        "memory_kb": 10.31,
+        "total_cost": 6.0
+      }
+    },
+    {
+      "solver": "bfs",
+      "case": "T3",
+      "status": "PASS",
+      "wall_seconds": 0.204,
+      "metrics": {
+        "found": true,
+        "solution_length": 17,
+        "expanded_nodes": 1664,
+        "search_time_ms": 202.955,
+        "memory_kb": 444.62,
+        "total_cost": 17.0
+      }
+    },
+    {
+      "solver": "bfs",
+      "case": "T4",
+      "status": "PASS",
+      "wall_seconds": 0.0,
+      "metrics": {
+        "found": false,
+        "solution_length": 0,
+        "expanded_nodes": 1,
+        "search_time_ms": 0.045,
+        "memory_kb": 1.29,
+        "total_cost": 0.0
+      }
+    },
+    {
+      "solver": "bfs",
+      "case": "T5",
+      "status": "PASS",
+      "wall_seconds": 0.0,
+      "metrics": {
+        "found": true,
+        "solution_length": 2,
+        "expanded_nodes": 2,
+        "search_time_ms": 0.13,
+        "memory_kb": 2.32,
+        "total_cost": 2.0
+      }
+    },
+    {
+      "solver": "bfs",
+      "case": "T6",
+      "status": "PASS",
+      "wall_seconds": 0.0,
+      "metrics": {
+        "found": false,
+        "solution_length": 0,
+        "expanded_nodes": 2,
+        "search_time_ms": 0.143,
+        "memory_kb": 2.11,
+        "total_cost": 0.0
+      }
+    },
+    {
+      "solver": "bfs",
+      "case": "T7",
+      "status": "PASS",
+      "wall_seconds": 0.0,
+      "metrics": {
+        "found": true,
+        "solution_length": 4,
+        "expanded_nodes": 6,
+        "search_time_ms": 0.354,
+        "memory_kb": 3.31,
+        "total_cost": 4.0
+      }
+    },
+    {
+      "solver": "bfs",
+      "case": "T8",
+      "status": "PASS",
+      "wall_seconds": 0.0,
+      "metrics": {
+        "found": true,
+        "solution_length": 4,
+        "expanded_nodes": 5,
+        "search_time_ms": 0.334,
+        "memory_kb": 3.31,
+        "total_cost": 4.0
+      }
+    },
+    {
+      "solver": "bfs",
+      "case": "T9",
+      "status": "PASS",
+      "wall_seconds": 0.0,
+      "metrics": {
+        "found": false,
+        "solution_length": 0,
+        "expanded_nodes": 3,
+        "search_time_ms": 0.177,
+        "memory_kb": 2.34,
+        "total_cost": 0.0
+      }
+    },
+    {
+      "solver": "bfs",
+      "case": "T10",
+      "status": "PASS",
+      "wall_seconds": 0.0,
+      "metrics": {
+        "found": true,
+        "solution_length": 0,
+        "expanded_nodes": 0,
+        "search_time_ms": 0.005,
+        "memory_kb": 0.17,
+        "total_cost": 0.0
+      }
+    },
+    {
+      "solver": "bfs",
+      "case": "1",
+      "status": "PASS",
+      "wall_seconds": 0.004,
+      "metrics": {
+        "found": true,
+        "solution_length": 7,
+        "expanded_nodes": 48,
+        "search_time_ms": 3.413,
+        "memory_kb": 13.14,
+        "total_cost": 7.0
+      }
+    },
+    {
+      "solver": "bfs",
+      "case": "2",
+      "status": "PASS",
+      "wall_seconds": 0.002,
+      "metrics": {
+        "found": true,
+        "solution_length": 6,
+        "expanded_nodes": 31,
+        "search_time_ms": 2.258,
+        "memory_kb": 10.25,
+        "total_cost": 6.0
+      }
+    },
+    {
+      "solver": "bfs",
+      "case": "3",
+      "status": "PASS",
+      "wall_seconds": 0.009,
+      "metrics": {
+        "found": true,
+        "solution_length": 15,
+        "expanded_nodes": 118,
+        "search_time_ms": 8.172,
+        "memory_kb": 23.26,
+        "total_cost": 15.0
+      }
+    },
+    {
+      "solver": "bfs",
+      "case": "4",
+      "status": "PASS",
+      "wall_seconds": 0.148,
+      "metrics": {
+        "found": true,
+        "solution_length": 17,
+        "expanded_nodes": 1662,
+        "search_time_ms": 147.891,
+        "memory_kb": 302.8,
+        "total_cost": 17.0
+      }
+    },
+    {
+      "solver": "bfs",
+      "case": "5",
+      "status": "PASS",
+      "wall_seconds": 0.001,
+      "metrics": {
+        "found": true,
+        "solution_length": 12,
+        "expanded_nodes": 12,
+        "search_time_ms": 0.746,
+        "memory_kb": 4.43,
+        "total_cost": 12.0
+      }
+    },
+    {
+      "solver": "bfs",
+      "case": "6",
+      "status": "PASS",
+      "wall_seconds": 0.001,
+      "metrics": {
+        "found": true,
+        "solution_length": 8,
+        "expanded_nodes": 10,
+        "search_time_ms": 0.67,
+        "memory_kb": 4.46,
+        "total_cost": 8.0
+      }
+    },
+    {
+      "solver": "bfs",
+      "case": "7",
+      "status": "PASS",
+      "wall_seconds": 0.008,
+      "metrics": {
+        "found": true,
+        "solution_length": 11,
+        "expanded_nodes": 108,
+        "search_time_ms": 7.679,
+        "memory_kb": 22.37,
+        "total_cost": 11.0
+      }
+    },
+    {
+      "solver": "bfs",
+      "case": "8",
+      "status": "PASS",
+      "wall_seconds": 0.011,
+      "metrics": {
+        "found": true,
+        "solution_length": 17,
+        "expanded_nodes": 147,
+        "search_time_ms": 10.397,
+        "memory_kb": 27.63,
+        "total_cost": 17.0
+      }
+    },
+    {
+      "solver": "bfs",
+      "case": "9",
+      "status": "PASS",
+      "wall_seconds": 0.023,
+      "metrics": {
+        "found": true,
+        "solution_length": 19,
+        "expanded_nodes": 323,
+        "search_time_ms": 22.929,
+        "memory_kb": 54.52,
+        "total_cost": 19.0
+      }
+    },
+    {
+      "solver": "bfs",
+      "case": "10",
+      "status": "PASS",
+      "wall_seconds": 0.267,
+      "metrics": {
+        "found": true,
+        "solution_length": 22,
+        "expanded_nodes": 2747,
+        "search_time_ms": 265.865,
+        "memory_kb": 635.42,
+        "total_cost": 22.0
+      }
+    },
+    {
+      "solver": "bfs",
+      "case": "11",
+      "status": "PASS",
+      "wall_seconds": 0.015,
+      "metrics": {
+        "found": true,
+        "solution_length": 23,
+        "expanded_nodes": 201,
+        "search_time_ms": 14.36,
+        "memory_kb": 38.5,
+        "total_cost": 23.0
+      }
+    },
+    {
+      "solver": "bfs",
+      "case": "12",
+      "status": "PASS",
+      "wall_seconds": 0.326,
+      "metrics": {
+        "found": true,
+        "solution_length": 30,
+        "expanded_nodes": 3233,
+        "search_time_ms": 325.048,
+        "memory_kb": 786.26,
+        "total_cost": 30.0
+      }
+    },
+    {
+      "solver": "bfs",
+      "case": "13",
+      "status": "PASS",
+      "wall_seconds": 0.007,
+      "metrics": {
+        "found": true,
+        "solution_length": 25,
+        "expanded_nodes": 103,
+        "search_time_ms": 6.875,
+        "memory_kb": 21.43,
+        "total_cost": 25.0
+      }
+    },
+    {
+      "solver": "bfs",
+      "case": "14",
+      "status": "PASS",
+      "wall_seconds": 0.008,
+      "metrics": {
+        "found": true,
+        "solution_length": 20,
+        "expanded_nodes": 120,
+        "search_time_ms": 7.848,
+        "memory_kb": 23.23,
+        "total_cost": 20.0
+      }
+    },
+    {
+      "solver": "bfs",
+      "case": "15",
+      "status": "PASS",
+      "wall_seconds": 0.009,
+      "metrics": {
+        "found": true,
+        "solution_length": 39,
+        "expanded_nodes": 135,
+        "search_time_ms": 8.437,
+        "memory_kb": 24.79,
+        "total_cost": 39.0
+      }
+    },
+    {
+      "solver": "bfs",
+      "case": "16",
+      "status": "PASS",
+      "wall_seconds": 0.019,
+      "metrics": {
+        "found": true,
+        "solution_length": 38,
+        "expanded_nodes": 280,
+        "search_time_ms": 18.228,
+        "memory_kb": 47.87,
+        "total_cost": 38.0
+      }
+    },
+    {
+      "solver": "bfs",
+      "case": "17",
+      "status": "PASS",
+      "wall_seconds": 0.314,
+      "metrics": {
+        "found": true,
+        "solution_length": 24,
+        "expanded_nodes": 2978,
+        "search_time_ms": 313.455,
+        "memory_kb": 726.73,
+        "total_cost": 24.0
+      }
+    },
+    {
+      "solver": "bfs",
+      "case": "18",
+      "status": "PASS",
+      "wall_seconds": 0.016,
+      "metrics": {
+        "found": true,
+        "solution_length": 20,
+        "expanded_nodes": 196,
+        "search_time_ms": 15.24,
+        "memory_kb": 50.47,
+        "total_cost": 20.0
+      }
+    },
+    {
+      "solver": "bfs",
+      "case": "19",
+      "status": "PASS",
+      "wall_seconds": 0.008,
+      "metrics": {
+        "found": true,
+        "solution_length": 33,
+        "expanded_nodes": 121,
+        "search_time_ms": 7.575,
+        "memory_kb": 22.91,
+        "total_cost": 33.0
+      }
+    },
+    {
+      "solver": "bfs",
+      "case": "20",
+      "status": "PASS",
+      "wall_seconds": 0.2,
+      "metrics": {
+        "found": true,
+        "solution_length": 21,
+        "expanded_nodes": 2007,
+        "search_time_ms": 198.836,
+        "memory_kb": 429.57,
+        "total_cost": 21.0
+      }
+    },
+    {
+      "solver": "bfs",
+      "case": "21",
+      "status": "PASS",
+      "wall_seconds": 0.005,
+      "metrics": {
+        "found": true,
+        "solution_length": 14,
+        "expanded_nodes": 65,
+        "search_time_ms": 4.612,
+        "memory_kb": 14.7,
+        "total_cost": 14.0
+      }
+    },
+    {
+      "solver": "bfs",
+      "case": "22",
+      "status": "PASS",
+      "wall_seconds": 0.086,
+      "metrics": {
+        "found": true,
+        "solution_length": 24,
+        "expanded_nodes": 1021,
+        "search_time_ms": 85.371,
+        "memory_kb": 183.28,
+        "total_cost": 24.0
+      }
+    },
+    {
+      "solver": "bfs",
+      "case": "23",
+      "status": "PASS",
+      "wall_seconds": 0.069,
+      "metrics": {
+        "found": true,
+        "solution_length": 28,
+        "expanded_nodes": 880,
+        "search_time_ms": 68.167,
+        "memory_kb": 243.24,
+        "total_cost": 28.0
+      }
+    },
+    {
+      "solver": "bfs",
+      "case": "24",
+      "status": "PASS",
+      "wall_seconds": 0.081,
+      "metrics": {
+        "found": true,
+        "solution_length": 43,
+        "expanded_nodes": 1028,
+        "search_time_ms": 80.248,
+        "memory_kb": 286.17,
+        "total_cost": 43.0
+      }
+    },
+    {
+      "solver": "bfs",
+      "case": "25",
+      "status": "PASS",
+      "wall_seconds": 7.616,
+      "metrics": {
+        "found": true,
+        "solution_length": 57,
+        "expanded_nodes": 55501,
+        "search_time_ms": 7614.44,
+        "memory_kb": 14357.37,
+        "total_cost": 57.0
+      }
+    },
+    {
+      "solver": "bfs",
+      "case": "26",
+      "status": "PASS",
+      "wall_seconds": 0.14,
+      "metrics": {
+        "found": true,
+        "solution_length": 54,
+        "expanded_nodes": 1727,
+        "search_time_ms": 138.401,
+        "memory_kb": 484.42,
+        "total_cost": 54.0
+      }
+    },
+    {
+      "solver": "bfs",
+      "case": "27",
+      "status": "PASS",
+      "wall_seconds": 0.218,
+      "metrics": {
+        "found": true,
+        "solution_length": 73,
+        "expanded_nodes": 2686,
+        "search_time_ms": 216.542,
+        "memory_kb": 900.6,
+        "total_cost": 73.0
+      }
+    },
+    {
+      "solver": "bfs",
+      "case": "28",
+      "status": "TIMEOUT",
+      "detail": "Giới hạn kiểm tra nhanh 15 giây mỗi ca, không phải kết luận vô nghiệm.",
+      "wall_seconds": 15.049,
+      "metrics": null
+    },
+    {
+      "solver": "bfs",
+      "case": "29",
+      "status": "TIMEOUT",
+      "detail": "Giới hạn kiểm tra nhanh 15 giây mỗi ca, không phải kết luận vô nghiệm.",
+      "wall_seconds": 15.104,
+      "metrics": null
+    },
+    {
+      "solver": "bfs",
+      "case": "30",
+      "status": "PASS",
+      "wall_seconds": 0.201,
+      "metrics": {
+        "found": true,
+        "solution_length": 56,
+        "expanded_nodes": 2512,
+        "search_time_ms": 199.701,
+        "memory_kb": 923.34,
+        "total_cost": 56.0
+      }
+    },
+    {
+      "solver": "bfs",
+      "case": "31",
+      "status": "PASS",
+      "wall_seconds": 0.002,
+      "metrics": {
+        "found": true,
+        "solution_length": 9,
+        "expanded_nodes": 32,
+        "search_time_ms": 2.227,
+        "memory_kb": 8.46,
+        "total_cost": 9.0
+      }
+    },
+    {
+      "solver": "bfs",
+      "case": "32",
+      "status": "PASS",
+      "wall_seconds": 0.004,
+      "metrics": {
+        "found": true,
+        "solution_length": 6,
+        "expanded_nodes": 51,
+        "search_time_ms": 4.093,
+        "memory_kb": 19.67,
+        "total_cost": 6.0
+      }
+    },
+    {
+      "solver": "bfs",
+      "case": "33",
+      "status": "PASS",
+      "wall_seconds": 8.947,
+      "metrics": {
+        "found": true,
+        "solution_length": 119,
+        "expanded_nodes": 67354,
+        "search_time_ms": 8942.818,
+        "memory_kb": 14681.02,
+        "total_cost": 119.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "T1",
+      "status": "PASS",
+      "wall_seconds": 0.001,
+      "metrics": {
+        "found": true,
+        "solution_length": 7,
+        "expanded_nodes": 7,
+        "search_time_ms": 0.645,
+        "memory_kb": 4.09,
+        "total_cost": 7.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "T2",
+      "status": "PASS",
+      "wall_seconds": 0.005,
+      "metrics": {
+        "found": true,
+        "solution_length": 28,
+        "expanded_nodes": 55,
+        "search_time_ms": 4.069,
+        "memory_kb": 14.07,
+        "total_cost": 28.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "T3",
+      "status": "PASS",
+      "wall_seconds": 0.042,
+      "metrics": {
+        "found": true,
+        "solution_length": 281,
+        "expanded_nodes": 400,
+        "search_time_ms": 35.589,
+        "memory_kb": 169.89,
+        "total_cost": 281.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "T4",
+      "status": "PASS",
+      "wall_seconds": 0.0,
+      "metrics": {
+        "found": false,
+        "solution_length": 0,
+        "expanded_nodes": 1,
+        "search_time_ms": 0.041,
+        "memory_kb": 0.55,
+        "total_cost": 0.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "T5",
+      "status": "PASS",
+      "wall_seconds": 0.0,
+      "metrics": {
+        "found": true,
+        "solution_length": 2,
+        "expanded_nodes": 2,
+        "search_time_ms": 0.129,
+        "memory_kb": 1.58,
+        "total_cost": 2.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "T6",
+      "status": "PASS",
+      "wall_seconds": 0.0,
+      "metrics": {
+        "found": false,
+        "solution_length": 0,
+        "expanded_nodes": 2,
+        "search_time_ms": 0.103,
+        "memory_kb": 1.37,
+        "total_cost": 0.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "T7",
+      "status": "PASS",
+      "wall_seconds": 0.0,
+      "metrics": {
+        "found": true,
+        "solution_length": 4,
+        "expanded_nodes": 4,
+        "search_time_ms": 0.28,
+        "memory_kb": 2.47,
+        "total_cost": 4.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "T8",
+      "status": "PASS",
+      "wall_seconds": 0.0,
+      "metrics": {
+        "found": true,
+        "solution_length": 4,
+        "expanded_nodes": 4,
+        "search_time_ms": 0.276,
+        "memory_kb": 2.22,
+        "total_cost": 4.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "T9",
+      "status": "PASS",
+      "wall_seconds": 0.0,
+      "metrics": {
+        "found": false,
+        "solution_length": 0,
+        "expanded_nodes": 3,
+        "search_time_ms": 0.186,
+        "memory_kb": 1.6,
+        "total_cost": 0.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "T10",
+      "status": "PASS",
+      "wall_seconds": 0.0,
+      "metrics": {
+        "found": true,
+        "solution_length": 0,
+        "expanded_nodes": 0,
+        "search_time_ms": 0.006,
+        "memory_kb": 0.17,
+        "total_cost": 0.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "1",
+      "status": "PASS",
+      "wall_seconds": 0.001,
+      "metrics": {
+        "found": true,
+        "solution_length": 7,
+        "expanded_nodes": 7,
+        "search_time_ms": 0.573,
+        "memory_kb": 4.09,
+        "total_cost": 7.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "2",
+      "status": "PASS",
+      "wall_seconds": 0.005,
+      "metrics": {
+        "found": true,
+        "solution_length": 28,
+        "expanded_nodes": 55,
+        "search_time_ms": 4.32,
+        "memory_kb": 14.07,
+        "total_cost": 28.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "3",
+      "status": "PASS",
+      "wall_seconds": 0.004,
+      "metrics": {
+        "found": true,
+        "solution_length": 37,
+        "expanded_nodes": 52,
+        "search_time_ms": 3.63,
+        "memory_kb": 13.51,
+        "total_cost": 37.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "4",
+      "status": "PASS",
+      "wall_seconds": 0.043,
+      "metrics": {
+        "found": true,
+        "solution_length": 281,
+        "expanded_nodes": 398,
+        "search_time_ms": 36.718,
+        "memory_kb": 143.52,
+        "total_cost": 281.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "5",
+      "status": "PASS",
+      "wall_seconds": 0.001,
+      "metrics": {
+        "found": true,
+        "solution_length": 12,
+        "expanded_nodes": 12,
+        "search_time_ms": 0.748,
+        "memory_kb": 3.74,
+        "total_cost": 12.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "6",
+      "status": "PASS",
+      "wall_seconds": 0.001,
+      "metrics": {
+        "found": true,
+        "solution_length": 8,
+        "expanded_nodes": 8,
+        "search_time_ms": 0.556,
+        "memory_kb": 3.29,
+        "total_cost": 8.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "7",
+      "status": "PASS",
+      "wall_seconds": 0.003,
+      "metrics": {
+        "found": true,
+        "solution_length": 23,
+        "expanded_nodes": 24,
+        "search_time_ms": 2.013,
+        "memory_kb": 10.0,
+        "total_cost": 23.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "8",
+      "status": "PASS",
+      "wall_seconds": 0.007,
+      "metrics": {
+        "found": true,
+        "solution_length": 42,
+        "expanded_nodes": 78,
+        "search_time_ms": 5.846,
+        "memory_kb": 20.87,
+        "total_cost": 42.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "9",
+      "status": "PASS",
+      "wall_seconds": 0.01,
+      "metrics": {
+        "found": true,
+        "solution_length": 37,
+        "expanded_nodes": 112,
+        "search_time_ms": 8.662,
+        "memory_kb": 25.11,
+        "total_cost": 37.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "10",
+      "status": "PASS",
+      "wall_seconds": 0.224,
+      "metrics": {
+        "found": true,
+        "solution_length": 527,
+        "expanded_nodes": 2097,
+        "search_time_ms": 212.925,
+        "memory_kb": 680.3,
+        "total_cost": 527.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "11",
+      "status": "PASS",
+      "wall_seconds": 0.008,
+      "metrics": {
+        "found": true,
+        "solution_length": 60,
+        "expanded_nodes": 84,
+        "search_time_ms": 6.415,
+        "memory_kb": 23.2,
+        "total_cost": 60.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "12",
+      "status": "PASS",
+      "wall_seconds": 0.08,
+      "metrics": {
+        "found": true,
+        "solution_length": 551,
+        "expanded_nodes": 746,
+        "search_time_ms": 68.252,
+        "memory_kb": 312.16,
+        "total_cost": 551.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "13",
+      "status": "PASS",
+      "wall_seconds": 0.005,
+      "metrics": {
+        "found": true,
+        "solution_length": 35,
+        "expanded_nodes": 67,
+        "search_time_ms": 4.388,
+        "memory_kb": 13.86,
+        "total_cost": 35.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "14",
+      "status": "PASS",
+      "wall_seconds": 0.004,
+      "metrics": {
+        "found": true,
+        "solution_length": 32,
+        "expanded_nodes": 42,
+        "search_time_ms": 2.917,
+        "memory_kb": 11.11,
+        "total_cost": 32.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "15",
+      "status": "PASS",
+      "wall_seconds": 0.009,
+      "metrics": {
+        "found": true,
+        "solution_length": 71,
+        "expanded_nodes": 115,
+        "search_time_ms": 7.321,
+        "memory_kb": 22.95,
+        "total_cost": 71.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "16",
+      "status": "PASS",
+      "wall_seconds": 0.011,
+      "metrics": {
+        "found": true,
+        "solution_length": 70,
+        "expanded_nodes": 150,
+        "search_time_ms": 9.798,
+        "memory_kb": 36.54,
+        "total_cost": 70.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "17",
+      "status": "PASS",
+      "wall_seconds": 0.007,
+      "metrics": {
+        "found": true,
+        "solution_length": 60,
+        "expanded_nodes": 60,
+        "search_time_ms": 5.29,
+        "memory_kb": 23.14,
+        "total_cost": 60.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "18",
+      "status": "PASS",
+      "wall_seconds": 0.009,
+      "metrics": {
+        "found": true,
+        "solution_length": 50,
+        "expanded_nodes": 104,
+        "search_time_ms": 8.015,
+        "memory_kb": 31.64,
+        "total_cost": 50.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "19",
+      "status": "PASS",
+      "wall_seconds": 0.005,
+      "metrics": {
+        "found": true,
+        "solution_length": 46,
+        "expanded_nodes": 55,
+        "search_time_ms": 3.75,
+        "memory_kb": 13.53,
+        "total_cost": 46.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "20",
+      "status": "PASS",
+      "wall_seconds": 0.028,
+      "metrics": {
+        "found": true,
+        "solution_length": 196,
+        "expanded_nodes": 232,
+        "search_time_ms": 23.722,
+        "memory_kb": 100.04,
+        "total_cost": 196.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "21",
+      "status": "PASS",
+      "wall_seconds": 0.004,
+      "metrics": {
+        "found": true,
+        "solution_length": 35,
+        "expanded_nodes": 45,
+        "search_time_ms": 3.184,
+        "memory_kb": 11.94,
+        "total_cost": 35.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "22",
+      "status": "PASS",
+      "wall_seconds": 0.011,
+      "metrics": {
+        "found": true,
+        "solution_length": 79,
+        "expanded_nodes": 121,
+        "search_time_ms": 9.234,
+        "memory_kb": 38.27,
+        "total_cost": 79.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "23",
+      "status": "PASS",
+      "wall_seconds": 0.017,
+      "metrics": {
+        "found": true,
+        "solution_length": 80,
+        "expanded_nodes": 198,
+        "search_time_ms": 15.22,
+        "memory_kb": 68.42,
+        "total_cost": 80.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "24",
+      "status": "PASS",
+      "wall_seconds": 0.031,
+      "metrics": {
+        "found": true,
+        "solution_length": 226,
+        "expanded_nodes": 319,
+        "search_time_ms": 26.173,
+        "memory_kb": 131.36,
+        "total_cost": 226.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "25",
+      "status": "PASS",
+      "wall_seconds": 0.028,
+      "metrics": {
+        "found": true,
+        "solution_length": 209,
+        "expanded_nodes": 218,
+        "search_time_ms": 22.458,
+        "memory_kb": 109.93,
+        "total_cost": 209.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "26",
+      "status": "PASS",
+      "wall_seconds": 0.036,
+      "metrics": {
+        "found": true,
+        "solution_length": 220,
+        "expanded_nodes": 409,
+        "search_time_ms": 31.165,
+        "memory_kb": 155.62,
+        "total_cost": 220.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "27",
+      "status": "PASS",
+      "wall_seconds": 0.066,
+      "metrics": {
+        "found": true,
+        "solution_length": 361,
+        "expanded_nodes": 749,
+        "search_time_ms": 58.773,
+        "memory_kb": 281.83,
+        "total_cost": 361.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "28",
+      "status": "PASS",
+      "wall_seconds": 0.134,
+      "metrics": {
+        "found": true,
+        "solution_length": 958,
+        "expanded_nodes": 978,
+        "search_time_ms": 112.345,
+        "memory_kb": 728.2,
+        "total_cost": 958.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "29",
+      "status": "PASS",
+      "wall_seconds": 0.063,
+      "metrics": {
+        "found": true,
+        "solution_length": 462,
+        "expanded_nodes": 474,
+        "search_time_ms": 50.38,
+        "memory_kb": 288.3,
+        "total_cost": 462.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "30",
+      "status": "PASS",
+      "wall_seconds": 0.05,
+      "metrics": {
+        "found": true,
+        "solution_length": 337,
+        "expanded_nodes": 541,
+        "search_time_ms": 42.96,
+        "memory_kb": 237.48,
+        "total_cost": 337.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "31",
+      "status": "PASS",
+      "wall_seconds": 0.001,
+      "metrics": {
+        "found": true,
+        "solution_length": 9,
+        "expanded_nodes": 9,
+        "search_time_ms": 0.635,
+        "memory_kb": 3.45,
+        "total_cost": 9.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "32",
+      "status": "PASS",
+      "wall_seconds": 0.009,
+      "metrics": {
+        "found": true,
+        "solution_length": 65,
+        "expanded_nodes": 86,
+        "search_time_ms": 7.128,
+        "memory_kb": 36.66,
+        "total_cost": 65.0
+      }
+    },
+    {
+      "solver": "dfs",
+      "case": "33",
+      "status": "PASS",
+      "wall_seconds": 3.828,
+      "metrics": {
+        "found": true,
+        "solution_length": 2052,
+        "expanded_nodes": 30843,
+        "search_time_ms": 3781.11,
+        "memory_kb": 7385.96,
+        "total_cost": 2052.0
+      }
+    },
+    {
+      "solver": "ucs",
+      "case": "T1",
+      "status": "PASS",
+      "wall_seconds": 0.02,
+      "metrics": {
+        "found": true,
+        "solution_length": 7,
+        "expanded_nodes": 67,
+        "search_time_ms": 19.801,
+        "memory_kb": 20.43,
+        "total_cost": 21.0
+      }
+    },
+    {
+      "solver": "ucs",
+      "case": "T2",
+      "status": "PASS",
+      "wall_seconds": 0.015,
+      "metrics": {
+        "found": true,
+        "solution_length": 6,
+        "expanded_nodes": 53,
+        "search_time_ms": 14.279,
+        "memory_kb": 15.84,
+        "total_cost": 20.0
+      }
+    },
+    {
+      "solver": "ucs",
+      "case": "T3",
+      "status": "PASS",
+      "wall_seconds": 0.719,
+      "metrics": {
+        "found": true,
+        "solution_length": 17,
+        "expanded_nodes": 1573,
+        "search_time_ms": 718.371,
+        "memory_kb": 482.61,
+        "total_cost": 57.0
+      }
+    },
+    {
+      "solver": "ucs",
+      "case": "T4",
+      "status": "PASS",
+      "wall_seconds": 0.0,
+      "metrics": {
+        "found": false,
+        "solution_length": 0,
+        "expanded_nodes": 1,
+        "search_time_ms": 0.05,
+        "memory_kb": 0.76,
+        "total_cost": 0.0
+      }
+    },
+    {
+      "solver": "ucs",
+      "case": "T5",
+      "status": "PASS",
+      "wall_seconds": 0.0,
+      "metrics": {
+        "found": true,
+        "solution_length": 2,
+        "expanded_nodes": 2,
+        "search_time_ms": 0.317,
+        "memory_kb": 2.11,
+        "total_cost": 3.0
+      }
+    },
+    {
+      "solver": "ucs",
+      "case": "T6",
+      "status": "PASS",
+      "wall_seconds": 0.0,
+      "metrics": {
+        "found": false,
+        "solution_length": 0,
+        "expanded_nodes": 2,
+        "search_time_ms": 0.215,
+        "memory_kb": 1.88,
+        "total_cost": 0.0
+      }
+    },
+    {
+      "solver": "ucs",
+      "case": "T7",
+      "status": "PASS",
+      "wall_seconds": 0.001,
+      "metrics": {
+        "found": true,
+        "solution_length": 4,
+        "expanded_nodes": 6,
+        "search_time_ms": 0.937,
+        "memory_kb": 3.14,
+        "total_cost": 7.0
+      }
+    },
+    {
+      "solver": "ucs",
+      "case": "T8",
+      "status": "PASS",
+      "wall_seconds": 0.001,
+      "metrics": {
+        "found": true,
+        "solution_length": 4,
+        "expanded_nodes": 6,
+        "search_time_ms": 0.951,
+        "memory_kb": 3.23,
+        "total_cost": 7.0
+      }
+    },
+    {
+      "solver": "ucs",
+      "case": "T9",
+      "status": "PASS",
+      "wall_seconds": 0.0,
+      "metrics": {
+        "found": false,
+        "solution_length": 0,
+        "expanded_nodes": 3,
+        "search_time_ms": 0.384,
+        "memory_kb": 2.36,
+        "total_cost": 0.0
+      }
+    },
+    {
+      "solver": "ucs",
+      "case": "T10",
+      "status": "PASS",
+      "wall_seconds": 0.0,
+      "metrics": {
+        "found": true,
+        "solution_length": 0,
+        "expanded_nodes": 0,
+        "search_time_ms": 0.014,
+        "memory_kb": 0.52,
+        "total_cost": 0.0
+      }
+    },
+    {
+      "solver": "ucs",
+      "case": "1",
+      "status": "PASS",
+      "wall_seconds": 0.018,
+      "metrics": {
+        "found": true,
+        "solution_length": 7,
+        "expanded_nodes": 67,
+        "search_time_ms": 17.425,
+        "memory_kb": 17.57,
+        "total_cost": 21.0
+      }
+    },
+    {
+      "solver": "ucs",
+      "case": "2",
+      "status": "PASS",
+      "wall_seconds": 0.015,
+      "metrics": {
+        "found": true,
+        "solution_length": 6,
+        "expanded_nodes": 53,
+        "search_time_ms": 14.534,
+        "memory_kb": 15.84,
+        "total_cost": 20.0
+      }
+    },
+    {
+      "solver": "ucs",
+      "case": "3",
+      "status": "PASS",
+      "wall_seconds": 0.027,
+      "metrics": {
+        "found": true,
+        "solution_length": 15,
+        "expanded_nodes": 115,
+        "search_time_ms": 26.525,
+        "memory_kb": 27.95,
+        "total_cost": 37.0
+      }
+    },
+    {
+      "solver": "ucs",
+      "case": "4",
+      "status": "PASS",
+      "wall_seconds": 0.662,
+      "metrics": {
+        "found": true,
+        "solution_length": 17,
+        "expanded_nodes": 1571,
+        "search_time_ms": 661.723,
+        "memory_kb": 406.61,
+        "total_cost": 57.0
+      }
+    },
+    {
+      "solver": "ucs",
+      "case": "5",
+      "status": "PASS",
+      "wall_seconds": 0.002,
+      "metrics": {
+        "found": true,
+        "solution_length": 12,
+        "expanded_nodes": 12,
+        "search_time_ms": 2.017,
+        "memory_kb": 4.53,
+        "total_cost": 23.0
+      }
+    },
+    {
+      "solver": "ucs",
+      "case": "6",
+      "status": "PASS",
+      "wall_seconds": 0.002,
+      "metrics": {
+        "found": true,
+        "solution_length": 8,
+        "expanded_nodes": 11,
+        "search_time_ms": 1.955,
+        "memory_kb": 4.73,
+        "total_cost": 17.0
+      }
+    },
+    {
+      "solver": "ucs",
+      "case": "7",
+      "status": "PASS",
+      "wall_seconds": 0.03,
+      "metrics": {
+        "found": true,
+        "solution_length": 11,
+        "expanded_nodes": 115,
+        "search_time_ms": 29.835,
+        "memory_kb": 28.38,
+        "total_cost": 31.0
+      }
+    },
+    {
+      "solver": "ucs",
+      "case": "8",
+      "status": "PASS",
+      "wall_seconds": 0.042,
+      "metrics": {
+        "found": true,
+        "solution_length": 17,
+        "expanded_nodes": 156,
+        "search_time_ms": 41.634,
+        "memory_kb": 32.83,
+        "total_cost": 53.0
+      }
+    },
+    {
+      "solver": "ucs",
+      "case": "9",
+      "status": "PASS",
+      "wall_seconds": 0.09,
+      "metrics": {
+        "found": true,
+        "solution_length": 19,
+        "expanded_nodes": 335,
+        "search_time_ms": 89.626,
+        "memory_kb": 68.82,
+        "total_cost": 55.0
+      }
+    },
+    {
+      "solver": "ucs",
+      "case": "10",
+      "status": "PASS",
+      "wall_seconds": 1.216,
+      "metrics": {
+        "found": true,
+        "solution_length": 22,
+        "expanded_nodes": 2605,
+        "search_time_ms": 1214.913,
+        "memory_kb": 635.05,
+        "total_cost": 73.0
+      }
+    },
+    {
+      "solver": "ucs",
+      "case": "11",
+      "status": "PASS",
+      "wall_seconds": 0.055,
+      "metrics": {
+        "found": true,
+        "solution_length": 23,
+        "expanded_nodes": 204,
+        "search_time_ms": 54.9,
+        "memory_kb": 49.44,
+        "total_cost": 63.0
+      }
+    },
+    {
+      "solver": "ucs",
+      "case": "12",
+      "status": "PASS",
+      "wall_seconds": 1.345,
+      "metrics": {
+        "found": true,
+        "solution_length": 30,
+        "expanded_nodes": 2869,
+        "search_time_ms": 1343.755,
+        "memory_kb": 928.13,
+        "total_cost": 78.0
+      }
+    },
+    {
+      "solver": "ucs",
+      "case": "13",
+      "status": "PASS",
+      "wall_seconds": 0.024,
+      "metrics": {
+        "found": true,
+        "solution_length": 25,
+        "expanded_nodes": 115,
+        "search_time_ms": 23.66,
+        "memory_kb": 27.21,
+        "total_cost": 58.0
+      }
+    },
+    {
+      "solver": "ucs",
+      "case": "14",
+      "status": "PASS",
+      "wall_seconds": 0.026,
+      "metrics": {
+        "found": true,
+        "solution_length": 20,
+        "expanded_nodes": 123,
+        "search_time_ms": 25.928,
+        "memory_kb": 28.02,
+        "total_cost": 48.0
+      }
+    },
+    {
+      "solver": "ucs",
+      "case": "15",
+      "status": "PASS",
+      "wall_seconds": 0.027,
+      "metrics": {
+        "found": true,
+        "solution_length": 39,
+        "expanded_nodes": 136,
+        "search_time_ms": 26.59,
+        "memory_kb": 29.51,
+        "total_cost": 91.0
+      }
+    },
+    {
+      "solver": "ucs",
+      "case": "16",
+      "status": "PASS",
+      "wall_seconds": 0.06,
+      "metrics": {
+        "found": true,
+        "solution_length": 38,
+        "expanded_nodes": 282,
+        "search_time_ms": 59.536,
+        "memory_kb": 60.64,
+        "total_cost": 93.0
+      }
+    },
+    {
+      "solver": "ucs",
+      "case": "17",
+      "status": "PASS",
+      "wall_seconds": 0.835,
+      "metrics": {
+        "found": true,
+        "solution_length": 25,
+        "expanded_nodes": 2153,
+        "search_time_ms": 834.231,
+        "memory_kb": 636.17,
+        "total_cost": 64.0
+      }
+    },
+    {
+      "solver": "ucs",
+      "case": "18",
+      "status": "PASS",
+      "wall_seconds": 0.048,
+      "metrics": {
+        "found": true,
+        "solution_length": 20,
+        "expanded_nodes": 196,
+        "search_time_ms": 47.448,
+        "memory_kb": 48.39,
+        "total_cost": 52.0
+      }
+    },
+    {
+      "solver": "ucs",
+      "case": "19",
+      "status": "PASS",
+      "wall_seconds": 0.026,
+      "metrics": {
+        "found": true,
+        "solution_length": 33,
+        "expanded_nodes": 121,
+        "search_time_ms": 25.246,
+        "memory_kb": 27.14,
+        "total_cost": 83.0
+      }
+    },
+    {
+      "solver": "ucs",
+      "case": "20",
+      "status": "PASS",
+      "wall_seconds": 0.947,
+      "metrics": {
+        "found": true,
+        "solution_length": 21,
+        "expanded_nodes": 1996,
+        "search_time_ms": 945.939,
+        "memory_kb": 611.81,
+        "total_cost": 66.0
+      }
+    },
+    {
+      "solver": "ucs",
+      "case": "21",
+      "status": "PASS",
+      "wall_seconds": 0.016,
+      "metrics": {
+        "found": true,
+        "solution_length": 14,
+        "expanded_nodes": 71,
+        "search_time_ms": 15.68,
+        "memory_kb": 16.55,
+        "total_cost": 33.0
+      }
+    },
+    {
+      "solver": "ucs",
+      "case": "22",
+      "status": "PASS",
+      "wall_seconds": 0.394,
+      "metrics": {
+        "found": true,
+        "solution_length": 24,
+        "expanded_nodes": 1065,
+        "search_time_ms": 393.499,
+        "memory_kb": 254.89,
+        "total_cost": 73.0
+      }
+    },
+    {
+      "solver": "ucs",
+      "case": "23",
+      "status": "PASS",
+      "wall_seconds": 0.268,
+      "metrics": {
+        "found": true,
+        "solution_length": 28,
+        "expanded_nodes": 904,
+        "search_time_ms": 266.757,
+        "memory_kb": 306.96,
+        "total_cost": 82.0
+      }
+    },
+    {
+      "solver": "ucs",
+      "case": "24",
+      "status": "PASS",
+      "wall_seconds": 0.369,
+      "metrics": {
+        "found": true,
+        "solution_length": 43,
+        "expanded_nodes": 1193,
+        "search_time_ms": 367.409,
+        "memory_kb": 389.57,
+        "total_cost": 135.0
+      }
+    },
+    {
+      "solver": "ucs",
+      "case": "25",
+      "status": "TIMEOUT",
+      "detail": "Giới hạn kiểm tra nhanh 15 giây mỗi ca, không phải kết luận vô nghiệm.",
+      "wall_seconds": 15.015,
+      "metrics": null
+    },
+    {
+      "solver": "ucs",
+      "case": "26",
+      "status": "PASS",
+      "wall_seconds": 0.504,
+      "metrics": {
+        "found": true,
+        "solution_length": 54,
+        "expanded_nodes": 1724,
+        "search_time_ms": 502.336,
+        "memory_kb": 601.58,
+        "total_cost": 158.0
+      }
+    },
+    {
+      "solver": "ucs",
+      "case": "27",
+      "status": "PASS",
+      "wall_seconds": 0.847,
+      "metrics": {
+        "found": true,
+        "solution_length": 73,
+        "expanded_nodes": 2725,
+        "search_time_ms": 844.637,
+        "memory_kb": 1107.11,
+        "total_cost": 228.0
+      }
+    },
+    {
+      "solver": "ucs",
+      "case": "28",
+      "status": "TIMEOUT",
+      "detail": "Giới hạn kiểm tra nhanh 15 giây mỗi ca, không phải kết luận vô nghiệm.",
+      "wall_seconds": 15.021,
+      "metrics": null
+    },
+    {
+      "solver": "ucs",
+      "case": "29",
+      "status": "TIMEOUT",
+      "detail": "Giới hạn kiểm tra nhanh 15 giây mỗi ca, không phải kết luận vô nghiệm.",
+      "wall_seconds": 15.021,
+      "metrics": null
+    },
+    {
+      "solver": "ucs",
+      "case": "30",
+      "status": "PASS",
+      "wall_seconds": 0.917,
+      "metrics": {
+        "found": true,
+        "solution_length": 56,
+        "expanded_nodes": 2753,
+        "search_time_ms": 915.313,
+        "memory_kb": 1134.51,
+        "total_cost": 177.0
+      }
+    },
+    {
+      "solver": "ucs",
+      "case": "31",
+      "status": "PASS",
+      "wall_seconds": 0.006,
+      "metrics": {
+        "found": true,
+        "solution_length": 9,
+        "expanded_nodes": 26,
+        "search_time_ms": 5.506,
+        "memory_kb": 8.85,
+        "total_cost": 18.0
+      }
+    },
+    {
+      "solver": "ucs",
+      "case": "32",
+      "status": "PASS",
+      "wall_seconds": 0.023,
+      "metrics": {
+        "found": true,
+        "solution_length": 6,
+        "expanded_nodes": 73,
+        "search_time_ms": 22.18,
+        "memory_kb": 26.54,
+        "total_cost": 19.0
+      }
+    },
+    {
+      "solver": "ucs",
+      "case": "33",
+      "status": "TIMEOUT",
+      "detail": "Giới hạn kiểm tra nhanh 15 giây mỗi ca, không phải kết luận vô nghiệm.",
+      "wall_seconds": 15.018,
+      "metrics": null
+    },
+    {
+      "solver": "astar",
+      "case": "T1",
+      "status": "PASS",
+      "wall_seconds": 0.015,
+      "metrics": {
+        "found": true,
+        "solution_length": 7,
+        "expanded_nodes": 47,
+        "search_time_ms": 14.377,
+        "memory_kb": 18.5,
+        "total_cost": 21.0
+      }
+    },
+    {
+      "solver": "astar",
+      "case": "T2",
+      "status": "PASS",
+      "wall_seconds": 0.012,
+      "metrics": {
+        "found": true,
+        "solution_length": 6,
+        "expanded_nodes": 40,
+        "search_time_ms": 11.478,
+        "memory_kb": 14.09,
+        "total_cost": 20.0
+      }
+    },
+    {
+      "solver": "astar",
+      "case": "T3",
+      "status": "PASS",
+      "wall_seconds": 0.608,
+      "metrics": {
+        "found": true,
+        "solution_length": 17,
+        "expanded_nodes": 1314,
+        "search_time_ms": 606.965,
+        "memory_kb": 481.23,
+        "total_cost": 57.0
+      }
+    },
+    {
+      "solver": "astar",
+      "case": "T4",
+      "status": "PASS",
+      "wall_seconds": 0.0,
+      "metrics": {
+        "found": false,
+        "solution_length": 0,
+        "expanded_nodes": 1,
+        "search_time_ms": 0.064,
+        "memory_kb": 0.76,
+        "total_cost": 0.0
+      }
+    },
+    {
+      "solver": "astar",
+      "case": "T5",
+      "status": "PASS",
+      "wall_seconds": 0.0,
+      "metrics": {
+        "found": true,
+        "solution_length": 2,
+        "expanded_nodes": 2,
+        "search_time_ms": 0.342,
+        "memory_kb": 2.11,
+        "total_cost": 3.0
+      }
+    },
+    {
+      "solver": "astar",
+      "case": "T6",
+      "status": "PASS",
+      "wall_seconds": 0.0,
+      "metrics": {
+        "found": false,
+        "solution_length": 0,
+        "expanded_nodes": 2,
+        "search_time_ms": 0.251,
+        "memory_kb": 1.88,
+        "total_cost": 0.0
+      }
+    },
+    {
+      "solver": "astar",
+      "case": "T7",
+      "status": "PASS",
+      "wall_seconds": 0.001,
+      "metrics": {
+        "found": true,
+        "solution_length": 4,
+        "expanded_nodes": 6,
+        "search_time_ms": 1.145,
+        "memory_kb": 3.17,
+        "total_cost": 7.0
+      }
+    },
+    {
+      "solver": "astar",
+      "case": "T8",
+      "status": "PASS",
+      "wall_seconds": 0.001,
+      "metrics": {
+        "found": true,
+        "solution_length": 4,
+        "expanded_nodes": 4,
+        "search_time_ms": 0.743,
+        "memory_kb": 2.84,
+        "total_cost": 7.0
+      }
+    },
+    {
+      "solver": "astar",
+      "case": "T9",
+      "status": "PASS",
+      "wall_seconds": 0.001,
+      "metrics": {
+        "found": false,
+        "solution_length": 0,
+        "expanded_nodes": 3,
+        "search_time_ms": 0.506,
+        "memory_kb": 2.36,
+        "total_cost": 0.0
+      }
+    },
+    {
+      "solver": "astar",
+      "case": "T10",
+      "status": "PASS",
+      "wall_seconds": 0.0,
+      "metrics": {
+        "found": true,
+        "solution_length": 0,
+        "expanded_nodes": 0,
+        "search_time_ms": 0.007,
+        "memory_kb": 0.17,
+        "total_cost": 0.0
+      }
+    },
+    {
+      "solver": "astar",
+      "case": "1",
+      "status": "PASS",
+      "wall_seconds": 0.014,
+      "metrics": {
+        "found": true,
+        "solution_length": 7,
+        "expanded_nodes": 47,
+        "search_time_ms": 13.745,
+        "memory_kb": 17.54,
+        "total_cost": 21.0
+      }
+    },
+    {
+      "solver": "astar",
+      "case": "2",
+      "status": "PASS",
+      "wall_seconds": 0.011,
+      "metrics": {
+        "found": true,
+        "solution_length": 6,
+        "expanded_nodes": 40,
+        "search_time_ms": 10.982,
+        "memory_kb": 14.09,
+        "total_cost": 20.0
+      }
+    },
+    {
+      "solver": "astar",
+      "case": "3",
+      "status": "PASS",
+      "wall_seconds": 0.026,
+      "metrics": {
+        "found": true,
+        "solution_length": 15,
+        "expanded_nodes": 105,
+        "search_time_ms": 25.38,
+        "memory_kb": 27.09,
+        "total_cost": 37.0
+      }
+    },
+    {
+      "solver": "astar",
+      "case": "4",
+      "status": "PASS",
+      "wall_seconds": 0.589,
+      "metrics": {
+        "found": true,
+        "solution_length": 17,
+        "expanded_nodes": 1312,
+        "search_time_ms": 587.955,
+        "memory_kb": 410.04,
+        "total_cost": 57.0
+      }
+    },
+    {
+      "solver": "astar",
+      "case": "5",
+      "status": "PASS",
+      "wall_seconds": 0.002,
+      "metrics": {
+        "found": true,
+        "solution_length": 12,
+        "expanded_nodes": 12,
+        "search_time_ms": 2.084,
+        "memory_kb": 4.53,
+        "total_cost": 23.0
+      }
+    },
+    {
+      "solver": "astar",
+      "case": "6",
+      "status": "PASS",
+      "wall_seconds": 0.002,
+      "metrics": {
+        "found": true,
+        "solution_length": 8,
+        "expanded_nodes": 11,
+        "search_time_ms": 2.038,
+        "memory_kb": 4.73,
+        "total_cost": 17.0
+      }
+    },
+    {
+      "solver": "astar",
+      "case": "7",
+      "status": "PASS",
+      "wall_seconds": 0.029,
+      "metrics": {
+        "found": true,
+        "solution_length": 11,
+        "expanded_nodes": 106,
+        "search_time_ms": 28.864,
+        "memory_kb": 27.34,
+        "total_cost": 31.0
+      }
+    },
+    {
+      "solver": "astar",
+      "case": "8",
+      "status": "PASS",
+      "wall_seconds": 0.043,
+      "metrics": {
+        "found": true,
+        "solution_length": 17,
+        "expanded_nodes": 154,
+        "search_time_ms": 42.631,
+        "memory_kb": 33.69,
+        "total_cost": 53.0
+      }
+    },
+    {
+      "solver": "astar",
+      "case": "9",
+      "status": "PASS",
+      "wall_seconds": 0.083,
+      "metrics": {
+        "found": true,
+        "solution_length": 19,
+        "expanded_nodes": 292,
+        "search_time_ms": 82.625,
+        "memory_kb": 68.94,
+        "total_cost": 55.0
+      }
+    },
+    {
+      "solver": "astar",
+      "case": "10",
+      "status": "PASS",
+      "wall_seconds": 1.096,
+      "metrics": {
+        "found": true,
+        "solution_length": 22,
+        "expanded_nodes": 2254,
+        "search_time_ms": 1095.536,
+        "memory_kb": 603.27,
+        "total_cost": 73.0
+      }
+    },
+    {
+      "solver": "astar",
+      "case": "11",
+      "status": "PASS",
+      "wall_seconds": 0.056,
+      "metrics": {
+        "found": true,
+        "solution_length": 23,
+        "expanded_nodes": 196,
+        "search_time_ms": 55.529,
+        "memory_kb": 49.01,
+        "total_cost": 63.0
+      }
+    },
+    {
+      "solver": "astar",
+      "case": "12",
+      "status": "PASS",
+      "wall_seconds": 1.355,
+      "metrics": {
+        "found": true,
+        "solution_length": 30,
+        "expanded_nodes": 2727,
+        "search_time_ms": 1354.315,
+        "memory_kb": 957.45,
+        "total_cost": 78.0
+      }
+    },
+    {
+      "solver": "astar",
+      "case": "13",
+      "status": "PASS",
+      "wall_seconds": 0.024,
+      "metrics": {
+        "found": true,
+        "solution_length": 25,
+        "expanded_nodes": 107,
+        "search_time_ms": 23.661,
+        "memory_kb": 27.31,
+        "total_cost": 58.0
+      }
+    },
+    {
+      "solver": "astar",
+      "case": "14",
+      "status": "PASS",
+      "wall_seconds": 0.025,
+      "metrics": {
+        "found": true,
+        "solution_length": 20,
+        "expanded_nodes": 104,
+        "search_time_ms": 24.06,
+        "memory_kb": 26.91,
+        "total_cost": 48.0
+      }
+    },
+    {
+      "solver": "astar",
+      "case": "15",
+      "status": "PASS",
+      "wall_seconds": 0.03,
+      "metrics": {
+        "found": true,
+        "solution_length": 39,
+        "expanded_nodes": 136,
+        "search_time_ms": 29.219,
+        "memory_kb": 29.68,
+        "total_cost": 91.0
+      }
+    },
+    {
+      "solver": "astar",
+      "case": "16",
+      "status": "PASS",
+      "wall_seconds": 0.063,
+      "metrics": {
+        "found": true,
+        "solution_length": 38,
+        "expanded_nodes": 265,
+        "search_time_ms": 61.613,
+        "memory_kb": 60.11,
+        "total_cost": 93.0
+      }
+    },
+    {
+      "solver": "astar",
+      "case": "17",
+      "status": "PASS",
+      "wall_seconds": 0.64,
+      "metrics": {
+        "found": true,
+        "solution_length": 25,
+        "expanded_nodes": 1598,
+        "search_time_ms": 639.4,
+        "memory_kb": 535.77,
+        "total_cost": 64.0
+      }
+    },
+    {
+      "solver": "astar",
+      "case": "18",
+      "status": "PASS",
+      "wall_seconds": 0.046,
+      "metrics": {
+        "found": true,
+        "solution_length": 20,
+        "expanded_nodes": 171,
+        "search_time_ms": 45.566,
+        "memory_kb": 47.92,
+        "total_cost": 52.0
+      }
+    },
+    {
+      "solver": "astar",
+      "case": "19",
+      "status": "PASS",
+      "wall_seconds": 0.028,
+      "metrics": {
+        "found": true,
+        "solution_length": 33,
+        "expanded_nodes": 121,
+        "search_time_ms": 27.023,
+        "memory_kb": 27.29,
+        "total_cost": 83.0
+      }
+    },
+    {
+      "solver": "astar",
+      "case": "20",
+      "status": "PASS",
+      "wall_seconds": 0.656,
+      "metrics": {
+        "found": true,
+        "solution_length": 21,
+        "expanded_nodes": 1400,
+        "search_time_ms": 655.772,
+        "memory_kb": 471.29,
+        "total_cost": 66.0
+      }
+    },
+    {
+      "solver": "astar",
+      "case": "21",
+      "status": "PASS",
+      "wall_seconds": 0.016,
+      "metrics": {
+        "found": true,
+        "solution_length": 14,
+        "expanded_nodes": 65,
+        "search_time_ms": 15.636,
+        "memory_kb": 16.05,
+        "total_cost": 33.0
+      }
+    },
+    {
+      "solver": "astar",
+      "case": "22",
+      "status": "PASS",
+      "wall_seconds": 0.363,
+      "metrics": {
+        "found": true,
+        "solution_length": 24,
+        "expanded_nodes": 928,
+        "search_time_ms": 362.744,
+        "memory_kb": 252.22,
+        "total_cost": 73.0
+      }
+    },
+    {
+      "solver": "astar",
+      "case": "23",
+      "status": "PASS",
+      "wall_seconds": 0.227,
+      "metrics": {
+        "found": true,
+        "solution_length": 28,
+        "expanded_nodes": 708,
+        "search_time_ms": 225.565,
+        "memory_kb": 264.45,
+        "total_cost": 82.0
+      }
+    },
+    {
+      "solver": "astar",
+      "case": "24",
+      "status": "PASS",
+      "wall_seconds": 0.35,
+      "metrics": {
+        "found": true,
+        "solution_length": 44,
+        "expanded_nodes": 1065,
+        "search_time_ms": 348.554,
+        "memory_kb": 370.49,
+        "total_cost": 135.0
+      }
+    },
+    {
+      "solver": "astar",
+      "case": "25",
+      "status": "TIMEOUT",
+      "detail": "Giới hạn kiểm tra nhanh 15 giây mỗi ca, không phải kết luận vô nghiệm.",
+      "wall_seconds": 15.022,
+      "metrics": null
+    },
+    {
+      "solver": "astar",
+      "case": "26",
+      "status": "PASS",
+      "wall_seconds": 0.47,
+      "metrics": {
+        "found": true,
+        "solution_length": 54,
+        "expanded_nodes": 1537,
+        "search_time_ms": 468.928,
+        "memory_kb": 570.45,
+        "total_cost": 158.0
+      }
+    },
+    {
+      "solver": "astar",
+      "case": "27",
+      "status": "PASS",
+      "wall_seconds": 0.843,
+      "metrics": {
+        "found": true,
+        "solution_length": 74,
+        "expanded_nodes": 2603,
+        "search_time_ms": 841.207,
+        "memory_kb": 886.46,
+        "total_cost": 228.0
+      }
+    },
+    {
+      "solver": "astar",
+      "case": "28",
+      "status": "TIMEOUT",
+      "detail": "Giới hạn kiểm tra nhanh 15 giây mỗi ca, không phải kết luận vô nghiệm.",
+      "wall_seconds": 15.024,
+      "metrics": null
+    },
+    {
+      "solver": "astar",
+      "case": "29",
+      "status": "TIMEOUT",
+      "detail": "Giới hạn kiểm tra nhanh 15 giây mỗi ca, không phải kết luận vô nghiệm.",
+      "wall_seconds": 15.026,
+      "metrics": null
+    },
+    {
+      "solver": "astar",
+      "case": "30",
+      "status": "PASS",
+      "wall_seconds": 0.785,
+      "metrics": {
+        "found": true,
+        "solution_length": 57,
+        "expanded_nodes": 2290,
+        "search_time_ms": 783.584,
+        "memory_kb": 842.91,
+        "total_cost": 177.0
+      }
+    },
+    {
+      "solver": "astar",
+      "case": "31",
+      "status": "PASS",
+      "wall_seconds": 0.004,
+      "metrics": {
+        "found": true,
+        "solution_length": 9,
+        "expanded_nodes": 16,
+        "search_time_ms": 3.614,
+        "memory_kb": 5.89,
+        "total_cost": 18.0
+      }
+    },
+    {
+      "solver": "astar",
+      "case": "32",
+      "status": "FAIL",
+      "detail": "AssertionError: Cost 37, tối ưu là 19",
+      "wall_seconds": 0.049,
+      "metrics": {
+        "found": true,
+        "solution_length": 12,
+        "expanded_nodes": 133,
+        "search_time_ms": 48.926,
+        "memory_kb": 34.54,
+        "total_cost": 37.0
+      }
+    },
+    {
+      "solver": "astar",
+      "case": "33",
+      "status": "TIMEOUT",
+      "detail": "Giới hạn kiểm tra nhanh 15 giây mỗi ca, không phải kết luận vô nghiệm.",
+      "wall_seconds": 15.015,
+      "metrics": null
+    }
+  ],
+  "remaining_issue": {
+    "owner": "Tống Phúc Thiện",
+    "case": "32",
+    "algorithm": "astar",
+    "actual_cost": 37,
+    "optimal_cost": 19,
+    "detail": "Returned path is valid but suboptimal; UCS and independent reference cost are 19."
+  }
+}

@@ -7,9 +7,10 @@ from tempfile import TemporaryDirectory
 import unittest
 from unittest.mock import patch
 
-from game_logic import BloxorzBoard, State, STANDING, HORIZONTAL, VERTICAL, SPLIT
-from main import app, serialize_state, deserialize_state
-from tests.helpers import ROOT, load_cases, load_levels, read_json, replay_solution
+from core.board import BloxorzBoard, State, STANDING, HORIZONTAL, VERTICAL, SPLIT
+from web.app import app, serialize_state, deserialize_state
+from tests.helpers import ROOT, load_cases, load_levels, read_json
+from core.replay import replay_solution
 
 
 def board_with(tiles=None, switches=None, bridges=()):
@@ -19,6 +20,41 @@ def board_with(tiles=None, switches=None, bridges=()):
     return BloxorzBoard(
         dict(grid=grid, start_pos=[4, 4], switches=switches or {}, initial_bridges=list(bridges))
     )
+
+
+class CompoundMoveTests(unittest.TestCase):
+    def test_eight_successors_and_both_selected_cubes(self):
+        b = board_with()
+        for active in (0, 1):
+            st = State(2, 2, SPLIT, (), 7, 7, active)
+            successors = dict(b.get_successors(st))
+            self.assertEqual(set(successors), {
+                "UP", "LEFT", "RIGHT", "DOWN", "SUP", "SLEFT", "SRIGHT", "SDOWN"
+            })
+            for direction in ("UP", "LEFT", "RIGHT", "DOWN"):
+                selected = b.apply_move(st, "SPACE")
+                self.assertEqual(successors["S" + direction], b.apply_move(selected, direction))
+                self.assertEqual(successors["S" + direction].active_cube, 1 - active)
+
+    def test_compound_moves_require_split(self):
+        for orient in (STANDING, HORIZONTAL, VERTICAL):
+            st = State(4, 4, orient, ())
+            for action in ("SUP", "SLEFT", "SRIGHT", "SDOWN"):
+                self.assertIsNone(board_with().apply_move(st, action))
+            self.assertFalse(any(a.startswith("S") for a, _ in board_with().get_successors(st)))
+
+    def test_compound_merge_and_failed_move(self):
+        b = board_with()
+        st = State(3, 3, SPLIT, (), 3, 5)
+        self.assertEqual(b.apply_move(st, "SLEFT"), State(3, 3, HORIZONTAL, ()))
+        st = State(3, 3, SPLIT, (), 0, 0)
+        self.assertIsNone(b.apply_move(st, "SUP"))
+        self.assertEqual(st.active_cube, 0)
+
+    def test_selection_does_not_repress_parked_switch(self):
+        b = board_with({(2, 2): 3}, {"2,2": {"targets": [0]}}, (True,))
+        st = State(2, 2, SPLIT, (True,), 7, 7)
+        self.assertEqual(b.apply_move(st, "SUP").bridges, (True,))
 
 
 class MovementTests(unittest.TestCase):
@@ -288,7 +324,7 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json), len(self.levels))
         self.assertEqual(set(response.json), set(self.levels))
-        self.assertEqual(response.json["12"]["display_name"], "Hành trình liên hoàn")
+        self.assertEqual(response.json["12"]["name"], "Hành trình liên hoàn")
         for id in self.levels:
             with self.subTest(level=id):
                 data = self.client.get("/api/level/" + id).json
@@ -324,10 +360,27 @@ class ApiTests(unittest.TestCase):
                 )
 
     def test_pending_solver_is_explicit_501(self):
-        with patch("main.solve_bfs", side_effect=NotImplementedError("BFS TODO")):
+        with patch("web.app.solve_bfs", side_effect=NotImplementedError("BFS TODO")):
             res = self.client.post("/api/solve", json=dict(level_id="1", solver="bfs"))
         self.assertEqual(res.status_code, 501)
         self.assertEqual(res.json["code"], "SOLVER_NOT_IMPLEMENTED")
+
+    def test_real_solver_api_answers_replay_to_goal(self):
+        for level_id in ("1", "3", "4"):
+            for solver in ("bfs", "dfs", "ucs", "astar"):
+                with self.subTest(level=level_id, solver=solver):
+                    response = self.client.post("/api/solve", json={
+                        "level_id": level_id, "solver": solver})
+                    self.assertEqual(response.status_code, 200)
+                    self.assertTrue(response.json["found"])
+                    state = self.client.get("/api/level/" + level_id).json["initial_state"]
+                    for action in response.json["moves"]:
+                        move = self.client.post("/api/move", json={
+                            "level_id": level_id, "state": state, "action": action}).json
+                        self.assertTrue(move["valid"])
+                        state = move["next_state"]
+                    self.assertTrue(BloxorzBoard(self.levels[level_id]).is_goal(
+                        deserialize_state(state)))
 
     def test_video2_failed_move_retains_closed_bridge(self):
         state = self.client.get("/api/level/11").json["initial_state"]

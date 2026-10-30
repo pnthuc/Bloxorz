@@ -3,7 +3,14 @@
 import argparse
 import shutil
 import subprocess
+import sys
 import unittest
+
+if sys.stdout and hasattr(sys.stdout, "reconfigure"):
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
 from typing import Callable, Dict, List, Optional
 
 from solvers import solve_astar, solve_bfs, solve_dfs, solve_ucs
@@ -89,7 +96,7 @@ def main(argv=None):
             ui_status = 1
         else:
             ui_status = subprocess.run(
-                [node, "--test", "test_ui.cjs"],
+                [node, "--test", "test_ui.cjs", "test_audio.cjs", "test_render_assets.cjs"],
                 cwd=ROOT / "tests",
             ).returncode
     if solver_status == 1 or ui_status != 0:

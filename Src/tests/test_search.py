@@ -7,17 +7,16 @@ from io import StringIO
 import unittest
 from unittest.mock import Mock, patch
 
-from game_logic import BloxorzBoard, SPLIT, State
+from core.board import BloxorzBoard, SPLIT, State
 from tests.helpers import (
     Case,
     load_cases,
     load_levels,
-    replay_solution,
     select_cases,
     validate_result,
     validate_schema,
-    verify_solution_walk,
 )
+from core.replay import replay_solution, verify_solution_walk
 import run_tests
 from run_tests import run_case, run_selected, run_suite
 
@@ -85,14 +84,61 @@ class SolverRunnerTests(unittest.TestCase):
         with self.assertRaisesRegex(AssertionError, "replay"):
             validate_result("ucs", case, board, make_result(cost=2))
 
-    def test_space_is_an_action_and_keeps_fragile_occupancy_cost(self):
+    def test_solver_replay_rejects_standalone_space(self):
         board = BloxorzBoard({"grid": [[1, 2, 1, 1, 9]], "start_pos": [0, 0]})
         split = State(0, 1, SPLIT, (), 0, 3)
         with patch.object(board, "get_initial_state", return_value=split):
             replay = replay_solution(board, ["SPACE"])
-        self.assertFalse(replay.valid)  # Chưa tới đích, vẫn tính cost của Space.
-        self.assertEqual(replay.cost, 1.5)
-        self.assertEqual(replay.state.active_cube, 1)
+        self.assertFalse(replay.valid)
+        self.assertEqual(replay.cost, 0)
+        self.assertEqual(replay.state, split)
+        with self.assertRaises(AssertionError):
+            validate_schema(make_result(["SPACE"]))
+
+    def test_compound_search_matches_free_selection_reference(self):
+        # Independent reference graph: four rolls plus a zero-cost selection edge.
+        from heapq import heappop, heappush
+        from itertools import count
+        from solvers.costs import step_cost
+        from solvers.member3_bfs import _bfs_core
+        from solvers.member5_ucs import _ucs_core
+        from solvers.member4_astar import _astar_core
+
+        grid = [[1] * 7 for _ in range(4)]
+        grid[1][3] = 9
+        grid[1][2] = 2
+        board = BloxorzBoard({"grid": grid, "start_pos": [0, 0]})
+        start = State(1, 1, SPLIT, (), 1, 5)
+
+        def reference(weighted):
+            serial = count()
+            heap = [(0, next(serial), start)]
+            best = {start: 0}
+            while heap:
+                cost, _, state = heappop(heap)
+                if cost != best[state]:
+                    continue
+                if board.is_goal(state):
+                    return cost
+                for action in ("UP", "LEFT", "RIGHT", "DOWN", "SPACE"):
+                    nxt = board.apply_move(state, action)
+                    if nxt is None:
+                        continue
+                    delta = 0 if action == "SPACE" else step_cost(board, nxt) if weighted else 1
+                    new_cost = cost + delta
+                    if new_cost < best.get(nxt, float("inf")):
+                        best[nxt] = new_cost
+                        heappush(heap, (new_cost, next(serial), nxt))
+            self.fail("Reference board must be solvable")
+
+        with patch.object(board, "get_initial_state", return_value=start):
+            for core, weighted in ((_bfs_core, False), (_ucs_core, True), (_astar_core, True)):
+                with self.subTest(core=core.__name__):
+                    result = core(board)
+                    self.assertTrue(result["found"])
+                    self.assertNotIn("SPACE", result["moves"])
+                    self.assertEqual(result["total_cost"], reference(weighted))
+                    self.assertTrue(replay_solution(board, result["moves"]).valid)
 
     def test_dfs_allows_detours_but_optimal_solvers_reject_them(self):
         detour = make_result(["RIGHT", "LEFT", "RIGHT", "RIGHT"])
@@ -191,7 +237,7 @@ class SolverRunnerTests(unittest.TestCase):
         self.assertEqual(len(cases), 12 + len(load_levels()))
         map33 = select_cases(cases, ["33"])[0]
         self.assertEqual(
-            (map33.bfs_moves, map33.ucs_cost, map33.walkthrough_cost), (119, 119.5, 120)
+            (map33.bfs_moves, map33.ucs_cost, map33.walkthrough_cost), (110, 110.5, 111)
         )
 
     def test_filters_cases_without_changing_default_solver_contract(self):
@@ -251,7 +297,7 @@ class RunCommandTests(unittest.TestCase):
             ui.return_value.returncode = 0
             self.assertEqual(run_tests.main(["--solver", "bfs", "--cases", "T5", "--ui"]), 2)
             solve.assert_called_once_with("bfs", ["T5"])
-            self.assertEqual(ui.call_args.args[0], ["node", "--test", "test_ui.cjs"])
+            self.assertEqual(ui.call_args.args[0], ["node", "--test", "test_ui.cjs", "test_audio.cjs", "test_render_assets.cjs"])
             ui.return_value.returncode = 1
             self.assertEqual(run_tests.main(["--ui"]), 1)
 

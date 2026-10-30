@@ -19,3 +19,9 @@ node_modules/
 /handoff/phuc/video/*.avi
 /handoff/phuc/video/*.prproj
 /handoff/phuc/video/*.drp
+
+/screenshots/
+
+# Local AI tools; not needed to run or test the game
+/.agents/
+/skills-lock.json

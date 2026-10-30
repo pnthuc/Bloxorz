@@ -3,7 +3,7 @@ import time
 import tracemalloc
 from threading import Lock
 from typing import List, Dict, Any, Callable
-from game_logic import BloxorzBoard
+from core.board import BloxorzBoard
 
 
 # tracemalloc is process-wide; two browser requests must not reset one another.
