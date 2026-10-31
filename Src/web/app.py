@@ -145,3 +145,4 @@ def api_benchmark():
                        level_revision=revision, limit_ms=limit_ms)
     finally:
         _BENCHMARK_SLOT.release()
+

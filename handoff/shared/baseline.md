@@ -7,7 +7,7 @@ Thức tổng hợp; Phúc xác nhận cost; Thiện xác nhận heuristic; Quâ
 
 ## Căn cứ từ source hiện tại
 
-- 25 màn JSON trong `Src/levels/`; 37 ca kiểm thử gồm 25 màn và 12 ca biên.
+- 33 màn JSON trong `Src/levels/`; 43 ca kiểm thử gồm 33 màn và 10 ca biên.
 - Engine: `Src/core/board.py`; replay: `Src/core/replay.py`.
 - Cost: `Src/solvers/costs.py`, mỗi cạnh `1 + 0.5 × số ô fragile ở trạng thái đến`.
 - Tìm kiếm dùng `UP LEFT RIGHT DOWN SUP SLEFT SRIGHT SDOWN`; tiền tố S đổi cube rồi lăn.
@@ -30,14 +30,14 @@ Thức tổng hợp; Phúc xác nhận cost; Thiện xác nhận heuristic; Quâ
 | Ngày chốt | Chưa điền | Thức |
 | Cost và lý do chọn | Công thức trên; chờ xác nhận P01 | Phúc |
 | Heuristic và giả thiết | Chờ xác nhận H01/H02 trên commit được chọn | Thiện |
-| Bộ màn | Đề xuất 25 ID trong level-groups.csv, cùng bộ cho bốn thuật toán | Quân |
+| Bộ màn | Đề xuất ID 1–33, cùng bộ cho bốn thuật toán | Quân |
 | Số lần lặp | Đề xuất 3 lần/trường hợp | Quân |
 | Timeout | Đề xuất 120 giây/lượt, giữ riêng TIMEOUT | Quân |
 | Môi trường | CPU, RAM, OS, Python; cùng máy/cấu hình | Quân |
 | Tổng hợp | Ghi số mẫu, tỷ lệ thành công, trung vị và cách xử lý timeout/lỗi | Quân |
 | Kiểm tra phiên bản | Ghi lệnh, kết quả, ngày chạy và giới hạn kiểm tra | Thức |
 
-25 màn, 3 lần lặp và 120 giây là kế hoạch nhóm, không phải số bắt buộc của đề.
+33 màn, 3 lần lặp và 120 giây là kế hoạch nhóm, không phải số bắt buộc của đề.
 Lấy commit bằng `git rev-parse HEAD` trên đúng checkout đã chọn; không coi HEAD là đủ
 nếu còn sửa code chưa commit. Mỗi đợt dùng thư mục riêng để không trộn dữ liệu/metadata.
 
@@ -48,6 +48,3 @@ nếu còn sửa code chưa commit. Mỗi đợt dùng thư mục riêng để k
 
 Sau khi đủ xác nhận, ghi commit/ngày thật và đổi trạng thái thành ĐÃ CHỐT.
 Nếu đổi engine, solver, cost, heuristic hoặc cách đo, tạo mốc mới và xác định dữ liệu cần chạy lại.
-
-Bộ dữ liệu đã chọn ngày 31/10/2026 có 25 màn và T1–T12. Xem [lựa chọn màn](../quan/LEVEL_SELECTION.md).
-Các trial cũ giữ nguyên phiên bản, không gán lại cho bộ màn/engine mới.

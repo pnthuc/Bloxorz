@@ -50,7 +50,7 @@ Src/
   web/              Flask API và chuyển State sang/từ JSON
   solvers/          Bốn thuật toán, profiler và cost chung
   benchmarks/       CLI thực nghiệm và worker đo cho GUI
-  levels/           25 màn đã chọn, giữ ID không liên tiếp
+  levels/           level_01.json đến level_33.json
   static/           JavaScript, CSS, texture tạo sẵn, font, âm thanh và thư viện local
   templates/        HTML
   tests/            Regression và dữ liệu ca kiểm thử
@@ -71,7 +71,7 @@ Chạy solver thật trên một số ca, có kiểm chứng lời giải:
 python run_tests.py --cases 1 2 3 4
 ```
 
-Bỏ `--cases` để chạy toàn bộ 37 ca, gồm 25 màn và 12 ca biên.
+Bỏ `--cases` để chạy toàn bộ 43 ca, gồm 33 màn và 10 ca biên.
 Các màn stress có thể mất nhiều thời gian; lệnh này không giới hạn thời gian tìm kiếm.
 `--solver bfs|dfs|ucs|astar` chọn riêng một thuật toán.
 
@@ -112,8 +112,3 @@ Quy ước hiện tại:
 
 Dữ liệu đo theo quy ước SPACE riêng trước đây cần đo lại trước khi dùng để so sánh bản này.
 Giữ kèm giấy phép [font](Src/static/fonts/OFL.txt) và [Three.js](Src/static/vendor/THREE-LICENSE.txt).
-
-## Bộ màn đã tinh gọn
-
-Bộ chơi có 25 màn, với 37 testcase gồm 12 ca biên. Các ID có khoảng trống để giữ nguyên tham chiếu lịch sử.
-Xem [lý do chọn màn](handoff/quan/LEVEL_SELECTION.md) và [trial so sánh](handoff/quan/comparison-study/README.md).

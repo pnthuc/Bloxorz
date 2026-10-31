@@ -1,0 +1,18 @@
+{
+  "id": "5",
+  "name": "Hành lang gấp khúc",
+  "description": "Đổi hướng khối trên các hành lang hẹp.",
+  "difficulty": "Trung bình",
+  "start_pos": [
+    0,
+    0
+  ],
+  "initial_bridges": [],
+  "switches": {},
+  "grid": [
+    [1, 1, 1, 1, 0, 0, 1, 1, 1, 1],
+    [0, 0, 0, 1, 0, 0, 1, 0, 0, 1],
+    [0, 0, 0, 1, 0, 0, 1, 0, 0, 1],
+    [0, 0, 0, 1, 1, 1, 1, 0, 0, 9]
+  ]
+}

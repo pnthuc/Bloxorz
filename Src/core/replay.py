@@ -52,3 +52,4 @@ def replay_solution(board: BloxorzBoard, moves: List[str]) -> Replay:
 def verify_solution_walk(board: BloxorzBoard, moves: List[str]) -> Tuple[bool, str, float]:
     result = replay_solution(board, moves)
     return result.valid, result.reason, result.cost
+

@@ -232,9 +232,9 @@ class SolverRunnerTests(unittest.TestCase):
     def test_one_catalog_contains_small_cases_and_every_map(self):
         cases = load_cases()
         ids = {case.id for case in cases}
-        self.assertTrue({f"T{i}" for i in range(1, 13)} <= ids)
+        self.assertTrue({f"T{i}" for i in range(1, 11)} <= ids)
         self.assertTrue(set(load_levels()) <= ids)
-        self.assertEqual(len(cases), 12 + len(load_levels()))
+        self.assertEqual(len(cases), 10 + len(load_levels()))
         map33 = select_cases(cases, ["33"])[0]
         self.assertEqual(
             (map33.bfs_moves, map33.ucs_cost, map33.walkthrough_cost), (110, 110.5, 111)

@@ -9,7 +9,7 @@ có file hoặc test qua chưa đồng nghĩa nội dung đã khớp phiên bả
 
 | Thành viên | MSSV | Phạm vi và nơi bàn giao | Nhánh gợi ý |
 | --- | --- | --- | --- |
-| Nguyễn Lê Minh Quân | 24120219 | [DFS, bộ màn và thực nghiệm](quan/README.md) | `work/quan-experiment` |
+| Nguyễn Lê Minh Quân | 24120219 | [DFS, bộ màn và thực nghiệm](quan/README.md) | `work/quan-experiments` |
 | Bùi Phương Nam | 24120502 | [BFS, mô hình và báo cáo tổng](nam/README.md) | `work/nam-report` |
 | Tống Phúc Thiện | 24120141 | [A* và heuristic](thien/README.md) | `work/thien-astar-report` |
 | Phan Gia Phúc | 24120503 | [UCS/cost, biểu đồ, video và source nộp](phuc/README.md) | `work/phuc-charts-video` |
@@ -31,7 +31,7 @@ bốn chỉ số thực nghiệm, bảng/biểu đồ, nhận xét, nguồn tham
 Phần trăm hoàn thành là mức hoàn thành trách nhiệm của từng người, không bắt buộc cộng thành 100%.
 Video phải có URL YouTube công khai trong PDF.
 
-Đề yêu cầu bộ test cố định, công bằng giữa các thuật toán. Kế hoạch **25 màn,
+Đề yêu cầu bộ test cố định, công bằng giữa các thuật toán. Kế hoạch **33 màn,
 3 lần lặp, timeout 120 giây/lượt** là đề xuất của nhóm, không phải định mức của đề.
 Chốt các giá trị này trong [baseline](shared/baseline.md) trước khi đo.
 
@@ -59,7 +59,7 @@ ghi phiên bản mới và xác định dữ liệu cần đo lại. Không tr�
   thao tác demo nằm trong tài liệu. JSON kiểm tra cũ vẫn thuộc phiên bản trước.
 - Phúc hiện có bản giao việc; chưa có gói cost/UCS, biểu đồ hoặc URL video trong repo.
 
-Phần DFS của Quân đã cập nhật theo tám hành động; bản thảo BFS còn cần đối chiếu SPACE.
+Các bản thảo DFS/BFS còn mô tả SPACE là cạnh tìm kiếm riêng.
 Đối chiếu lại tập tám hành động trong [README source](../README.md#thực-nghiệm)
 trước khi ghép báo cáo. Không tự thay số liệu cũ bằng số minh họa.
 
@@ -72,7 +72,7 @@ Ví dụ của Quân:
 ```bash
 git switch main
 git pull --ff-only origin main
-git switch -c work/quan-experiment
+git switch -c work/quan-experiments
 ```
 
 Trước khi bàn giao, xem `git status`, chỉ stage file mình sửa, commit và push nhánh.

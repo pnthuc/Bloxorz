@@ -1,6 +1,6 @@
 # Nguyễn Lê Minh Quân — DFS và thực nghiệm
 
-MSSV **24120219**. Nhánh bàn giao: `work/quan-experiment`. Nhận/gửi việc theo [quy trình chung](../README.md).
+MSSV **24120219**. Nhận/gửi việc theo [quy trình chung](../README.md).
 Quân đo và kiểm chứng số liệu; Phúc nhận CSV để làm bảng/biểu đồ; Nam tổng hợp báo cáo.
 
 ## Đầu vào và hiện trạng
@@ -8,12 +8,11 @@ Quân đo và kiểm chứng số liệu; Phúc nhận CSV để làm bảng/bi�
 - DFS: `Src/solvers/member2_dfs.py`; engine: `Src/core/board.py`.
 - Đo: `Src/benchmarks/cli.py`; profiler: `Src/solvers/base.py`;
   kiểm tra lời giải: `Src/core/replay.py`.
-- 25 màn trong `Src/levels/`, giữ ID không liên tiếp theo [bộ đã chọn](LEVEL_SELECTION.md).
-  `Src/tests/test_cases.json` gồm 25 ca màn và 12 ca biên; 37 ca kiểm chứng không phải 37 màn độc lập.
+- 33 màn `Src/levels/level_01.json` đến `level_33.json`.
+  `Src/tests/test_cases.json` gồm 33 ca màn và 10 ca biên, không phải 43 màn độc lập.
 - Đã có [dfs.docx](dfs.docx), [level-groups.csv](level-groups.csv)
-  và [dữ liệu Q02 chạy lại](benchmarks/q02-recheck-20261031/run-config.json): màn 1, 4, bốn solver, một lần/lượt.
-  8/8 SOLVED, gắn source commit 1e07d6e. Đây chưa phải bộ số liệu lặp chính thức Q04;
-  phần tổng hợp và methodology chính thức Q05 vẫn chưa hoàn tất.
+  và [dữ liệu chạy thử](benchmarks/run-config.json): màn 1, 4, bốn solver, một lần/lượt.
+  Đây chưa phải bộ số liệu lặp chính thức. Chưa có CSV tổng hợp hoặc phương pháp đo.
 
 ## Nhiệm vụ
 
@@ -26,7 +25,7 @@ Quân đo và kiểm chứng số liệu; Phúc nhận CSV để làm bảng/bi�
 | [ ] | `Q05` | Tổng hợp dữ liệu và viết phương pháp đo | `benchmarks/<đợt>/summary.csv`, `methodology.docx` → Phúc, Nam |
 | [ ] | `Q06` | Bàn giao lệnh tái lập, schema dữ liệu, nguồn và khai báo AI | README này và gói dữ liệu → Phúc, Nam |
 
-Q01 đã được cập nhật theo tập tám hành động hiện tại; Q02/Q03 đã được rà lại sau khi đồng bộ main.
+Dấu đã bàn giao được giữ từ trước; Q01 cần sửa nội dung theo tập hành động hiện tại.
 
 ## Tiêu chí kiểm tra
 
@@ -46,7 +45,7 @@ metric chưa đo để trống. Không dùng walkthrough làm lời giải solve
 còn lại switch/cầu → công tắc–cầu; còn lại fragile → gạch cam; còn lại → cơ bản.
 Cột stress là nhãn phụ, không phải nhóm màn mới. Đối chiếu kích thước, số ô/cầu/công tắc với JSON.
 
-**Q04/Q05:** Kế hoạch đang đề xuất 25 × 4 × 3 = 300 lượt, timeout 120 giây;
+**Q04/Q05:** Kế hoạch đang đề xuất 33 × 4 × 3 = 396 lượt, timeout 120 giây;
 chỉ dùng sau khi [baseline](../shared/baseline.md) được nhóm chốt.
 Báo tỷ lệ thành công và số mẫu; không đưa timeout thành thời gian 0 hoặc loại âm thầm.
 CSV tổng hợp có trung vị và đơn vị rõ: ms, KiB, node, số hành động, cost.
@@ -66,13 +65,6 @@ Lệnh cho toàn bộ kế hoạch đề xuất, chỉ chạy sau mốc chốt:
 python -m benchmarks.cli --levels all --solvers bfs dfs ucs astar --repeats 3 --timeout 120 --output-dir ../handoff/quan/benchmarks/official-run
 ```
 
-CLI yêu cầu thư mục mới và từ chối ghi vào thư mục đã tồn tại. Nếu bỏ --output-dir,
-CLI tự tạo một thư mục đợt đo mới trong benchmarks/. Metadata có fingerprint source,
-hash bộ màn và cờ git_dirty cho thay đổi trong Src; các cột CSV giữ nguyên.
+Mỗi đợt dùng thư mục riêng vì CLI nối thêm `raw.csv` nhưng ghi lại metadata.
 CLI chưa tạo `summary.csv` hay hình; Q05 tổng hợp dữ liệu, P05 của Phúc vẽ biểu đồ.
 Q06 phải bổ sung cách tái tạo CSV tổng hợp khi phần đó hoàn thành.
-
-## Bộ dữ liệu mới
-
-[LEVEL_SELECTION.md](LEVEL_SELECTION.md) ghi lý do chọn 25 màn và archive 17 màn cũ.
-[Q01-Q03_REVIEW.md](Q01-Q03_REVIEW.md) ghi kết quả rà soát và phiên bản đồng bộ.

@@ -1114,8 +1114,8 @@ test('Bloxorz UI', async (t) => {
       assert.equal(d.querySelectorAll('.level-row button[data-current="true"]').length,1);
       assert.equal(d.querySelector('.level-row button[data-current="true"]').textContent,'12');
       assert.equal(d.querySelector('.level-row button[data-current="true"]').getAttribute('aria-current'),'step');
-      [...d.querySelectorAll('.level-row button')].find(b=>b.textContent==='11').click();
-      await wait(()=>String(scene.level.id)==='11','preview level 11');assert.equal(w.localStorage.getItem('bloxorz-current-level'),'12');
+      [...d.querySelectorAll('.level-row button')].find(b=>b.textContent==='13').click();
+      await wait(()=>String(scene.level.id)==='13','preview level 13');assert.equal(w.localStorage.getItem('bloxorz-current-level'),'12');
       assert.equal(d.querySelector('.level-row button[data-current="true"]').textContent,'12','current game stays highlighted while previewing another level');
       click('back');click('choose-level');assert.equal(el('preview-title').textContent,'Màn 12');click('back');click('resume');
       const original=w.fetch;
@@ -1144,15 +1144,6 @@ test('Bloxorz UI', async (t) => {
         assert(visible.length>=2,'maximum zoom must reveal distant land at '+elevation+'/'+azimuth);
       }
       scene.resetCamera();
-    });
-    await t.test('curated menu has 25 playable levels and replays a new shallow goal', async () => {
-      await returnToPlay();
-      assert.equal(levelIds.length,25);assert(!levelIds.includes('29'));assert(levelIds.includes('36'));
-      await select('36');click('menu-toggle');click('choose-solver');
-      controls.mockSolvers=true;
-      await w.Bloxorz.ui.actions.runSolver('bfs');
-      await w.Bloxorz.ui.actions.playReplay();
-      assert.equal(count(),2);assert.equal(w.Bloxorz.ui.actions.inspect().replayOutcome,'complete');
     });
     await t.test('no uncaught runtime errors. GPU rasterization was not tested.', async () => {
       assert.deepEqual(errors, []);

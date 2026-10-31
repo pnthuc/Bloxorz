@@ -10,7 +10,7 @@
  $('focus-block').onclick=A.focusBlock;
  $('simple-hud').append($('switch-cube'));
  const pad=document.querySelector('.dpad');pad.id='touch-pad';$('shell').append(pad);
- document.body.append($('game-overlay'));$('game-overlay').setAttribute('role','dialog');$('game-overlay').setAttribute('aria-label','Kết quả màn chơi');
+ document.body.append($('game-overlay'));$('game-overlay').setAttribute('role','dialog');$('game-overlay').setAttribute('aria-label','Kết quả màn chơi'); 
  $('game-overlay').insertAdjacentHTML('beforeend',`<div class="end-actions">${button('end-levels','Chọn màn','levels')}${button('end-next','Màn tiếp theo','next')}</div>`);
  $('tabs').before(Object.assign(document.createElement('nav'),{id:'solver-modes',className:'tabs',hidden:true}));
  $('solver-modes').setAttribute('aria-label','Chế độ AI Solver');
