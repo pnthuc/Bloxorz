@@ -1,0 +1,757 @@
+{
+  "figures": [
+    {
+      "file": "01_search_time_ms",
+      "metric": "search_time_ms",
+      "title": "Search time by level",
+      "scale": "log",
+      "samples": [
+        3
+      ]
+    },
+    {
+      "file": "02_memory_kb",
+      "metric": "memory_kb",
+      "title": "Peak Python allocation by level",
+      "scale": "log",
+      "samples": [
+        3
+      ]
+    },
+    {
+      "file": "03_expanded_nodes",
+      "metric": "expanded_nodes",
+      "title": "Expanded nodes by level",
+      "scale": "log",
+      "samples": [
+        3
+      ]
+    },
+    {
+      "file": "04_solution_length",
+      "metric": "solution_length",
+      "title": "Solution length by level",
+      "scale": "log",
+      "samples": [
+        3
+      ]
+    },
+    {
+      "file": "05_path_cost",
+      "metric": "path_cost",
+      "title": "Common path cost by level",
+      "scale": "log",
+      "samples": [
+        3
+      ]
+    }
+  ],
+  "solver_colors": {
+    "bfs": "#0072B2",
+    "dfs": "#D55E00",
+    "ucs": "#009E73",
+    "astar": "#CC79A7"
+  },
+  "samples_by_level_solver": {
+    "1/bfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "1/dfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "1/ucs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "1/astar": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "2/bfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "2/dfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "2/ucs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "2/astar": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "3/bfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "3/dfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "3/ucs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "3/astar": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "4/bfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "4/dfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "4/ucs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "4/astar": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "5/bfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "5/dfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "5/ucs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "5/astar": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "6/bfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "6/dfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "6/ucs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "6/astar": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "7/bfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "7/dfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "7/ucs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "7/astar": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "8/bfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "8/dfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "8/ucs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "8/astar": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "9/bfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "9/dfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "9/ucs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "9/astar": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "10/bfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "10/dfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "10/ucs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "10/astar": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "11/bfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "11/dfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "11/ucs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "11/astar": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "12/bfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "12/dfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "12/ucs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "12/astar": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "13/bfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "13/dfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "13/ucs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "13/astar": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "14/bfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "14/dfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "14/ucs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "14/astar": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "15/bfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "15/dfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "15/ucs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "15/astar": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "16/bfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "16/dfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "16/ucs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "16/astar": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "17/bfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "17/dfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "17/ucs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "17/astar": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "18/bfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "18/dfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "18/ucs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "18/astar": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "19/bfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "19/dfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "19/ucs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "19/astar": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "20/bfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "20/dfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "20/ucs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "20/astar": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "21/bfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "21/dfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "21/ucs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "21/astar": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "22/bfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "22/dfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "22/ucs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "22/astar": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "23/bfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "23/dfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "23/ucs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "23/astar": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "24/bfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "24/dfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "24/ucs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "24/astar": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "25/bfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "25/dfs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "25/ucs": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    },
+    "25/astar": {
+      "search_time_ms": 3,
+      "memory_kb": 3,
+      "expanded_nodes": 3,
+      "solution_length": 3,
+      "path_cost": 3
+    }
+  }
+}
