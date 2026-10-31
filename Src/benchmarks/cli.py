@@ -290,14 +290,18 @@ def run_benchmarks(
     print(f"\nĐã xuất kết quả vào: {out_path}")
 
 
-def main():
+def main(argv=None):
+    argv = list(sys.argv[1:] if argv is None else argv)
+    if argv and argv[0] == "summarize":
+        from .summary import summarize_main
+        return summarize_main(argv[1:])
     parser = argparse.ArgumentParser(description="Bloxorz Benchmarking CLI with Progressive Logging")
     parser.add_argument("--levels", nargs="+", default=["all"], help="Danh sách ID màn cần chạy")
     parser.add_argument("--solvers", nargs="+", default=["all"], help="Danh sách thuật toán: bfs dfs ucs astar")
     parser.add_argument("--repeats", type=int, default=1, help="Số lần lặp lại cho mỗi màn")
     parser.add_argument("--timeout", type=float, default=60.0, help="Giới hạn thời gian (giây), mặc định 60s")
     parser.add_argument("--output-dir", type=str, default=DEFAULT_OUTPUT_DIR, help="Thư mục xuất CSV/JSON")
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
     run_benchmarks(
         selected_levels=args.levels,

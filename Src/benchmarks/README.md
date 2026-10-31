@@ -3,7 +3,7 @@
 Chạy từ thư mục `Src` sau khi hoàn tất một đợt đo:
 
 ```powershell
-python -m benchmarks.summary ../handoff/quan/benchmarks
+python -m benchmarks.cli summarize ../handoff/quan/benchmarks
 ```
 
 Tool đọc `raw.csv`, `run-config.json`, `environment.json` và `runs/*.json`,
@@ -14,8 +14,8 @@ CLI chạy benchmark vẫn dùng như trước.
 Nếu cần tên đầu ra hoặc bảng phân nhóm khác:
 
 ```powershell
-python -m benchmarks.summary ../handoff/quan/benchmarks --output ../handoff/quan/benchmarks/summary-new.csv
-python -m benchmarks.summary PATH_TO_BATCH --groups PATH_TO_GROUPS_CSV
+python -m benchmarks.cli summarize ../handoff/quan/benchmarks --output ../handoff/quan/benchmarks/summary-new.csv
+python -m benchmarks.cli summarize PATH_TO_BATCH --groups PATH_TO_GROUPS_CSV
 ```
 
 Mỗi dòng đầu ra là một cặp màn–thuật toán, gồm số lượt theo từng trạng thái,
@@ -30,7 +30,6 @@ So sánh chi phí giữa bốn thuật toán bằng `path_cost`, vì `total_cost
 Tool yêu cầu đủ các lượt trong cấu hình, không trùng, CSV khớp JSON và các metric hợp lệ.
 Đợt đo mới cần dùng quy ước một hành động là một lần di chuyển; dữ liệu cũ đếm Space
 riêng hoặc có tên màn khác bảng phân nhóm cần dùng đúng phiên bản dữ liệu tương ứng.
-Nếu metadata cũ không có `level_set_sha256`, cột đó để trống; tool không suy ra hash từ màn hiện tại.
 
 Kiểm tra:
 
