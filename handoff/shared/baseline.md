@@ -1,41 +1,53 @@
 # Phiên bản và cách đo dùng chung
 
-Quân yêu cầu chạy lại Q04/Q05 sau khi đánh số 25 màn thành 1–25 ngày 31/10/2026.
-Mốc này chốt phạm vi đo của Quân; các xác nhận cost/heuristic và nghiệm thu nhóm vẫn để riêng.
+**CHƯA CHỐT.** File này là giao ước cần nhóm xác nhận trước thực nghiệm chính thức,
+không phải xác nhận báo cáo/video hoặc gói nộp đã hoàn tất.
 
-- Source dùng để đo: 0d7adc5bcf4960cb53f855aa0f2082bb6ea710b0; 92 test Python và 53 test UI PASS trước khi đo.
-- Bộ màn: `Src/levels/level_01.json` đến `level_25.json`, cùng bộ cho cả bốn thuật toán.
-- 25 màn × bfs, dfs, ucs, astar × 3 lần = 300 lượt, timeout 120 giây/lượt.
-- Thứ tự: ID tăng dần → lần lặp 1–3 → bfs, dfs, ucs, astar; chạy tuần tự, không warm-up riêng.
-- Engine: tám hướng; tiền tố S đổi cube rồi lăn; SPACE miễn phí khi chơi tay, không là cạnh tìm kiếm.
-- Cost: 1 + 0,5 cho mỗi ô fragile bị chiếm ở trạng thái đến; dùng `path_cost` khi so chéo.
-- Profiler: `search_time_ms` trong core; `memory_kb` là peak cấp phát Python KiB, không phải RAM/GPU.
-- Timeout: cha poll sau khi tạo worker; phần khởi động còn diễn ra dùng chung ngân sách chờ.
-- Replay và ghi file nằm ngoài vùng đo. Đếm riêng SOLVED, NO_SOLUTION, TIMEOUT, ERROR, INVALID_PATH.
-- CSV tổng hợp: số mẫu, tỷ lệ thành công và median/min/max/IQR; không biến timeout thành số 0.
-- Mỗi đợt có metadata riêng, source hash và level-set hash; không gán dữ liệu cũ cho ID hoặc source mới.
+Thức tổng hợp; Phúc xác nhận cost; Thiện xác nhận heuristic; Quân xác nhận bộ màn và phép đo.
 
-P01/P02 của Phúc đã có trong main qua PR #16. Tài liệu heuristic của Thiện cần đối chiếu
-với code thực đo; không tự xác nhận tính admissible/consistent từ vài ca kiểm thử.
-Các tài liệu thành viên khác viết trước mốc đánh số có thể dùng ID cũ; đối chiếu lịch sử Git khi ghép báo cáo.
+## Căn cứ từ source hiện tại
 
-- [x] Quân chốt bộ màn, số lặp, timeout, schema và đơn vị.
-- [x] Phúc xác nhận cost và diễn giải trên snapshot cuối.
-- [x] Thiện xác nhận heuristic và giả thiết trên snapshot cuối.
-- [x] Thức nghiệm thu snapshot và kết quả kiểm tra.
+- 25 màn JSON trong `Src/levels/`; 37 ca kiểm thử gồm 25 màn và 12 ca biên.
+- Engine: `Src/core/board.py`; replay: `Src/core/replay.py`.
+- Cost: `Src/solvers/costs.py`, mỗi cạnh `1 + 0.5 × số ô fragile ở trạng thái đến`.
+- Tìm kiếm dùng `UP LEFT RIGHT DOWN SUP SLEFT SRIGHT SDOWN`; tiền tố S đổi cube rồi lăn.
+  SPACE chỉ chọn cube khi chơi tay. `solution_length = len(moves)`.
+- Heuristic: `Src/solvers/member4_astar.py`, gồm khoảng cách/ghép cube và đường qua split switch.
+  Thiện phải đối chiếu công thức với code thực sự dùng trong lượt đo.
+- Profiler: `Src/solvers/base.py`. Thời gian ms; đỉnh cấp phát Python KiB, không phải tổng RAM/GPU.
+- `expanded_nodes` đếm lượt mở rộng để sinh successor, không phải tổng state đã phát hiện;
+  mô tả đúng cách từng solver bỏ qua goal và entry lỗi thời khi diễn giải kết quả.
+- CLI: `Src/benchmarks/cli.py`. Timeout ngoài tiến trình gồm thời gian khởi động worker;
+  `search_time_ms` trong profiler không gồm khởi động, giao tiếp, replay hoặc vẽ hình.
+- CLI giữ `total_cost` gốc và tính lại `path_cost` chung. GUI benchmark tính lại cost chung
+  trong `total_cost`, giữ số gốc ở `solver_reported_cost`; không trộn hai schema khi làm bảng.
 
-Chi tiết kết quả, môi trường và lệnh tái lập được cập nhật tại [handoff Quân](../quan/README.md).
+## Nhóm xác nhận
 
-Q04/Q05 theo ID mới đã hoàn tất: 300/300 SOLVED, replay/coverage/hash và mốc tối ưu đã qua;
-summary có 100 dòng, tái tạo giống từng byte. Dữ liệu nằm trong `quan/benchmarks/q04/`;
-phương pháp đo ở `quan/methodology.docx`. Q06 và các xác nhận nhóm còn thiếu giữ nguyên.
+| Nội dung | Giá trị | Người xác nhận |
+| --- | --- | --- |
+| Commit dùng để đo | Chưa chốt; ghi hash sau khi các thay đổi cần đo đã commit | Thức, Quân |
+| Ngày chốt | Chưa điền | Thức |
+| Cost và lý do chọn | Công thức trên; chờ xác nhận P01 | Phúc |
+| Heuristic và giả thiết | Chờ xác nhận H01/H02 trên commit được chọn | Thiện |
+| Bộ màn | Đề xuất 25 ID trong level-groups.csv, cùng bộ cho bốn thuật toán | Quân |
+| Số lần lặp | Đề xuất 3 lần/trường hợp | Quân |
+| Timeout | Đề xuất 120 giây/lượt, giữ riêng TIMEOUT | Quân |
+| Môi trường | CPU, RAM, OS, Python; cùng máy/cấu hình | Quân |
+| Tổng hợp | Ghi số mẫu, tỷ lệ thành công, trung vị và cách xử lý timeout/lỗi | Quân |
+| Kiểm tra phiên bản | Ghi lệnh, kết quả, ngày chạy và giới hạn kiểm tra | Thức |
 
-## Xác nhận được giữ từ main
+25 màn, 3 lần lặp và 120 giây là kế hoạch nhóm, không phải số bắt buộc của đề.
+Lấy commit bằng `git rev-parse HEAD` trên đúng checkout đã chọn; không coi HEAD là đủ
+nếu còn sửa code chưa commit. Mỗi đợt dùng thư mục riêng để không trộn dữ liệu/metadata.
 
-Commit 3962aa8 trên main đã đánh dấu hoàn tất các xác nhận của baseline trước khi đánh số lại.
-Giữ nguyên ghi nhận đó; không tự chuyển thành nghiệm thu snapshot 0d7adc5 theo ID 1–25.
+- [X] Phúc xác nhận cost và diễn giải.
+- [X] Thiện xác nhận heuristic và giả thiết.
+- [X] Quân xác nhận cấu hình, schema, đơn vị và cách tổng hợp.
+- [X] Thức xác nhận snapshot và kết quả kiểm tra.
 
-- [x] Phúc xác nhận cost và diễn giải trên baseline trước.
-- [x] Thiện xác nhận heuristic và giả thiết trên baseline trước.
-- [x] Quân xác nhận cấu hình, schema, đơn vị và cách tổng hợp trên baseline trước.
-- [x] Thức xác nhận snapshot và kết quả kiểm tra trên baseline trước.
+Sau khi đủ xác nhận, ghi commit/ngày thật và đổi trạng thái thành ĐÃ CHỐT.
+Nếu đổi engine, solver, cost, heuristic hoặc cách đo, tạo mốc mới và xác định dữ liệu cần chạy lại.
+
+Bộ dữ liệu đã chọn ngày 31/10/2026 có 25 màn và T1–T12. Xem [lựa chọn màn](../quan/LEVEL_SELECTION.md).
+Các trial cũ giữ nguyên phiên bản, không gán lại cho bộ màn/engine mới.

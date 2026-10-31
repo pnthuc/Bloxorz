@@ -1,0 +1,27 @@
+{
+  "case_id": "36",
+  "family": "shallow_goal",
+  "angle": 0,
+  "solver": "bfs",
+  "repeat": 1,
+  "status": "SOLVED",
+  "search_time_ms": 0.389,
+  "memory_kb": 4.27,
+  "expanded_nodes": 2,
+  "solution_length": 2,
+  "path_cost": 2.0,
+  "total_cost": 2.0,
+  "error": "",
+  "solver_result": {
+    "found": true,
+    "moves": [
+      "UP",
+      "UP"
+    ],
+    "solution_length": 2,
+    "expanded_nodes": 2,
+    "search_time_ms": 0.389,
+    "memory_kb": 4.27,
+    "total_cost": 2.0
+  }
+}

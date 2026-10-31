@@ -1,0 +1,16 @@
+{
+  "case_id": "33",
+  "family": "stress",
+  "angle": 0,
+  "solver": "astar",
+  "repeat": 1,
+  "status": "TIMEOUT",
+  "search_time_ms": null,
+  "memory_kb": null,
+  "expanded_nodes": null,
+  "solution_length": null,
+  "path_cost": null,
+  "total_cost": null,
+  "error": "",
+  "solver_result": null
+}

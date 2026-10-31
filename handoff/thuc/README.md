@@ -7,7 +7,7 @@ Thức giữ luật game/API/UI/level/test thống nhất, cung cấp demo và n
 
 - Engine: `Src/core/board.py`; level/replay: `Src/core/levels.py`, `Src/core/replay.py`.
 - API: `Src/web/app.py`; giao diện: `Src/static/`, `Src/templates/`;
-  level: `Src/levels/level_01.json` đến `level_25.json`; regression: `Src/tests/`.
+  level: `Src/levels/level_01.json` đến `level_33.json`; regression: `Src/tests/`.
 - [Tài liệu bàn giao cho Nam](Phan_Ngoc_Thuc.docx) gồm 3 trang: phần A cho mục 2,
   phần B cho mục 3, phần C cho mục 5.2 và phụ lục kiểm thử/demo.
   `kiem_tra_thuc.json` là log cũ; kết quả kiểm tra mới ngày 30/10/2026 ghi trong tài liệu.

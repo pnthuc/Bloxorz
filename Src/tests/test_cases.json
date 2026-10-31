@@ -79,8 +79,8 @@
     ],
     "walkthrough_cost": 16.5
   },
-  "5": {
-    "level": "5",
+  "6": {
+    "level": "6",
     "solvable": true,
     "bfs_moves": 8,
     "ucs_cost": 10,
@@ -99,8 +99,8 @@
       2
     ]
   },
-  "6": {
-    "level": "6",
+  "7": {
+    "level": "7",
     "solvable": true,
     "bfs_moves": 11,
     "ucs_cost": 11,
@@ -123,8 +123,8 @@
       10
     ]
   },
-  "7": {
-    "level": "7",
+  "8": {
+    "level": "8",
     "solvable": true,
     "bfs_moves": 17,
     "ucs_cost": 17,
@@ -153,8 +153,8 @@
       10
     ]
   },
-  "8": {
-    "level": "8",
+  "11": {
+    "level": "11",
     "solvable": true,
     "bfs_moves": 23,
     "ucs_cost": 23,
@@ -191,8 +191,8 @@
       11
     ]
   },
-  "9": {
-    "level": "9",
+  "12": {
+    "level": "12",
     "solvable": true,
     "bfs_moves": 30,
     "ucs_cost": 31,
@@ -238,8 +238,8 @@
       "SPLIT"
     ]
   },
-  "10": {
-    "level": "10",
+  "15": {
+    "level": "15",
     "solvable": true,
     "bfs_moves": 39,
     "ucs_cost": 39,
@@ -286,8 +286,8 @@
     ],
     "walkthrough_cost": 39
   },
-  "11": {
-    "level": "11",
+  "19": {
+    "level": "19",
     "solvable": true,
     "bfs_moves": 33,
     "ucs_cost": 44,
@@ -328,8 +328,8 @@
     ],
     "walkthrough_cost": 44
   },
-  "12": {
-    "level": "12",
+  "23": {
+    "level": "23",
     "solvable": true,
     "bfs_moves": 28,
     "ucs_cost": 28,
@@ -365,8 +365,8 @@
     ],
     "walkthrough_cost": 28
   },
-  "13": {
-    "level": "13",
+  "30": {
+    "level": "30",
     "solvable": true,
     "bfs_moves": 56,
     "ucs_cost": 56,
@@ -430,8 +430,8 @@
     ],
     "walkthrough_cost": 56
   },
-  "14": {
-    "level": "14",
+  "31": {
+    "level": "31",
     "solvable": true,
     "bfs_moves": 9,
     "ucs_cost": 10,
@@ -448,8 +448,8 @@
     ],
     "walkthrough_cost": 10
   },
-  "15": {
-    "level": "15",
+  "32": {
+    "level": "32",
     "solvable": true,
     "bfs_moves": 6,
     "ucs_cost": 6,
@@ -463,8 +463,8 @@
     ],
     "walkthrough_cost": 6
   },
-  "16": {
-    "level": "16",
+  "33": {
+    "level": "33",
     "solvable": true,
     "bfs_moves": 110,
     "ucs_cost": 110.5,
@@ -1025,8 +1025,8 @@
       3
     ]
   },
-  "17": {
-    "level": "17",
+  "35": {
+    "level": "35",
     "solvable": true,
     "bfs_moves": 2,
     "ucs_cost": 2,
@@ -1036,8 +1036,8 @@
     ],
     "walkthrough_cost": 2.0
   },
-  "18": {
-    "level": "18",
+  "36": {
+    "level": "36",
     "solvable": true,
     "bfs_moves": 2,
     "ucs_cost": 2,
@@ -1047,8 +1047,8 @@
     ],
     "walkthrough_cost": 2.0
   },
-  "19": {
-    "level": "19",
+  "37": {
+    "level": "37",
     "solvable": true,
     "bfs_moves": 2,
     "ucs_cost": 2,
@@ -1058,8 +1058,8 @@
     ],
     "walkthrough_cost": 2.0
   },
-  "20": {
-    "level": "20",
+  "38": {
+    "level": "38",
     "solvable": true,
     "bfs_moves": 2,
     "ucs_cost": 2,
@@ -1069,8 +1069,8 @@
     ],
     "walkthrough_cost": 2.0
   },
-  "21": {
-    "level": "21",
+  "39": {
+    "level": "39",
     "solvable": true,
     "bfs_moves": 16,
     "ucs_cost": 16,
@@ -1094,8 +1094,8 @@
     ],
     "walkthrough_cost": 16.0
   },
-  "22": {
-    "level": "22",
+  "40": {
+    "level": "40",
     "solvable": true,
     "bfs_moves": 16,
     "ucs_cost": 16,
@@ -1119,8 +1119,8 @@
     ],
     "walkthrough_cost": 16.0
   },
-  "23": {
-    "level": "23",
+  "43": {
+    "level": "43",
     "solvable": true,
     "bfs_moves": 20,
     "ucs_cost": 20,
@@ -1148,8 +1148,8 @@
     ],
     "walkthrough_cost": 20.0
   },
-  "24": {
-    "level": "24",
+  "45": {
+    "level": "45",
     "solvable": true,
     "bfs_moves": 16,
     "ucs_cost": 20,
@@ -1173,8 +1173,8 @@
     ],
     "walkthrough_cost": 23.0
   },
-  "25": {
-    "level": "25",
+  "46": {
+    "level": "46",
     "solvable": true,
     "bfs_moves": 16,
     "ucs_cost": 20,

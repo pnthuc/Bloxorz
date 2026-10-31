@@ -1,0 +1,2 @@
+case_id,family,angle,solver,runs,completed,solved,timeouts,errors,search_time_ms_median,memory_kb_median,expanded_nodes_median,solution_length_median,path_cost_median,time_min_ms,time_max_ms,time_iqr_ms
+33,stress,0,astar,1,1,1,0,0,20079.0,19486.1,65598,119,119.5,20079.0,20079.0,

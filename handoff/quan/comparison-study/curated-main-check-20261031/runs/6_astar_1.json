@@ -1,0 +1,33 @@
+{
+  "case_id": "6",
+  "family": "mechanisms",
+  "angle": 0,
+  "solver": "astar",
+  "repeat": 1,
+  "status": "SOLVED",
+  "search_time_ms": 1.048,
+  "memory_kb": 4.6,
+  "expanded_nodes": 10,
+  "solution_length": 8,
+  "path_cost": 10.0,
+  "total_cost": 10.0,
+  "error": "",
+  "solver_result": {
+    "found": true,
+    "moves": [
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "DOWN"
+    ],
+    "solution_length": 8,
+    "expanded_nodes": 10,
+    "search_time_ms": 1.048,
+    "memory_kb": 4.6,
+    "total_cost": 10.0
+  }
+}

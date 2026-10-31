@@ -1,0 +1,121 @@
+[
+  {
+    "id": 5,
+    "filename": "level_05_turning_corridor.json",
+    "sha256": "f877a427d97a218702d0256763fb1790d71afda58d62688ca489c5cb9682b924",
+    "name": "Hành lang gấp khúc",
+    "reason": "Reduced overlap within the same mechanism family; original board preserved."
+  },
+  {
+    "id": 9,
+    "filename": "level_09_two_bridges.json",
+    "sha256": "639b417ef91ce0db11518fb968e4b0d0aede512d7d14726eec46c805cb17414a",
+    "name": "Hai nhịp cầu",
+    "reason": "Reduced overlap within the same mechanism family; original board preserved."
+  },
+  {
+    "id": 10,
+    "filename": "level_10_companions.json",
+    "sha256": "a56216651f285d3c24b09f8e17777d7e2168fd0996e5fa21152d9cfd639fa85e",
+    "name": "Bạn đồng hành",
+    "reason": "Reduced overlap within the same mechanism family; original board preserved."
+  },
+  {
+    "id": 13,
+    "filename": "level_13_parity_lock.json",
+    "sha256": "ef3c71c763c1d822da152e594f79664cac425d6aa1e4765cbc34d6fb27555943",
+    "name": "Khóa chẵn lẻ",
+    "reason": "Reduced overlap within the same mechanism family; original board preserved."
+  },
+  {
+    "id": 14,
+    "filename": "level_14_amber_trap.json",
+    "sha256": "c891556adff2808c83de8f75c7c12c3cbe65b56ef43bd2896a4d9a41e827d7f0",
+    "name": "Bẫy hổ phách",
+    "reason": "Reduced overlap within the same mechanism family; original board preserved."
+  },
+  {
+    "id": 16,
+    "filename": "level_16_hydra_fork.json",
+    "sha256": "d79f4e4be874de3f45b5ffc32a3343e7732428b4757b0ebed943c4ba69ea4609",
+    "name": "Nhánh cụt Hydra",
+    "reason": "Reduced overlap within the same mechanism family; original board preserved."
+  },
+  {
+    "id": 17,
+    "filename": "level_17_isolate_rejoin.json",
+    "sha256": "345f73c0bea739a1912b1a1e54f967c7dbbe5ff748a209ed7036cf3c7dda6e61",
+    "name": "Phân tách & Tái hợp",
+    "reason": "Reduced overlap within the same mechanism family; original board preserved."
+  },
+  {
+    "id": 18,
+    "filename": "level_18_triple_gatekeeper.json",
+    "sha256": "ebdb29bdffdd6f9e06a1ce4c2543426849f836d4ce69eb4ce15f27bd7dafed73",
+    "name": "Ba cổng liên hoàn",
+    "reason": "Reduced overlap within the same mechanism family; original board preserved."
+  },
+  {
+    "id": 20,
+    "filename": "level_20_orbital_relay.json",
+    "sha256": "c207a433f342a79d45a37d4ea24b6d0a2ca8f554a7f6dd715774adf07ba91f74",
+    "name": "Trạm quỹ đạo",
+    "reason": "Reduced overlap within the same mechanism family; original board preserved."
+  },
+  {
+    "id": 21,
+    "filename": "level_21_closed_loop.json",
+    "sha256": "c8f62bcf17022185afe09361bafdf38f5088fa01c0bded90976b326c6f294d66",
+    "name": "Vòng lặp đóng",
+    "reason": "Reduced overlap within the same mechanism family; original board preserved."
+  },
+  {
+    "id": 22,
+    "filename": "level_22_grandmaster_crucible.json",
+    "sha256": "f866b96cf3ee6ef62b95d298418af95b2faf4e5a7a4c53184db2c2940ebc2531",
+    "name": "Hỏa ngục Đại kiện tướng",
+    "reason": "Reduced overlap within the same mechanism family; original board preserved."
+  },
+  {
+    "id": 24,
+    "filename": "level_24_bridge_avenue.json",
+    "sha256": "d5e4e6125121fbf00db6cb5cdc9d0f4706989278d3958efd08b8fba0db36cc0d",
+    "name": "Đại lộ Bách kiều",
+    "reason": "Reduced overlap within the same mechanism family; original board preserved."
+  },
+  {
+    "id": 25,
+    "filename": "level_25_split_rift.json",
+    "sha256": "11cca2050f0753c4dce89f71d8cc39c282f2c65141debb8fe4e2222584f22883",
+    "name": "Thiên môn Tách hợp",
+    "reason": "Reduced overlap within the same mechanism family; original board preserved."
+  },
+  {
+    "id": 26,
+    "filename": "level_26_eight_gates.json",
+    "sha256": "abafffb03348b733b2f031be05b9a62150fad4d99ddd6133023e50a78f25cc01",
+    "name": "Bát môn Độn giáp",
+    "reason": "Reduced overlap within the same mechanism family; original board preserved."
+  },
+  {
+    "id": 27,
+    "filename": "level_27_infinite_chaos.json",
+    "sha256": "dd0c5187d38e9e7d0de1eeaeb34f82158b82b6a53d09193aa6179aee1494bd79",
+    "name": "Đại hỗn mang Vô cực",
+    "reason": "Reduced overlap within the same mechanism family; original board preserved."
+  },
+  {
+    "id": 28,
+    "filename": "level_28_split_matrix.json",
+    "sha256": "747e71c6695f35d1743ab3b9eaaebb017bb78d947a8082191ef9c88f1c5685fd",
+    "name": "Ma trận Phân tách Vô tận",
+    "reason": "Reduced overlap within the same mechanism family; original board preserved."
+  },
+  {
+    "id": 29,
+    "filename": "level_29_three_realms.json",
+    "sha256": "8bd9a467b7913a317bc213634a70c5999b8e668452c903dfdf04932939ac1c4f",
+    "name": "Tam giới Phân ly",
+    "reason": "Reduced overlap within the same mechanism family; original board preserved."
+  }
+]

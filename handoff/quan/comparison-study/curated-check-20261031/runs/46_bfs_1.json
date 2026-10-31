@@ -1,0 +1,41 @@
+{
+  "case_id": "46",
+  "family": "fragile_tradeoff",
+  "angle": 0,
+  "solver": "bfs",
+  "repeat": 1,
+  "status": "SOLVED",
+  "search_time_ms": 8.91,
+  "memory_kb": 40.82,
+  "expanded_nodes": 161,
+  "solution_length": 16,
+  "path_cost": 23.0,
+  "total_cost": 16.0,
+  "error": "",
+  "solver_result": {
+    "found": true,
+    "moves": [
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT"
+    ],
+    "solution_length": 16,
+    "expanded_nodes": 161,
+    "search_time_ms": 8.91,
+    "memory_kb": 40.82,
+    "total_cost": 16.0
+  }
+}

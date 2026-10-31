@@ -1,0 +1,9 @@
+run_id,level_id,level_name,solver,repeat_index,status,search_time_ms,memory_kb,expanded_nodes,solution_length,rolling_steps,total_cost,path_cost,timeout_sec,timestamp,error_message
+lvl1_bfs_rep1_1793179925786,1,Stage 1: Classic Warmup,bfs,1,SOLVED,3.575,13.41,48,7,7,7.0,7.0,60.0,2026-10-28T16:32:05.786832,
+lvl1_dfs_rep1_1793179926156,1,Stage 1: Classic Warmup,dfs,1,SOLVED,0.592,4.41,7,7,7,7.0,7.0,60.0,2026-10-28T16:32:06.156421,
+lvl1_ucs_rep1_1793179926533,1,Stage 1: Classic Warmup,ucs,1,SOLVED,4.941,18.16,64,7,7,7.0,7.0,60.0,2026-10-28T16:32:06.533598,
+lvl1_astar_rep1_1793179926932,1,Stage 1: Classic Warmup,astar,1,SOLVED,2.058,10.15,20,7,7,7.0,7.0,60.0,2026-10-28T16:32:06.932911,
+lvl4_bfs_rep1_1793179927484,4,Stage 4: Split Switch & Fragile,bfs,1,SOLVED,153.156,430.32,1662,17,16,17.0,17.5,60.0,2026-10-28T16:32:07.484418,
+lvl4_dfs_rep1_1793179927943,4,Stage 4: Split Switch & Fragile,dfs,1,SOLVED,33.807,177.62,398,281,166,281.0,292.0,60.0,2026-10-28T16:32:07.943113,
+lvl4_ucs_rep1_1793179928584,4,Stage 4: Split Switch & Fragile,ucs,1,SOLVED,216.789,595.84,1785,17,16,17.5,17.5,60.0,2026-10-28T16:32:08.584301,
+lvl4_astar_rep1_1793179929145,4,Stage 4: Split Switch & Fragile,astar,1,SOLVED,161.719,419.48,1107,17,16,17.5,17.5,60.0,2026-10-28T16:32:09.145871,

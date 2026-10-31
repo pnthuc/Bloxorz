@@ -1,95 +1,21 @@
 {
   "id": "6",
-  "name": "Stage 6: Open Switch",
-  "description": "Press the switch to open the bridge.",
-  "difficulty": "Easy",
+  "name": "Dải gạch mỏng",
+  "description": "Đi qua các dải gạch cam mà không đứng lên chúng.",
+  "difficulty": "Khó",
   "start_pos": [
-    2,
-    1
+    0,
+    0
   ],
-  "initial_bridges": [
-    false
-  ],
-  "switches": {
-    "2,3": {
-      "behavior": "open",
-      "targets": [
-        0
-      ]
-    }
-  },
+  "initial_bridges": [],
+  "switches": {},
   "grid": [
-    [
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0
-    ],
-    [
-      1,
-      1,
-      1,
-      1,
-      0,
-      0,
-      1,
-      1,
-      1,
-      1
-    ],
-    [
-      1,
-      1,
-      1,
-      3,
-      0,
-      0,
-      1,
-      1,
-      1,
-      1
-    ],
-    [
-      1,
-      1,
-      1,
-      1,
-      10,
-      10,
-      1,
-      1,
-      1,
-      1
-    ],
-    [
-      1,
-      1,
-      1,
-      1,
-      0,
-      0,
-      1,
-      1,
-      9,
-      1
-    ],
-    [
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      1,
-      1,
-      1,
-      1
-    ]
+    [1, 2, 1, 1, 0, 0, 0],
+    [0, 0, 0, 2, 0, 0, 0],
+    [0, 0, 0, 1, 0, 0, 0],
+    [0, 0, 0, 1, 2, 1, 1],
+    [0, 0, 0, 2, 0, 0, 2],
+    [0, 0, 0, 1, 0, 0, 1],
+    [0, 0, 0, 1, 2, 1, 9]
   ]
 }

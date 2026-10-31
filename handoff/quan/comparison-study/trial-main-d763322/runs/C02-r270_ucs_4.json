@@ -1,0 +1,27 @@
+{
+  "case_id": "C02-r270",
+  "family": "shallow_goal",
+  "angle": 270,
+  "solver": "ucs",
+  "repeat": 4,
+  "status": "SOLVED",
+  "search_time_ms": 3.47,
+  "memory_kb": 15.58,
+  "expanded_nodes": 16,
+  "solution_length": 2,
+  "path_cost": 2.0,
+  "total_cost": 2.0,
+  "error": "",
+  "solver_result": {
+    "found": true,
+    "moves": [
+      "DOWN",
+      "DOWN"
+    ],
+    "solution_length": 2,
+    "expanded_nodes": 16,
+    "search_time_ms": 3.47,
+    "memory_kb": 15.58,
+    "total_cost": 2.0
+  }
+}

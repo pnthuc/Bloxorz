@@ -1,0 +1,35 @@
+{
+  "case_id": "C01-r000",
+  "family": "forced_corridor",
+  "angle": 0,
+  "solver": "astar",
+  "repeat": 5,
+  "status": "SOLVED",
+  "search_time_ms": 0.741,
+  "memory_kb": 3.77,
+  "expanded_nodes": 10,
+  "solution_length": 10,
+  "path_cost": 10.0,
+  "total_cost": 10.0,
+  "error": "",
+  "solver_result": {
+    "found": true,
+    "moves": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT"
+    ],
+    "solution_length": 10,
+    "expanded_nodes": 10,
+    "search_time_ms": 0.741,
+    "memory_kb": 3.77,
+    "total_cost": 10.0
+  }
+}

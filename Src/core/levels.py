@@ -8,9 +8,8 @@ BASE_DIR = str(Path(__file__).resolve().parents[1])
 DEFAULT_LEVELS = {
     "1": {
         "id": "1",
-        "name": "Stage 1: Basic Moves",
-        "description": "Reach the goal.",
-        "difficulty": "Easy",
+        "name": "Stage 1: Classic Warmup",
+        "difficulty": "Easy (Basic Floor Only)",
         "start_pos": [1, 1],
         "initial_bridges": [],
         "switches": {},
@@ -25,9 +24,8 @@ DEFAULT_LEVELS = {
     },
     "2": {
         "id": "2",
-        "name": "Stage 2: Fragile Tiles",
-        "description": "Cross the fragile tiles.",
-        "difficulty": "Medium",
+        "name": "Stage 2: Fragile Path",
+        "difficulty": "Medium (Fragile Orange Tiles)",
         "start_pos": [2, 1],
         "initial_bridges": [],
         "switches": {},
@@ -41,9 +39,8 @@ DEFAULT_LEVELS = {
     },
     "3": {
         "id": "3",
-        "name": "Stage 3: Two Bridges",
-        "description": "Open both bridges.",
-        "difficulty": "Medium",
+        "name": "Stage 3: Switches & Bridges",
+        "difficulty": "Hard (Soft & Heavy Switches)",
         "start_pos": [1, 1],
         "initial_bridges": [False, False],
         "switches": {
@@ -61,9 +58,8 @@ DEFAULT_LEVELS = {
     },
     "4": {
         "id": "4",
-        "name": "Stage 4: Split and Merge",
-        "description": "Split the block and join it again.",
-        "difficulty": "Hard",
+        "name": "Stage 4: Split Switch & Fragile",
+        "difficulty": "Expert (Split Cubes + Bridge + Fragile)",
         "start_pos": [1, 1],
         "initial_bridges": [False],
         "switches": {

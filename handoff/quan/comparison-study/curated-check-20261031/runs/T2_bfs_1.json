@@ -1,0 +1,31 @@
+{
+  "case_id": "T2",
+  "family": "edge_case",
+  "angle": 0,
+  "solver": "bfs",
+  "repeat": 1,
+  "status": "SOLVED",
+  "search_time_ms": 1.945,
+  "memory_kb": 11.11,
+  "expanded_nodes": 31,
+  "solution_length": 6,
+  "path_cost": 7.5,
+  "total_cost": 6.0,
+  "error": "",
+  "solver_result": {
+    "found": true,
+    "moves": [
+      "RIGHT",
+      "UP",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "RIGHT"
+    ],
+    "solution_length": 6,
+    "expanded_nodes": 31,
+    "search_time_ms": 1.945,
+    "memory_kb": 11.11,
+    "total_cost": 6.0
+  }
+}

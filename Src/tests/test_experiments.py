@@ -42,7 +42,7 @@ class ExperimentTests(unittest.TestCase):
         self.assertEqual({p.pid for p in mp.active_children()}, before)
 
     def test_invalid_configuration_fails_before_output_creation(self):
-        invalid = [dict(selected_levels=['26']), dict(selected_levels=['all','1']),
+        invalid = [dict(selected_levels=['5']), dict(selected_levels=['all','1']),
                    dict(selected_solvers=['missing']), dict(repeats=0), dict(repeats=True),
                    dict(timeout=0), dict(timeout=float('nan')), dict(timeout=float('inf'))]
         with TemporaryDirectory() as directory:

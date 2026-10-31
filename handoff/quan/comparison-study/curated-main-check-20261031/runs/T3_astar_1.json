@@ -1,0 +1,41 @@
+{
+  "case_id": "T3",
+  "family": "edge_case",
+  "angle": 0,
+  "solver": "astar",
+  "repeat": 1,
+  "status": "SOLVED",
+  "search_time_ms": 303.008,
+  "memory_kb": 586.1,
+  "expanded_nodes": 1258,
+  "solution_length": 16,
+  "path_cost": 16.0,
+  "total_cost": 16.0,
+  "error": "",
+  "solver_result": {
+    "found": true,
+    "moves": [
+      "RIGHT",
+      "RIGHT",
+      "SRIGHT",
+      "SRIGHT",
+      "RIGHT",
+      "DOWN",
+      "RIGHT",
+      "SUP",
+      "SRIGHT",
+      "SRIGHT",
+      "SRIGHT",
+      "SRIGHT",
+      "SUP",
+      "SRIGHT",
+      "RIGHT",
+      "DOWN"
+    ],
+    "solution_length": 16,
+    "expanded_nodes": 1258,
+    "search_time_ms": 303.008,
+    "memory_kb": 586.1,
+    "total_cost": 16.0
+  }
+}

@@ -369,7 +369,7 @@ test('Bloxorz UI', async (t) => {
       );
       assert.equal(/\p{Extended_Pictographic}/u.test(d.body.textContent), false);
       assert.equal(el('stage-number').textContent, stageNumber('1'));
-      assert.equal(el('level-difficulty').textContent, 'Easy');
+      assert.equal(el('level-difficulty').textContent, 'Cơ bản');
       // Thin beveled geometry must stay finite, convex and outward-facing.
       for (const dims of [
         [0.78, 0.024, 0.78, 0.015],
@@ -552,7 +552,7 @@ test('Bloxorz UI', async (t) => {
       await select('2');
       await sleep(600);
       assert.equal(count(), 0);
-      assert.equal(el('stage-title').textContent, 'Stage 2: Fragile Tiles');
+      assert.equal(el('stage-title').textContent, 'Đường đi mong manh');
       controls.solveDelay = 0;
     });
     await t.test('failed move request recovers without locking controls', async () => {
@@ -578,7 +578,7 @@ test('Bloxorz UI', async (t) => {
     await t.test(
       'video 2 bridge disappears BEFORE fall, correct loss reason and final orientation',
       async () => {
-        await select('8');
+        await select('11');
         for (const [i, code] of ['ArrowRight', 'ArrowDown', 'ArrowRight'].entries()) {
           tap(code);
           await wait(() => count() === i + 1, 'video 2 approach ' + i);
@@ -633,10 +633,10 @@ test('Bloxorz UI', async (t) => {
       assert(Math.abs(cube1.position.y - 0.5) < 1e-6);
     });
     await t.test('new level metadata, numeric ordering, two bridge groups and reset', async () => {
-      await select('9');
-      assert.equal(el('stage-title').textContent, 'Stage 9: Mixed Mechanisms');
-      assert.equal(el('stage-number').textContent, stageNumber('9'));
-      assert.equal(el('level-difficulty').textContent, 'Hard');
+      await select('12');
+      assert.equal(el('stage-title').textContent, 'Hành trình liên hoàn');
+      assert.equal(el('stage-number').textContent, stageNumber('12'));
+      assert.equal(el('level-difficulty').textContent, 'Thử thách');
       assert.equal(el('level-summary').textContent, el('stage-description').textContent);
       for (const bridge of scene.bridgeGroups.values())
         assert(bridge.every((group) => !group.visible));
@@ -775,7 +775,7 @@ test('Bloxorz UI', async (t) => {
     });
     await t.test('F frames the active block on a large level, keeps local zoom on resize and C restores overview', async () => {
       await returnToPlay();
-      await select('16');scene.resetCamera();scene.reducedMotion=false;
+      await select('33');scene.resetCamera();scene.reducedMotion=false;
       const overview=scene.captureView(),state=JSON.parse(JSON.stringify(w.Bloxorz.ui.actions.inspect().state)),p=scene.placements(state)[0];
       tap('KeyF');assert.equal(scene.target.x,overview.target[0],'F must not teleport');await sleep(950);
       assert(scene.localView);assert(scene.distance<=10);assert(scene.distance<overview.distance*.6,'large level requires a genuinely closer framing');
@@ -1147,8 +1147,8 @@ test('Bloxorz UI', async (t) => {
     });
     await t.test('curated menu has 25 playable levels and replays a new shallow goal', async () => {
       await returnToPlay();
-      assert.deepEqual(levelIds,Array.from({length:25},(_,i)=>String(i+1)));
-      await select('18');click('menu-toggle');click('choose-solver');
+      assert.equal(levelIds.length,25);assert(!levelIds.includes('29'));assert(levelIds.includes('36'));
+      await select('36');click('menu-toggle');click('choose-solver');
       controls.mockSolvers=true;
       await w.Bloxorz.ui.actions.runSolver('bfs');
       await w.Bloxorz.ui.actions.playReplay();

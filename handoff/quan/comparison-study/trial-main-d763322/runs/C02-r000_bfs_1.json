@@ -1,0 +1,27 @@
+{
+  "case_id": "C02-r000",
+  "family": "shallow_goal",
+  "angle": 0,
+  "solver": "bfs",
+  "repeat": 1,
+  "status": "SOLVED",
+  "search_time_ms": 0.773,
+  "memory_kb": 5.16,
+  "expanded_nodes": 3,
+  "solution_length": 2,
+  "path_cost": 2.0,
+  "total_cost": 2.0,
+  "error": "",
+  "solver_result": {
+    "found": true,
+    "moves": [
+      "LEFT",
+      "LEFT"
+    ],
+    "solution_length": 2,
+    "expanded_nodes": 3,
+    "search_time_ms": 0.773,
+    "memory_kb": 5.16,
+    "total_cost": 2.0
+  }
+}

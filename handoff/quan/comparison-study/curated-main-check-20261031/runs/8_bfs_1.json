@@ -1,0 +1,42 @@
+{
+  "case_id": "8",
+  "family": "mechanisms",
+  "angle": 0,
+  "solver": "bfs",
+  "repeat": 1,
+  "status": "SOLVED",
+  "search_time_ms": 9.255,
+  "memory_kb": 38.41,
+  "expanded_nodes": 143,
+  "solution_length": 17,
+  "path_cost": 17.0,
+  "total_cost": 17.0,
+  "error": "",
+  "solver_result": {
+    "found": true,
+    "moves": [
+      "UP",
+      "LEFT",
+      "DOWN",
+      "RIGHT",
+      "UP",
+      "RIGHT",
+      "LEFT",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "UP",
+      "RIGHT",
+      "DOWN",
+      "LEFT",
+      "DOWN"
+    ],
+    "solution_length": 17,
+    "expanded_nodes": 143,
+    "search_time_ms": 9.255,
+    "memory_kb": 38.41,
+    "total_cost": 17.0
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "levels": [
+    "1",
+    "4"
+  ],
+  "solvers": [
+    "bfs",
+    "dfs",
+    "ucs",
+    "astar"
+  ],
+  "repeats": 1,
+  "timeout_sec": 10.0,
+  "level_set_sha256": "af3454c56532ed20db63d09ea644f4b24021802bafd3de07a07652ee57b34185"
+}

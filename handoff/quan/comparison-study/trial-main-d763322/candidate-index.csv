@@ -1,0 +1,15 @@
+candidate_id,case_id,family,filename,solvable,bfs_moves,ucs_cost
+34,C01-r000,forced_corridor,level_34_C01-r000.json,True,10,10
+35,C02-r000,shallow_goal,level_35_C02-r000.json,True,2,2
+36,C02-r090,shallow_goal,level_36_C02-r090.json,True,2,2
+37,C02-r180,shallow_goal,level_37_C02-r180.json,True,2,2
+38,C02-r270,shallow_goal,level_38_C02-r270.json,True,2,2
+39,C03-r000,open_field,level_39_C03-r000.json,True,16,16
+40,C03-r090,open_field,level_40_C03-r090.json,True,16,16
+41,C03-r180,open_field,level_41_C03-r180.json,True,16,16
+42,C03-r270,open_field,level_42_C03-r270.json,True,16,16
+43,C04-r000,manhattan_detour,level_43_C04-r000.json,True,20,20
+44,C04-r180,manhattan_detour,level_44_C04-r180.json,True,20,20
+45,C05-r000,fragile_tradeoff,level_45_C05-r000.json,True,16,20
+46,C05-r180,fragile_tradeoff,level_46_C05-r180.json,True,16,20
+47,C06-r000,unreachable_goal,level_47_C06-r000.json,False,,

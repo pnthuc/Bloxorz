@@ -1,74 +1,78 @@
-# Quân — DFS và thực nghiệm
+# Nguyễn Lê Minh Quân — DFS và thực nghiệm
 
-Nguyễn Lê Minh Quân · MSSV 24120219 · Nhánh `work/quan-cleanup`.
-Handoff giữ tài liệu cuối, CSV phân nhóm và một bộ kết quả; công cụ ở `Src/benchmarks/cli.py`.
+MSSV **24120219**. Nhánh bàn giao: `work/quan-experiment`. Nhận/gửi việc theo [quy trình chung](../README.md).
+Quân đo và kiểm chứng số liệu; Phúc nhận CSV để làm bảng/biểu đồ; Nam tổng hợp báo cáo.
 
-| Trạng thái | Mã | Bàn giao |
-| --- | --- | --- |
-| [x] | Q01 | [dfs.docx](dfs.docx) — DFS và giới hạn tối ưu |
-| [x] | Q02 | CLI đo tuần tự, timeout, replay, CSV/JSON và metadata |
-| [x] | Q03 | [level-groups.csv](level-groups.csv) — 25 màn ID 1–25 |
-| [x] | Q04 | `benchmarks/q04/`: 25 màn × 4 solver × 3 lần, timeout 120 giây |
-| [x] | Q05 | [summary.csv](benchmarks/q04/summary.csv) và [methodology.docx](methodology.docx) |
-| [ ] | Q06 | Nguồn, schema, lệnh tái lập và khai báo AI đầy đủ |
+## Đầu vào và hiện trạng
 
-## Bộ màn
+- DFS: `Src/solvers/member2_dfs.py`; engine: `Src/core/board.py`.
+- Đo: `Src/benchmarks/cli.py`; profiler: `Src/solvers/base.py`;
+  kiểm tra lời giải: `Src/core/replay.py`.
+- 25 màn trong `Src/levels/`, giữ ID không liên tiếp theo [bộ đã chọn](LEVEL_SELECTION.md).
+  `Src/tests/test_cases.json` gồm 25 ca màn và 12 ca biên; 37 ca kiểm chứng không phải 37 màn độc lập.
+- Đã có [dfs.docx](dfs.docx), [level-groups.csv](level-groups.csv)
+  và [dữ liệu Q02 chạy lại](benchmarks/q02-recheck-20261031/run-config.json): màn 1, 4, bốn solver, một lần/lượt.
+  8/8 SOLVED, gắn source commit 1e07d6e. Đây chưa phải bộ số liệu lặp chính thức Q04;
+  phần tổng hợp và methodology chính thức Q05 vẫn chưa hoàn tất.
 
-`Src/levels/level_01.json` đến `level_25.json`, đánh số liên tục 1–25.
-Tên dạng `Stage x: ...`; mô tả ngắn; độ khó chỉ `Easy`, `Medium`, `Hard`.
-Thứ tự khóa: id, name, display_name (nếu có), description, difficulty, start_pos, initial_bridges, switches, grid.
-Màn 17–20 là bốn góc xoay đích nông; 21–22 là cặp bàn mở; 23 có vách ngăn;
-24–25 đối chiếu ít bước với ít cost. Màn stress: 12, 13, 16.
-25 màn và 12 ca biên nằm chung `Src/tests/test_cases.json`; ca biên không nằm trong bộ đo 25 màn.
+## Nhiệm vụ
 
-## Đo và tổng hợp
+| Đã bàn giao | Mã | Công việc | Đầu ra |
+| --- | --- | --- | --- |
+| [x] | `Q01` | Viết DFS, giả mã, ví dụ, chống chu trình và giới hạn tối ưu | `dfs.docx` → Nam |
+| [x] | `Q02` | Công cụ đo tuần tự, timeout, lưu từng lượt và kiểm chứng replay | `Src/benchmarks/cli.py` → Thức rà; dữ liệu thử → Nam |
+| [x] | `Q03` | Danh mục và phân nhóm bộ màn từ JSON | `level-groups.csv` → Nam, Thức |
+| [ ] | `Q04` | Chạy bộ số liệu trên snapshot đã chốt | `benchmarks/<đợt>/raw.csv`, `runs/*.json`, metadata → cả nhóm |
+| [ ] | `Q05` | Tổng hợp dữ liệu và viết phương pháp đo | `benchmarks/<đợt>/summary.csv`, `methodology.docx` → Phúc, Nam |
+| [ ] | `Q06` | Bàn giao lệnh tái lập, schema dữ liệu, nguồn và khai báo AI | README này và gói dữ liệu → Phúc, Nam |
 
-Từ `Src`, chạy thử vào thư mục mới:
+Q01 đã được cập nhật theo tập tám hành động hiện tại; Q02/Q03 đã được rà lại sau khi đồng bộ main.
 
-```powershell
-python -m benchmarks.cli --levels 1 4 --solvers bfs dfs ucs astar --repeats 1 --timeout 10 --output-dir "$env:TEMP/bloxorz-smoke"
+## Tiêu chí kiểm tra
+
+**Q01:** Trình bày stack LIFO, `parent` đánh dấu khi phát hiện, kiểm tra goal khi sinh con
+và truy vết. Thứ tự sinh là `UP LEFT RIGHT DOWN SUP SLEFT SRIGHT SDOWN`,
+các hướng có tiền tố S chỉ khi SPLIT. Stack duyệt theo thứ tự lấy ra ngược lại;
+không mô tả SPACE là một cạnh tìm kiếm. Nêu start=goal, vô nghiệm và cách đếm node.
+Phân tích bộ nhớ gồm stack và bảng trạng thái đã gặp, không áp công thức tree-DFS máy móc.
+
+**Q02/Q04:** Dùng bốn hàm `solve_*` công khai, board mới cho mỗi lượt và cùng bộ màn.
+Lưu CSV ngay sau từng lượt, JSON lời giải, commit, môi trường, cấu hình và run_id.
+Replay kiểm tra tới đích và tính `path_cost` ngoài vùng đo profiler.
+Giữ `SOLVED`, `NO_SOLUTION`, `TIMEOUT`, `ERROR`, `INVALID_PATH` riêng;
+metric chưa đo để trống. Không dùng walkthrough làm lời giải solver.
+
+**Q03:** Mỗi ID xuất hiện đúng một lần. Quy tắc nhóm đang dùng: split → tách/ghép;
+còn lại switch/cầu → công tắc–cầu; còn lại fragile → gạch cam; còn lại → cơ bản.
+Cột stress là nhãn phụ, không phải nhóm màn mới. Đối chiếu kích thước, số ô/cầu/công tắc với JSON.
+
+**Q04/Q05:** Kế hoạch đang đề xuất 25 × 4 × 3 = 300 lượt, timeout 120 giây;
+chỉ dùng sau khi [baseline](../shared/baseline.md) được nhóm chốt.
+Báo tỷ lệ thành công và số mẫu; không đưa timeout thành thời gian 0 hoặc loại âm thầm.
+CSV tổng hợp có trung vị và đơn vị rõ: ms, KiB, node, số hành động, cost.
+Phân biệt `total_cost` gốc với `path_cost` chung khi so BFS/DFS với UCS/A*.
+
+## Chạy lại
+
+Từ `Src`, chạy thử vào một thư mục mới:
+
+```bash
+python -m benchmarks.cli --levels 1 4 --solvers bfs dfs ucs astar --repeats 1 --timeout 5 --output-dir ../handoff/quan/benchmarks/trial
 ```
 
-Lệnh cho đợt Q04 theo ID mới:
+Lệnh cho toàn bộ kế hoạch đề xuất, chỉ chạy sau mốc chốt:
 
-```powershell
-python -u -m benchmarks.cli --levels all --solvers bfs dfs ucs astar --repeats 3 --timeout 120 --output-dir ../handoff/quan/benchmarks/q04
-python -m benchmarks.cli summarize ../handoff/quan/benchmarks/q04
+```bash
+python -m benchmarks.cli --levels all --solvers bfs dfs ucs astar --repeats 3 --timeout 120 --output-dir ../handoff/quan/benchmarks/official-run
 ```
 
-Mỗi đợt cần thư mục mới. Lệnh tổng hợp từ chối ghi đè; để tái lập, thêm
-`--output "$env:TEMP/bloxorz-summary-recheck.csv"` và so với CSV bàn giao.
-Đầu ra thử cục bộ đặt ngoài repo; thư mục Src/benchmarks chỉ giữ ba file công cụ.
+CLI yêu cầu thư mục mới và từ chối ghi vào thư mục đã tồn tại. Nếu bỏ --output-dir,
+CLI tự tạo một thư mục đợt đo mới trong benchmarks/. Metadata có fingerprint source,
+hash bộ màn và cờ git_dirty cho thay đổi trong Src; các cột CSV giữ nguyên.
+CLI chưa tạo `summary.csv` hay hình; Q05 tổng hợp dữ liệu, P05 của Phúc vẽ biểu đồ.
+Q06 phải bổ sung cách tái tạo CSV tổng hợp khi phần đó hoàn thành.
 
-`raw.csv` giữ schema 16 cột; `runs/*.json` giữ moves từng lượt. Metadata ghi đúng commit,
-CPU/RAM/OS/Python, hash source và bộ màn, cờ source sạch lúc đo. `path_cost` là cost chung;
-`total_cost` của BFS/DFS là số bước, của UCS/A* là cost có trọng số.
-Thời gian là ms trong profiler có tracemalloc; memory là peak cấp phát Python KiB.
-Timeout chờ worker gồm phần khởi động còn diễn ra, không gồm replay ở cha.
+## Bộ dữ liệu mới
 
-Baseline và xác nhận nhóm nằm ở [baseline chung](../shared/baseline.md).
-Các bộ dữ liệu theo ID cũ đã đưa ra ngoài repo và còn trong lịch sử Git; không trộn với đợt mới.
-
-## CSV tổng hợp Q05
-
-Mỗi dòng là một cặp màn/solver; 25 màn tạo 100 dòng. `runs` là toàn bộ số lượt,
-`measured_runs` đếm SOLVED và NO_SOLUTION; `solved`, `no_solution`, `timeouts`, `errors`,
-`invalid_paths` giữ số lượng từng trạng thái. `success_rate` là tỷ lệ 0–1, mẫu số là `runs`.
-
-Các cột `search_time_ms`, `memory_kb`, `expanded_nodes`, `solution_length`, `total_cost`,
-`path_cost` có hậu tố `_median`, `_min`, `_max`, `_iqr`. IQR dùng quartile inclusive.
-Ba metric tìm kiếm dùng `measured_runs`; ba metric chất lượng nghiệm chỉ dùng `solved`.
-Không có mẫu thì để trống; chỉ một mẫu thì IQR trống. Không đưa timeout/lỗi thành số 0.
-CSV có BOM UTF-8, giữ tên nhóm tiếng Việt; `source_commit`, `level_set_sha256`, `raw_sha256`
-truy về đúng dữ liệu gốc. Các CSV của đợt được giữ nguyên byte trong Git để hash không đổi khi checkout.
-
-## Kết quả đã kiểm chứng
-
-Snapshot đo: `0d7adc5bcf4960cb53f855aa0f2082bb6ea710b0`, source sạch lúc bắt đầu.
-Q04: 300/300 SOLVED; không timeout, lỗi hoặc đường đi sai. Đã replay độc lập mọi lời giải,
-đối chiếu cost/độ dài, mốc BFS/UCS/A*, đầy đủ tổ hợp và hash source/bộ màn.
-Q05: 100 dòng, 41 cột; mọi metric đã được kiểm tra độc lập và file tái tạo giống từng byte.
-Môi trường: i5-12450HX, RAM 24 GB, Windows 11, Python 3.14.6; chi tiết trong metadata của đợt.
-92 test Python và 53 test UI PASS; test UI dùng GPU mock, không xác nhận rasterization thật.
-Phương pháp đo đã kiểm tra bố cục đủ 4 trang; DFS đã đồng bộ snapshot cuối.
-Q06 vẫn để mở, các xác nhận thành viên khác trong baseline không tự đánh dấu thay.
+[LEVEL_SELECTION.md](LEVEL_SELECTION.md) ghi lý do chọn 25 màn và archive 17 màn cũ.
+[Q01-Q03_REVIEW.md](Q01-Q03_REVIEW.md) ghi kết quả rà soát và phiên bản đồng bộ.

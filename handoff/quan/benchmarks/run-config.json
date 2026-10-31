@@ -1,0 +1,14 @@
+{
+  "levels": [
+    "1",
+    "4"
+  ],
+  "solvers": [
+    "bfs",
+    "dfs",
+    "ucs",
+    "astar"
+  ],
+  "repeats": 1,
+  "timeout_sec": 60.0
+}

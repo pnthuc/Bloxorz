@@ -1,0 +1,2 @@
+case_id,family,angle,solver,repeat,status,search_time_ms,memory_kb,expanded_nodes,solution_length,path_cost,total_cost,error
+33,stress,0,astar,1,SOLVED,20079.0,19486.1,65598,119,119.5,119.5,

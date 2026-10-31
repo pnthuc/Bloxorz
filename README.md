@@ -94,8 +94,7 @@ python -m benchmarks.cli --levels 1 4 --solvers bfs dfs ucs astar --repeats 1 --
 ```
 
 CLI xuất `raw.csv`, `runs/*.json`, `environment.json` và `run-config.json`.
-Tạo CSV tổng hợp bằng `python -m benchmarks.cli summarize <thư-mục-đợt-đo>`;
-biểu đồ do Phúc trình bày từ CSV. Chốt phiên bản và cách đo trong
+Nó chưa tạo CSV tổng hợp hoặc biểu đồ. Chốt phiên bản và cách đo trong
 [baseline](handoff/shared/baseline.md) trước lượt thực nghiệm chính thức.
 Chế độ so sánh trong GUI là phép đo một lượt để minh họa, không thay bộ số liệu lặp của báo cáo.
 
@@ -116,5 +115,5 @@ Giữ kèm giấy phép [font](Src/static/fonts/OFL.txt) và [Three.js](Src/stat
 
 ## Bộ màn đã tinh gọn
 
-Bộ chơi có 25 màn đánh số liên tục 1–25, với 37 testcase gồm 12 ca biên.
-Phân nhóm nằm trong [CSV bàn giao](handoff/quan/level-groups.csv); xem [lệnh đo và tổng hợp](handoff/quan/README.md).
+Bộ chơi có 25 màn, với 37 testcase gồm 12 ca biên. Các ID có khoảng trống để giữ nguyên tham chiếu lịch sử.
+Xem [lý do chọn màn](handoff/quan/LEVEL_SELECTION.md) và [trial so sánh](handoff/quan/comparison-study/README.md).

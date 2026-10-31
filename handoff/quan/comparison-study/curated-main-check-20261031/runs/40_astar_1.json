@@ -1,0 +1,41 @@
+{
+  "case_id": "40",
+  "family": "open_field",
+  "angle": 0,
+  "solver": "astar",
+  "repeat": 1,
+  "status": "SOLVED",
+  "search_time_ms": 41.055,
+  "memory_kb": 185.54,
+  "expanded_nodes": 323,
+  "solution_length": 16,
+  "path_cost": 16.0,
+  "total_cost": 16.0,
+  "error": "",
+  "solver_result": {
+    "found": true,
+    "moves": [
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN"
+    ],
+    "solution_length": 16,
+    "expanded_nodes": 323,
+    "search_time_ms": 41.055,
+    "memory_kb": 185.54,
+    "total_cost": 16.0
+  }
+}
