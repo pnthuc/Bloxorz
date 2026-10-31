@@ -1,0 +1,22 @@
+{
+  "run_id": "lvl35_ucs_rep3_1793431970123",
+  "level_id": "35",
+  "level_name": "Đích ngay bên trái",
+  "solver": "ucs",
+  "repeat_index": 3,
+  "status": "SOLVED",
+  "search_time_ms": 1.049,
+  "memory_kb": 8.69,
+  "expanded_nodes": 9,
+  "solution_length": 2,
+  "rolling_steps": 2,
+  "total_cost": 2.0,
+  "path_cost": 2.0,
+  "timeout_sec": 120.0,
+  "timestamp": "2026-10-31T14:32:50.123649",
+  "error_message": "",
+  "moves": [
+    "LEFT",
+    "LEFT"
+  ]
+}

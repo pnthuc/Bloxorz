@@ -1,0 +1,27 @@
+{
+  "run_id": "lvl1_astar_rep2_1793431569291",
+  "level_id": "1",
+  "level_name": "Stage 1: Classic Warmup",
+  "solver": "astar",
+  "repeat_index": 2,
+  "status": "SOLVED",
+  "search_time_ms": 2.1,
+  "memory_kb": 9.68,
+  "expanded_nodes": 18,
+  "solution_length": 7,
+  "rolling_steps": 7,
+  "total_cost": 7.0,
+  "path_cost": 7.0,
+  "timeout_sec": 120.0,
+  "timestamp": "2026-10-31T14:26:09.291305",
+  "error_message": "",
+  "moves": [
+    "RIGHT",
+    "RIGHT",
+    "DOWN",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "DOWN"
+  ]
+}

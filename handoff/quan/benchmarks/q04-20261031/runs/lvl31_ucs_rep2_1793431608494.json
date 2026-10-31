@@ -1,0 +1,29 @@
+{
+  "run_id": "lvl31_ucs_rep2_1793431608494",
+  "level_id": "31",
+  "level_name": "Đường tắt gạch cam",
+  "solver": "ucs",
+  "repeat_index": 2,
+  "status": "SOLVED",
+  "search_time_ms": 2.62,
+  "memory_kb": 13.05,
+  "expanded_nodes": 38,
+  "solution_length": 9,
+  "rolling_steps": 9,
+  "total_cost": 10.0,
+  "path_cost": 10.0,
+  "timeout_sec": 120.0,
+  "timestamp": "2026-10-31T14:26:48.494005",
+  "error_message": "",
+  "moves": [
+    "DOWN",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "UP"
+  ]
+}
