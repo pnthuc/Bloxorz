@@ -1,7 +1,7 @@
 """Verify the intended experimental contrasts against the real engine."""
 import unittest
 
-from comparison_study import HERE, engine, load_cases, rotate_board, validate
+from benchmarks.comparison import HERE, engine, load_cases, rotate_board, validate
 
 
 class ComparisonCaseTests(unittest.TestCase):

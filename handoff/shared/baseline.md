@@ -49,5 +49,5 @@ nếu còn sửa code chưa commit. Mỗi đợt dùng thư mục riêng để k
 Sau khi đủ xác nhận, ghi commit/ngày thật và đổi trạng thái thành ĐÃ CHỐT.
 Nếu đổi engine, solver, cost, heuristic hoặc cách đo, tạo mốc mới và xác định dữ liệu cần chạy lại.
 
-Bộ dữ liệu đã chọn ngày 31/10/2026 có 25 màn và T1–T12. Xem [lựa chọn màn](../quan/LEVEL_SELECTION.md).
+Bộ dữ liệu đã chọn ngày 31/10/2026 có 25 màn và T1–T12. Xem [vai trò các màn](../../Src/levels/README.md).
 Các trial cũ giữ nguyên phiên bản, không gán lại cho bộ màn/engine mới.

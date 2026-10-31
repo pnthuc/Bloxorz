@@ -25,3 +25,6 @@ node_modules/
 # Local AI tools; not needed to run or test the game
 /.agents/
 /skills-lock.json
+
+# Disposable local benchmark trials; publish only selected report batches in handoff
+/Src/benchmarks/results/

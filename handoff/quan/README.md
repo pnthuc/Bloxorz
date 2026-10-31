@@ -8,12 +8,12 @@ Quân đo và kiểm chứng số liệu; Phúc nhận CSV để làm bảng/bi�
 - DFS: `Src/solvers/member2_dfs.py`; engine: `Src/core/board.py`.
 - Đo: `Src/benchmarks/cli.py`; profiler: `Src/solvers/base.py`;
   kiểm tra lời giải: `Src/core/replay.py`.
-- 25 màn trong `Src/levels/`, giữ ID không liên tiếp theo [bộ đã chọn](LEVEL_SELECTION.md).
+- 25 màn trong `Src/levels/`, giữ ID không liên tiếp theo [bộ đã chọn](../../Src/levels/README.md).
   `Src/tests/test_cases.json` gồm 25 ca màn và 12 ca biên; 37 ca kiểm chứng không phải 37 màn độc lập.
-- Đã có [dfs.docx](dfs.docx), [level-groups.csv](level-groups.csv)
-  và [dữ liệu Q02 chạy lại](benchmarks/q02-recheck-20261031/run-config.json): màn 1, 4, bốn solver, một lần/lượt.
-  8/8 SOLVED, gắn source commit 1e07d6e. Đây chưa phải bộ số liệu lặp chính thức Q04;
-  phần tổng hợp và methodology chính thức Q05 vẫn chưa hoàn tất.
+- Đã có [dfs.docx](dfs.docx), [level-groups.csv](level-groups.csv) và dữ liệu thử gốc trong `benchmarks/`.
+  Q02 đã được kiểm chứng lại; chưa có bộ số liệu lặp chính thức Q04 hoặc methodology Q05.
+  Công cụ và catalog chạy thử nằm trong [Src/benchmarks](../../Src/benchmarks/README.md);
+  đầu ra thử nghiệm cục bộ không đưa vào handoff.
 
 ## Nhiệm vụ
 
@@ -57,7 +57,7 @@ Phân biệt `total_cost` gốc với `path_cost` chung khi so BFS/DFS với UCS
 Từ `Src`, chạy thử vào một thư mục mới:
 
 ```bash
-python -m benchmarks.cli --levels 1 4 --solvers bfs dfs ucs astar --repeats 1 --timeout 5 --output-dir ../handoff/quan/benchmarks/trial
+python -m benchmarks.cli --levels 1 4 --solvers bfs dfs ucs astar --repeats 1 --timeout 5 --output-dir benchmarks/results/trial
 ```
 
 Lệnh cho toàn bộ kế hoạch đề xuất, chỉ chạy sau mốc chốt:
@@ -72,7 +72,4 @@ hash bộ màn và cờ git_dirty cho thay đổi trong Src; các cột CSV gi�
 CLI chưa tạo `summary.csv` hay hình; Q05 tổng hợp dữ liệu, P05 của Phúc vẽ biểu đồ.
 Q06 phải bổ sung cách tái tạo CSV tổng hợp khi phần đó hoàn thành.
 
-## Bộ dữ liệu mới
-
-[LEVEL_SELECTION.md](LEVEL_SELECTION.md) ghi lý do chọn 25 màn và archive 17 màn cũ.
-[Q01-Q03_REVIEW.md](Q01-Q03_REVIEW.md) ghi kết quả rà soát và phiên bản đồng bộ.
+Handoff chỉ giữ đầu ra bàn giao. Màn đã bỏ, trial và nhật ký rà soát cũ có thể tra lại trong lịch sử Git.

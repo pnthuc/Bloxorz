@@ -116,4 +116,4 @@ Giữ kèm giấy phép [font](Src/static/fonts/OFL.txt) và [Three.js](Src/stat
 ## Bộ màn đã tinh gọn
 
 Bộ chơi có 25 màn, với 37 testcase gồm 12 ca biên. Các ID có khoảng trống để giữ nguyên tham chiếu lịch sử.
-Xem [lý do chọn màn](handoff/quan/LEVEL_SELECTION.md) và [trial so sánh](handoff/quan/comparison-study/README.md).
+Xem [vai trò các màn](Src/levels/README.md) và [công cụ chạy thử](Src/benchmarks/README.md).
