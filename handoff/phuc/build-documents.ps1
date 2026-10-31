@@ -1,15 +1,18 @@
 param(
-    [string]$OutputDirectory = $PSScriptRoot
+    [string]$OutputDirectory = $PSScriptRoot,
+    [ValidateSet('result-tables', 'chart-notes', 'ucs-results')]
+    [string[]]$Documents = @('result-tables', 'chart-notes')
 )
 
 $ErrorActionPreference = 'Stop'
 $pandoc = (Get-Command pandoc -ErrorAction Stop).Source
 $null = Get-Command xelatex -ErrorAction Stop
-$layoutFilter = Join-Path $PSScriptRoot 'page-layout.lua'
 $outputPath = [IO.Path]::GetFullPath($OutputDirectory)
 New-Item -ItemType Directory -Path $outputPath -Force | Out-Null
 
-foreach ($name in @('result-tables', 'chart-notes')) {
+foreach ($name in $Documents) {
+    $filterName = if ($name -eq 'ucs-results') { 'ucs-results-layout.lua' } else { 'page-layout.lua' }
+    $layoutFilter = Join-Path $PSScriptRoot $filterName
     $markdown = Join-Path $PSScriptRoot "$name.md"
     $document = Join-Path $outputPath "$name.docx"
     $pdf = Join-Path $outputPath "$name.pdf"

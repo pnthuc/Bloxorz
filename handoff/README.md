@@ -58,6 +58,8 @@ ghi phiên bản mới và xác định dữ liệu cần đo lại. Không tr�
   thao tác demo nằm trong tài liệu. JSON kiểm tra cũ vẫn thuộc phiên bản trước.
 - Phúc đã có gói cost/UCS P01/P02 và bảng/biểu đồ P05 từ bộ CSV 300 lượt;
   nguồn Markdown, DOCX, PDF, PNG/SVG và lệnh tái tạo nằm trong `handoff/phuc/`.
+  P03 đã có `ucs-results.docx`: phân tích UCS/BFS/A*, đoạn ghép báo cáo và
+  các câu sửa về cost/số liệu trong bản thảo của Nam/Thiện.
 
 Các bản thảo DFS/BFS còn mô tả SPACE là cạnh tìm kiếm riêng.
 Đối chiếu lại tập tám hành động trong [README source](../README.md#thực-nghiệm)

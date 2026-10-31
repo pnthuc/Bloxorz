@@ -1,0 +1,22 @@
+﻿level_id,level_name,solver,samples,search_time_ms_median,memory_kb_median,expanded_nodes_median,solution_length_median,path_cost_median
+1,Stage 1: Basic Moves,bfs,3,2.639,16.73,35,7,7.0
+1,Stage 1: Basic Moves,ucs,3,5.485,25.66,55,7,7.0
+1,Stage 1: Basic Moves,astar,3,2.163,13.2,18,7,7.0
+4,Stage 4: Split and Merge,bfs,3,357.309,543.01,1789,16,16.5
+4,Stage 4: Split and Merge,ucs,3,500.618,705.98,1903,16,16.5
+4,Stage 4: Split and Merge,astar,3,354.592,601.08,1245,16,16.5
+8,Stage 8: Closing Bridge,bfs,3,17.205,66.2,201,23,23.0
+8,Stage 8: Closing Bridge,ucs,3,22.036,81.1,208,23,23.0
+8,Stage 8: Closing Bridge,astar,3,25.398,82.38,192,23,23.0
+12,Stage 12: Bridge Maze,bfs,3,75.837,321.86,928,28,28.0
+12,Stage 12: Bridge Maze,ucs,3,109.48,413.37,995,28,28.0
+12,Stage 12: Bridge Maze,astar,3,50.082,228.16,451,28,28.0
+16,Stage 16: Split Maze,bfs,3,21128.143,15344.75,67472,110,111.5
+16,Stage 16: Split Maze,ucs,3,19903.749,19741.03,68095,110,110.5
+16,Stage 16: Split Maze,astar,3,35061.705,19546.84,65951,110,110.5
+24,Stage 24: Short or Cheap,bfs,3,10.861,40.14,154,16,23.0
+24,Stage 24: Short or Cheap,ucs,3,27.844,68.86,195,20,20.0
+24,Stage 24: Short or Cheap,astar,3,12.929,48.37,109,20,20.0
+25,Stage 25: Short or Cheap Turned,bfs,3,12.352,41.51,160,16,23.0
+25,Stage 25: Short or Cheap Turned,ucs,3,18.18,67.81,192,20,20.0
+25,Stage 25: Short or Cheap Turned,astar,3,11.323,48.31,109,20,20.0

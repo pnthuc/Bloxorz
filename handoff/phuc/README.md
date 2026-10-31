@@ -9,7 +9,7 @@ Phúc không thay số đo của Quân; nhận dữ liệu để trình bày và
   kiểm tra đường đi: `Src/core/replay.py`.
 - Nhận CSV/metadata/nhóm màn từ Quân, đề cương video từ Nam,
   tư liệu và thao tác demo từ Thức. Dùng [baseline](../shared/baseline.md) chung.
-- Đã có tài liệu P01/P02 và gói P05: [biểu đồ](charts/),
+- Đã có tài liệu P01/P02, [phân tích UCS/cost P03](ucs-results.docx) và gói P05: [biểu đồ](charts/),
   [bảng](result-tables.docx), [chú thích](chart-notes.docx) cùng nguồn Markdown/CSV.
 
 ## Nhiệm vụ
@@ -18,7 +18,7 @@ Phúc không thay số đo của Quân; nhận dữ liệu để trình bày và
 | --- | --- | --- | --- |
 | [X] | `P01` | Giải thích và chốt cost chung | `cost-policy.docx` → Thiện, Quân, Nam, Thức |
 | [X] | `P02` | UCS, giả mã và ví dụ tích lũy cost | `ucs.docx`, `cost-example.docx` → Nam, Thiện |
-| [ ] | `P03` | Phân tích UCS và rà kết luận về cost | `ucs-results.docx` → Nam; Quân rà nguồn dữ liệu |
+| [X] | `P03` | Phân tích UCS và rà kết luận về cost | `ucs-results.docx` → Nam; Quân rà nguồn dữ liệu |
 | [ ] | `P04` | README và source giải nén chạy được | `submission/Source/`, `run-check.docx` → Thức |
 | [X] | `P05` | Bảng/biểu đồ từ CSV đã kiểm chứng | `charts/`, `result-tables.docx`, `chart-notes.docx` và lệnh tái tạo → Nam, Quân |
 | [X] | `P06` | Kịch bản, quay dựng, phụ đề/lời dẫn và YouTube | `video/video-script.docx`, `video/video-url.txt`, phụ đề → Nam, Thức |
@@ -36,6 +36,35 @@ P02 đối chiếu heap theo g, best_g, parent, entry cũ và goal test khi lấ
 Bảng tính tay ghi state, action, step_cost và tổng cost; phân biệt tối ưu số bước với cost có trọng số.
 P03 dùng ID màn và CSV để nhận xét UCS/BFS/A*. CLI giữ `total_cost` gốc của solver;
 so chéo bằng `path_cost` chung, không so hai cột khác nghĩa.
+
+### P03 - Kết quả và phần rà bản thảo
+
+[ucs-results.md](ucs-results.md) là nguồn soạn; [DOCX](ucs-results.docx) và
+[PDF](ucs-results.pdf) có 6 trang: kết quả tổng hợp, số bước/cost, hiệu năng,
+chi phí xử lý theo code, đoạn để ghép mục 6.2 Report và câu sửa cho các bản thảo.
+Bản phân tích dùng checkout `ce04ee45ead1702365646e41b4cbad92b8818304`
+và cùng dữ liệu P05.
+
+UCS giảm cost so với BFS ở L16/L24/L25; L24/L25 minh họa 20 hành động/cost 20
+của UCS so với 16 hành động/cost 23 của BFS. A* khớp cost UCS trên cả 25 màn,
+nhưng không luôn nhanh hơn hoặc dùng ít bộ nhớ hơn. Phần rà nêu rõ mục/câu
+trong Report, video-outline, astar-results và review-notes; các bản thảo gốc được
+giữ nguyên để người phụ trách ghép/sửa nội dung.
+
+`ucs-results-selected.csv` giữ 21 dòng màn/thuật toán đại diện;
+`ucs-results-data.json` ghi các phép so sánh trên 25 màn, phần trăm chênh lệch,
+hash dữ liệu và bản thảo được rà. Từ gốc repo:
+
+```powershell
+python handoff/phuc/analyze_ucs.py
+powershell -ExecutionPolicy Bypass `
+  -File handoff/phuc/build-documents.ps1 -Documents ucs-results
+```
+
+Đã đối chiếu 300 lượt/JSON và mọi trung vị, kiểm tra dữ liệu trùng hash P05,
+chuyển Markdown → DOCX → PDF qua Pandoc/XeLaTeX và kiểm tra trực quan 6 trang.
+Phần suy luận về thời gian của heuristic/cost được ghi riêng với số đã đo;
+không coi khớp cost trên bộ test là chứng minh admissibility tổng quát.
 
 ## Bảng và biểu đồ
 
