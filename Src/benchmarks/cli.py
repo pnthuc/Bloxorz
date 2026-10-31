@@ -3,7 +3,6 @@ import argparse
 import csv
 from collections import Counter, defaultdict
 import statistics
-import hashlib
 import math
 import json
 import multiprocessing as mp
@@ -304,7 +303,6 @@ SUMMARY_HEADERS = [
     'level_id', 'level_name', 'primary_group', 'solver',
     'runs', 'measured_runs', 'solved', 'no_solution', 'timeouts', 'errors',
     'invalid_paths', 'success_rate', 'timeout_sec', 'source_commit',
-    'level_set_sha256', 'raw_sha256',
     *(f'{metric}_{stat}' for metric in METRICS for stat in STATISTICS),
 ]
 
@@ -355,11 +353,8 @@ def load_batch(batch, groups_path):
     require(type(repeats) is int and repeats > 0, 'Invalid config repeats')
     timeout = number(config.get('timeout_sec'), 'config timeout_sec')
     require(timeout > 0, 'Timeout must be positive')
-    for key in ('repeats', 'timeout_sec', 'level_set_sha256'):
+    for key in ('repeats', 'timeout_sec'):
         require(environment.get(key) == config.get(key), f'Metadata mismatch: {key}')
-    if config.get('level_set_sha256') is not None:
-        require(isinstance(config['level_set_sha256'], str) and len(config['level_set_sha256']) == 64,
-                'Invalid level set hash')
     require(isinstance(environment.get('git_commit'), str) and environment['git_commit'] != '',
             'Missing measured source commit')
 
@@ -426,7 +421,7 @@ def load_batch(batch, groups_path):
         row['_values'] = values
     require(seen == expected, f'Incomplete batch: expected {len(expected)} runs, found {len(seen)}')
     require({p.stem for p in (batch / 'runs').glob('*.json')} == run_ids, 'Extra or missing run JSON')
-    return rows, config, environment, groups, hashlib.sha256(raw_path.read_bytes()).hexdigest()
+    return rows, config, environment, groups
 
 
 def statistics_for(values):
@@ -440,7 +435,7 @@ def statistics_for(values):
 
 
 def summarize_batch(batch, groups_path=None, output=None):
-    rows, config, environment, groups, raw_hash = load_batch(batch, groups_path)
+    rows, config, environment, groups = load_batch(batch, groups_path)
     grouped = defaultdict(list)
     for row in rows:
         grouped[row['level_id'], row['solver']].append(row)
@@ -456,8 +451,7 @@ def summarize_batch(batch, groups_path=None, output=None):
                           solved=counts['SOLVED'], no_solution=counts['NO_SOLUTION'], timeouts=counts['TIMEOUT'],
                           errors=counts['ERROR'], invalid_paths=counts['INVALID_PATH'],
                           success_rate=round(len(solved) / len(runs), 6), timeout_sec=config['timeout_sec'],
-                          source_commit=environment['git_commit'], level_set_sha256=config.get('level_set_sha256', ''),
-                          raw_sha256=raw_hash)
+                          source_commit=environment['git_commit'])
             for metric in METRICS:
                 samples = completed if metric in SEARCH_METRICS else solved
                 for stat, value in statistics_for([row['_values'][metric] for row in samples]).items():

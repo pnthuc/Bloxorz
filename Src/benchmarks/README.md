@@ -33,7 +33,6 @@ So sánh chi phí giữa bốn thuật toán bằng `path_cost`, vì `total_cost
 Tool yêu cầu đủ các lượt trong cấu hình, không trùng, CSV khớp JSON và các metric hợp lệ.
 Đợt đo mới cần dùng quy ước một hành động là một lần di chuyển; dữ liệu cũ đếm Space
 riêng hoặc có tên màn khác bảng phân nhóm cần dùng đúng phiên bản dữ liệu tương ứng.
-Nếu metadata cũ không có `level_set_sha256`, cột đó để trống; tool không suy ra hash từ màn hiện tại.
 
 Kiểm tra:
 

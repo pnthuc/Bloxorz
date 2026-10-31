@@ -13,8 +13,7 @@ class SummaryTests(unittest.TestCase):
     def make_batch(self, root, statuses):
         root = Path(root)
         (root / 'runs').mkdir()
-        config = dict(levels=['1'], solvers=['bfs'], repeats=len(statuses), timeout_sec=120,
-                      level_set_sha256='a' * 64)
+        config = dict(levels=['1'], solvers=['bfs'], repeats=len(statuses), timeout_sec=120)
         (root / 'run-config.json').write_text(json.dumps(config), encoding='utf-8')
         (root / 'environment.json').write_text(json.dumps(dict(config, git_commit='b' * 40)), encoding='utf-8')
         groups = root / 'groups.csv'
@@ -67,6 +66,8 @@ class SummaryTests(unittest.TestCase):
             self.assertEqual(row['solution_length_median'], 2)
             self.assertEqual(row['path_cost_median'], 2)
             self.assertEqual(row['path_cost_iqr'], '')
+            self.assertNotIn('level_set_sha256', row)
+            self.assertNotIn('raw_sha256', row)
 
     def test_unmeasured_group_has_blank_statistics(self):
         with TemporaryDirectory() as directory:
