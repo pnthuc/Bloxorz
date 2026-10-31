@@ -3,8 +3,5 @@
   "ram": "24.0 GB",
   "os": "Windows-11-10.0.26200-SP0",
   "python_version": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
-  "git_commit": "c37fa0d96b4639eb4a6aa6e08197568d3a496e81",
-  "date": "2026-10-28T16:32:05.405277",
-  "timeout_sec": 60.0,
-  "repeats": 1
+  "date": "2026-10-28T16:32:05.405277"
 }

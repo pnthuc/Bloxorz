@@ -1,0 +1,9 @@
+﻿level_id,solver,runs,solved,no_solution,timeouts,errors,invalid_paths,search_time_ms_median,memory_kb_median,expanded_nodes_median,solution_length_median,path_cost_median
+1,bfs,1,1,0,0,0,0,3.575,13.41,48,7,7.0
+1,dfs,1,1,0,0,0,0,0.592,4.41,7,7,7.0
+1,ucs,1,1,0,0,0,0,4.941,18.16,64,7,7.0
+1,astar,1,1,0,0,0,0,2.058,10.15,20,7,7.0
+4,bfs,1,1,0,0,0,0,153.156,430.32,1662,17,17.5
+4,dfs,1,1,0,0,0,0,33.807,177.62,398,281,292.0
+4,ucs,1,1,0,0,0,0,216.789,595.84,1785,17,17.5
+4,astar,1,1,0,0,0,0,161.719,419.48,1107,17,17.5
