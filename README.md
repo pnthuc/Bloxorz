@@ -94,7 +94,8 @@ python -m benchmarks.cli --levels 1 4 --solvers bfs dfs ucs astar --repeats 1 --
 ```
 
 CLI xuất `raw.csv`, `runs/*.json`, `environment.json` và `run-config.json`.
-Nó chưa tạo CSV tổng hợp hoặc biểu đồ. Chốt phiên bản và cách đo trong
+Tạo CSV tổng hợp bằng `python -m benchmarks.cli summarize <thư-mục-đợt-đo>`;
+biểu đồ do Phúc trình bày từ CSV. Chốt phiên bản và cách đo trong
 [baseline](handoff/shared/baseline.md) trước lượt thực nghiệm chính thức.
 Chế độ so sánh trong GUI là phép đo một lượt để minh họa, không thay bộ số liệu lặp của báo cáo.
 

@@ -1,0 +1,27 @@
+{
+  "run_id": "lvl1_astar_rep1_1793433467141",
+  "level_id": "1",
+  "level_name": "Stage 1: Basic Moves",
+  "solver": "astar",
+  "repeat_index": 1,
+  "status": "SOLVED",
+  "search_time_ms": 1.764,
+  "memory_kb": 8.34,
+  "expanded_nodes": 18,
+  "solution_length": 7,
+  "rolling_steps": 7,
+  "total_cost": 7.0,
+  "path_cost": 7.0,
+  "timeout_sec": 120.0,
+  "timestamp": "2026-10-31T14:57:47.141992",
+  "error_message": "",
+  "moves": [
+    "RIGHT",
+    "RIGHT",
+    "DOWN",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "DOWN"
+  ]
+}

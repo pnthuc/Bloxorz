@@ -1,0 +1,22 @@
+{
+  "run_id": "lvl19_bfs_rep2_1793434064259",
+  "level_id": "19",
+  "level_name": "Stage 19: Goal Right",
+  "solver": "bfs",
+  "repeat_index": 2,
+  "status": "SOLVED",
+  "search_time_ms": 0.586,
+  "memory_kb": 5.14,
+  "expanded_nodes": 4,
+  "solution_length": 2,
+  "rolling_steps": 2,
+  "total_cost": 2.0,
+  "path_cost": 2.0,
+  "timeout_sec": 120.0,
+  "timestamp": "2026-10-31T15:07:44.259306",
+  "error_message": "",
+  "moves": [
+    "RIGHT",
+    "RIGHT"
+  ]
+}
