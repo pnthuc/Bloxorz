@@ -1,0 +1,26 @@
+﻿level_id,level_name,grid_size,floor_cells,bridges_count,switches_count,split_switches,fragile_cells
+1,Stage 1: Basic Moves,6x10,35,0,0,0,0
+2,Stage 2: Fragile Tiles,5x9,39,0,0,0,8
+3,Stage 3: Two Bridges,6x12,38,2,2,0,0
+4,Stage 4: Split and Merge,4x10,26,1,2,1,1
+5,Stage 5: Narrow Path,7x7,18,0,0,0,6
+6,Stage 6: Open Switch,6x10,38,1,1,0,0
+7,Stage 7: Heavy Switch,6x10,42,1,1,0,0
+8,Stage 8: Closing Bridge,7x15,59,2,2,0,0
+9,Stage 9: Mixed Mechanisms,5x15,44,2,3,1,2
+10,Stage 10: Detour,9x8,38,1,1,0,0
+11,Stage 11: Fragile Crossing,11x13,58,0,0,0,20
+12,Stage 12: Bridge Maze,13x26,136,6,6,0,0
+13,Stage 13: Many Bridges,18x30,318,10,10,0,0
+14,Stage 14: Fragile Shortcut,10x10,58,0,0,0,2
+15,Stage 15: Teleport Chain,4x84,68,0,2,2,0
+16,Stage 16: Split Maze,36x36,784,0,64,64,10
+17,Stage 17: Goal Left,15x15,225,0,0,0,0
+18,Stage 18: Goal Up,15x15,225,0,0,0,0
+19,Stage 19: Goal Right,15x15,225,0,0,0,0
+20,Stage 20: Goal Down,15x15,225,0,0,0,0
+21,Stage 21: Open Field,15x15,225,0,0,0,0
+22,Stage 22: Open Field Turned,15x15,225,0,0,0,0
+23,Stage 23: Goal Behind Wall,18x23,400,0,0,0,0
+24,Stage 24: Short or Cheap,6x28,126,0,0,0,28
+25,Stage 25: Short or Cheap Turned,6x28,126,0,0,0,28

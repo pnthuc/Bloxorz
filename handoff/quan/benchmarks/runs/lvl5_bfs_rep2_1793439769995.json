@@ -1,0 +1,25 @@
+{
+  "run_id": "lvl5_bfs_rep2_1793439769995",
+  "level_id": "5",
+  "level_name": "Stage 5: Narrow Path",
+  "solver": "bfs",
+  "repeat_index": 2,
+  "status": "SOLVED",
+  "search_time_ms": 0.653,
+  "memory_kb": 5.32,
+  "expanded_nodes": 10,
+  "solution_length": 8,
+  "path_cost": 10.0,
+  "timestamp": "2026-10-31T16:42:49.995299",
+  "error_message": "",
+  "moves": [
+    "RIGHT",
+    "RIGHT",
+    "DOWN",
+    "DOWN",
+    "RIGHT",
+    "RIGHT",
+    "DOWN",
+    "DOWN"
+  ]
+}

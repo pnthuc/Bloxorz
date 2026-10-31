@@ -1,0 +1,33 @@
+{
+  "run_id": "lvl24_bfs_rep1_1793440091586",
+  "level_id": "24",
+  "level_name": "Stage 24: Short or Cheap",
+  "solver": "bfs",
+  "repeat_index": 1,
+  "status": "SOLVED",
+  "search_time_ms": 10.366,
+  "memory_kb": 40.14,
+  "expanded_nodes": 154,
+  "solution_length": 16,
+  "path_cost": 23.0,
+  "timestamp": "2026-10-31T16:48:11.586053",
+  "error_message": "",
+  "moves": [
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT"
+  ]
+}
