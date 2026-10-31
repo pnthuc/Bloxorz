@@ -29,3 +29,13 @@ Chi tiết kết quả, môi trường và lệnh tái lập được cập nh�
 Q04/Q05 theo ID mới đã hoàn tất: 300/300 SOLVED, replay/coverage/hash và mốc tối ưu đã qua;
 summary có 100 dòng, tái tạo giống từng byte. Dữ liệu nằm trong `quan/benchmarks/q04/`;
 phương pháp đo ở `quan/methodology.docx`. Q06 và các xác nhận nhóm còn thiếu giữ nguyên.
+
+## Xác nhận được giữ từ main
+
+Commit 3962aa8 trên main đã đánh dấu hoàn tất các xác nhận của baseline trước khi đánh số lại.
+Giữ nguyên ghi nhận đó; không tự chuyển thành nghiệm thu snapshot 0d7adc5 theo ID 1–25.
+
+- [x] Phúc xác nhận cost và diễn giải trên baseline trước.
+- [x] Thiện xác nhận heuristic và giả thiết trên baseline trước.
+- [x] Quân xác nhận cấu hình, schema, đơn vị và cách tổng hợp trên baseline trước.
+- [x] Thức xác nhận snapshot và kết quả kiểm tra trên baseline trước.
