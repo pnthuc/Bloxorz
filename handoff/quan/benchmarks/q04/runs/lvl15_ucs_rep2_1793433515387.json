@@ -1,0 +1,26 @@
+{
+  "run_id": "lvl15_ucs_rep2_1793433515387",
+  "level_id": "15",
+  "level_name": "Stage 15: Teleport Chain",
+  "solver": "ucs",
+  "repeat_index": 2,
+  "status": "SOLVED",
+  "search_time_ms": 11.55,
+  "memory_kb": 53.57,
+  "expanded_nodes": 83,
+  "solution_length": 6,
+  "rolling_steps": 6,
+  "total_cost": 6.0,
+  "path_cost": 6.0,
+  "timeout_sec": 120.0,
+  "timestamp": "2026-10-31T14:58:35.387129",
+  "error_message": "",
+  "moves": [
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT"
+  ]
+}

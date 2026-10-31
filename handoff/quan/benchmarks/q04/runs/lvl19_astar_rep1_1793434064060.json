@@ -1,0 +1,22 @@
+{
+  "run_id": "lvl19_astar_rep1_1793434064060",
+  "level_id": "19",
+  "level_name": "Stage 19: Goal Right",
+  "solver": "astar",
+  "repeat_index": 1,
+  "status": "SOLVED",
+  "search_time_ms": 0.424,
+  "memory_kb": 3.75,
+  "expanded_nodes": 2,
+  "solution_length": 2,
+  "rolling_steps": 2,
+  "total_cost": 2.0,
+  "path_cost": 2.0,
+  "timeout_sec": 120.0,
+  "timestamp": "2026-10-31T15:07:44.060100",
+  "error_message": "",
+  "moves": [
+    "RIGHT",
+    "RIGHT"
+  ]
+}

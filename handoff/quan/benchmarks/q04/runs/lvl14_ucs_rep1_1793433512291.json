@@ -1,0 +1,29 @@
+{
+  "run_id": "lvl14_ucs_rep1_1793433512291",
+  "level_id": "14",
+  "level_name": "Stage 14: Fragile Shortcut",
+  "solver": "ucs",
+  "repeat_index": 1,
+  "status": "SOLVED",
+  "search_time_ms": 3.528,
+  "memory_kb": 12.12,
+  "expanded_nodes": 38,
+  "solution_length": 9,
+  "rolling_steps": 9,
+  "total_cost": 10.0,
+  "path_cost": 10.0,
+  "timeout_sec": 120.0,
+  "timestamp": "2026-10-31T14:58:32.291643",
+  "error_message": "",
+  "moves": [
+    "DOWN",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "UP"
+  ]
+}

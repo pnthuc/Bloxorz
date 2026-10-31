@@ -324,7 +324,7 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json), len(self.levels))
         self.assertEqual(set(response.json), set(self.levels))
-        self.assertEqual(response.json["12"]["name"], "Hành trình liên hoàn")
+        self.assertEqual(response.json["9"]["name"], "Stage 9: Mixed Mechanisms")
         for id in self.levels:
             with self.subTest(level=id):
                 data = self.client.get("/api/level/" + id).json
@@ -383,20 +383,20 @@ class ApiTests(unittest.TestCase):
                         deserialize_state(state)))
 
     def test_video2_failed_move_retains_closed_bridge(self):
-        state = self.client.get("/api/level/11").json["initial_state"]
+        state = self.client.get("/api/level/8").json["initial_state"]
         for action in ["RIGHT", "DOWN", "RIGHT"]:
             data = self.client.post(
-                "/api/move", json=dict(level_id="11", state=state, action=action)
+                "/api/move", json=dict(level_id="8", state=state, action=action)
             ).json
             self.assertTrue(data["valid"])
             state = data["next_state"]
         data = self.client.post(
-            "/api/move", json=dict(level_id="11", state=state, action="RIGHT")
+            "/api/move", json=dict(level_id="8", state=state, action="RIGHT")
         ).json
         self.assertFalse(data["valid"])
         self.assertEqual(data["failure_reason"], "bridge_closed")
         self.assertEqual(data["failure_state"]["bridges"], [False, False])
-        b = BloxorzBoard(self.levels["11"])
+        b = BloxorzBoard(self.levels["8"])
         original = deserialize_state(state)
         self.assertIsNone(b.apply_move(original, "RIGHT"))
         self.assertNotIn("RIGHT", [a for a, st in b.get_successors(original)])
@@ -443,12 +443,12 @@ class CaseDataTests(unittest.TestCase):
         self.assertEqual(canonical, set(load_levels()))
         self.assertEqual(len({case.id for case in self.cases}), len(self.cases))
 
-    def test_curated_menu_retains_mechanisms_and_excludes_archived_levels(self):
+    def test_curated_menu_has_contiguous_ids_and_retains_mechanisms(self):
         ids = set(self.levels)
         self.assertEqual(len(ids), 25)
-        self.assertTrue({'35', '36', '37', '38', '39', '40', '43', '45', '46'} <= ids)
-        self.assertTrue(ids.isdisjoint({'5', '9', '10', '13', '14', '16', '17', '18',
-                                      '20', '21', '22', '24', '25', '26', '27', '28', '29'}))
+        self.assertEqual(ids, {str(i) for i in range(1, 26)})
+        self.assertEqual({path.name for path in (ROOT / 'levels').glob('*.json')},
+                         {f'level_{i:02}.json' for i in range(1, 26)})
         self.assertTrue(all(case.solvable for case in self.cases if case.level_id))
         tiles = {tile for level in self.levels.values() for row in level['grid'] for tile in row}
         self.assertTrue({0, 1, 2, 3, 4, 5, 9, 10} <= tiles)
@@ -511,7 +511,7 @@ class CaseDataTests(unittest.TestCase):
     def test_loader_rejects_missing_maps_and_bad_expectations(self):
         raw = read_json(ROOT / "tests" / "test_cases.json")
         broken = deepcopy(raw)
-        del broken["33"]
+        del broken["16"]
         with patch("tests.helpers.read_json", return_value=broken):
             with patch("tests.helpers.load_levels", return_value=self.levels):
                 with self.assertRaisesRegex(AssertionError, "thiếu map"):
