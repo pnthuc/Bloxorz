@@ -5,25 +5,27 @@ Nam viết BFS, mô hình hóa, phân tích và ghép báo cáo; Phúc phụ tr�
 
 ## Đầu vào và hiện trạng
 
-- BFS: `Src/solvers/member3_bfs.py`; State/luật: `Src/core/board.py`.
+- BFS: Src/solvers/member3_bfs.py; State/luật: Src/core/board.py.
 - Nhận DFS/phương pháp/số liệu từ Quân, A* từ Thiện, UCS/cost và hình từ Phúc,
   kiến trúc/demo từ Thức. Dùng cùng [baseline](../shared/baseline.md).
-- Đã có [BFS.docx](BFS.docx) và [Report.docx](Report.docx) bản thảo.
-  Đã có [video-outline.docx](video-outline.docx) từ bàn giao mới trên main.
-  Bìa Report hiện thiếu Nguyễn Lê Minh Quân, MSSV 24120219; nội dung còn chỗ giữ chỗ.
-  Chưa có `Report.pdf` và URL video cuối trong repo.
-- Số node, độ sâu và bộ nhớ nêu trong BFS.docx cần đối chiếu CSV đúng phiên bản;
-  không coi các con số trong bản thảo là dữ liệu đã nghiệm thu.
+- Đã hoàn thiện và trích xuất đồng bộ toàn diện:
+  - [Report.docx](Report.docx): Báo cáo tổng hợp nhóm (đã cập nhật đầy đủ Mục 6.2).
+  - [BFS.docx](BFS.docx): Báo cáo thuật toán BFS hoàn chỉnh (N01).
+  - [model.docx](model.docx): Báo cáo mô hình hóa không gian trạng thái, hành động, chuyển đổi, đích và chi phí (N02).
+  - [discussion.docx](discussion.docx): Báo cáo so sánh và đánh giá hiệu năng 4 thuật toán dựa trên dữ liệu 6.1 (N03).
+  - [video-outline.docx](video-outline.docx): Đề cương kịch bản demo video bàn giao Phúc (N05).
+- Bìa Report đã có đầy đủ 5 thành viên (bổ sung Nguyễn Lê Minh Quân, MSSV 24120219).
+- Đang chờ Thức xuất bản Report.pdf và Phúc cập nhật URL video YouTube cuối cùng (N04).
 
 ## Nhiệm vụ
 
 | Đã bàn giao | Mã | Công việc | Đầu ra |
 | --- | --- | --- | --- |
-| [x] | `N01` | Khung báo cáo, BFS, giả mã và ví dụ | `Report.docx`, `BFS.docx` → cả nhóm |
-| [ ] | `N02` | Mô hình trạng thái, hành động, chuyển, đích và cost | `model.docx` hoặc mục tương ứng trong Report → Thức, Phúc, Thiện rà |
-| [ ] | `N03` | So sánh bốn thuật toán bằng dữ liệu thật | `discussion.docx` hoặc mục tương ứng trong Report → Quân, Phúc, Thiện rà |
-| [ ] | `N04` | Biên tập PDF hoàn chỉnh, nguồn và phụ lục | `Report.docx`, `Report.pdf` → Thức |
-| [x] | `N05` | Đề cương nội dung video và rà bản nháp | `video-outline.docx` → Phúc; phản hồi video → Phúc, Thức |
+| [x] | `N01` | Khung báo cáo, BFS, giả mã và ví dụ | Report.docx, BFS.docx → cả nhóm |
+| [x] | `N02` | Mô hình trạng thái, hành động, chuyển, đích và cost | model.docx (khớp Mục 2 Report) → Thức, Phúc, Thiện rà |
+| [x] | `N03` | So sánh bốn thuật toán bằng dữ liệu thật | discussion.docx (dựa trên 6.1) và Mục 6.2 Report → Quân, Phúc, Thiện rà |
+| [ ] | `N04` | Biên tập PDF hoàn chỉnh, nguồn và phụ lục | Report.docx, Report.pdf → Thức |
+| [x] | `N05` | Đề cương nội dung video và rà bản nháp | video-outline.docx → Phúc; phản hồi video → Phúc, Thức |
 
 Có bản thảo chưa đồng nghĩa nhiệm vụ đã nghiệm thu; giữ trạng thái bàn giao hiện có.
 Không cần tạo thêm DOCX rời nếu nội dung đã có mục rõ ràng trong Report và người nhận sử dụng được.
