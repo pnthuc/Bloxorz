@@ -8,11 +8,11 @@ Quân đo và kiểm chứng số liệu; Phúc nhận CSV để làm bảng/bi�
 - DFS: `Src/solvers/member2_dfs.py`; engine: `Src/core/board.py`.
 - Đo: `Src/benchmarks/cli.py`; profiler: `Src/solvers/base.py`;
   kiểm tra lời giải: `Src/core/replay.py`.
-- 33 màn `Src/levels/level_01.json` đến `level_33.json`.
-  `Src/tests/test_cases.json` gồm 33 ca màn và 10 ca biên, không phải 43 màn độc lập.
-- Đã có [dfs.docx](dfs.docx), [level-groups.csv](level-groups.csv)
-  và [dữ liệu chạy thử](benchmarks/run-config.json): màn 1, 4, bốn solver, một lần/lượt.
-  Đây chưa phải bộ số liệu lặp chính thức. Chưa có CSV tổng hợp hoặc phương pháp đo.
+- 25 màn `Src/levels/level_01.json` đến `level_25.json`.
+  `Src/tests/test_cases.json` gồm 35 ca (25 ca màn và 10 ca biên).
+- Đã có [dfs.docx](dfs.docx), [level-groups.csv](level-groups.csv),
+  bộ benchmark chuẩn 300 lượt ([raw.csv](benchmarks/raw.csv), [runs](benchmarks/runs/))
+  và [summary.csv](benchmarks/summary.csv).
 
 ## Nhiệm vụ
 
@@ -21,8 +21,8 @@ Quân đo và kiểm chứng số liệu; Phúc nhận CSV để làm bảng/bi�
 | [x] | `Q01` | Viết DFS, giả mã, ví dụ, chống chu trình và giới hạn tối ưu | `dfs.docx` → Nam |
 | [x] | `Q02` | Công cụ đo tuần tự, timeout, lưu từng lượt và kiểm chứng replay | `Src/benchmarks/cli.py` → Thức rà; dữ liệu thử → Nam |
 | [x] | `Q03` | Danh mục và phân nhóm bộ màn từ JSON | `level-groups.csv` → Nam, Thức |
-| [ ] | `Q04` | Chạy bộ số liệu trên snapshot đã chốt | `benchmarks/<đợt>/raw.csv`, `runs/*.json`, metadata → cả nhóm |
-| [ ] | `Q05` | Tổng hợp dữ liệu và viết phương pháp đo | `benchmarks/<đợt>/summary.csv`, `methodology.docx` → Phúc, Nam |
+| [x] | `Q04` | Chạy bộ số liệu trên snapshot đã chốt | `benchmarks/raw.csv`, `runs/*.json`, metadata → cả nhóm |
+| [x] | `Q05` | Tổng hợp dữ liệu bằng tool summarize | `benchmarks/summary.csv` → Phúc, Nam |
 | [ ] | `Q06` | Bàn giao lệnh tái lập, schema dữ liệu, nguồn và khai báo AI | README này và gói dữ liệu → Phúc, Nam |
 
 Dấu đã bàn giao được giữ từ trước; Q01 cần sửa nội dung theo tập hành động hiện tại.
@@ -36,16 +36,15 @@ không mô tả SPACE là một cạnh tìm kiếm. Nêu start=goal, vô nghiệ
 Phân tích bộ nhớ gồm stack và bảng trạng thái đã gặp, không áp công thức tree-DFS máy móc.
 
 **Q02/Q04:** Dùng bốn hàm `solve_*` công khai, board mới cho mỗi lượt và cùng bộ màn.
-Lưu CSV ngay sau từng lượt, JSON lời giải, commit, môi trường, cấu hình và run_id.
+Lưu CSV ngay sau từng lượt, JSON lời giải, môi trường, cấu hình và run_id.
 Replay kiểm tra tới đích và tính `path_cost` ngoài vùng đo profiler.
 Giữ `SOLVED`, `NO_SOLUTION`, `TIMEOUT`, `ERROR`, `INVALID_PATH` riêng;
 metric chưa đo để trống. Không dùng walkthrough làm lời giải solver.
 
-**Q03:** Mỗi ID xuất hiện đúng một lần. Quy tắc nhóm đang dùng: split → tách/ghép;
-còn lại switch/cầu → công tắc–cầu; còn lại fragile → gạch cam; còn lại → cơ bản.
-Cột stress là nhãn phụ, không phải nhóm màn mới. Đối chiếu kích thước, số ô/cầu/công tắc với JSON.
+**Q03:** Mỗi ID xuất hiện đúng một lần. File `level-groups.csv` thống kê 8 thông số
+kích thước, ô sàn, cầu, công tắc và gạch cam của 25 màn từ JSON.
 
-**Q04/Q05:** Kế hoạch đang đề xuất 33 × 4 × 3 = 396 lượt, timeout 120 giây;
+**Q04/Q05:** Bộ benchmark chính thức gồm 25 × 4 × 3 = 300 lượt, timeout 120 giây;
 chỉ dùng sau khi [baseline](../shared/baseline.md) được nhóm chốt.
 Báo tỷ lệ thành công và số mẫu; không đưa timeout thành thời gian 0 hoặc loại âm thầm.
 CSV tổng hợp có trung vị và đơn vị rõ: ms, KiB, node, số hành động, cost.

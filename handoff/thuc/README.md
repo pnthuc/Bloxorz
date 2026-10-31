@@ -7,7 +7,7 @@ Thức giữ luật game/API/UI/level/test thống nhất, cung cấp demo và n
 
 - Engine: `Src/core/board.py`; level/replay: `Src/core/levels.py`, `Src/core/replay.py`.
 - API: `Src/web/app.py`; giao diện: `Src/static/`, `Src/templates/`;
-  level: `Src/levels/level_01.json` đến `level_33.json`; regression: `Src/tests/`.
+  level: `Src/levels/level_01.json` đến `level_25.json`; regression: `Src/tests/`.
 - [Tài liệu bàn giao cho Nam](Phan_Ngoc_Thuc.docx) gồm 3 trang: phần A cho mục 2,
   phần B cho mục 3, phần C cho mục 5.2 và phụ lục kiểm thử/demo.
   `kiem_tra_thuc.json` là log cũ; kết quả kiểm tra mới ngày 30/10/2026 ghi trong tài liệu.
@@ -18,7 +18,7 @@ Thức giữ luật game/API/UI/level/test thống nhất, cung cấp demo và n
 | --- | --- | --- | --- |
 | [x] | `T01` | Mô hình State, luật và kiến trúc game/API/GUI | Các mục trong `Phan_Ngoc_Thuc.docx` → Nam |
 | [x] | `T02` | Tư liệu và thao tác demo cho từng cơ chế | Tài liệu, ảnh và chuỗi thao tác → Phúc, Nam |
-| [ ] | `T03` | Chốt snapshot và giao ước thực nghiệm | `handoff/shared/baseline.md` → cả nhóm |
+| [X] | `T03` | Chốt snapshot và giao ước thực nghiệm | `handoff/shared/baseline.md` → cả nhóm |
 | [ ] | `T04` | Nghiệm thu tích hợp, dữ liệu và mức hoàn thành | `final-review.docx`, log, bảng phân công → Nam và chủ phần việc |
 | [ ] | `T05` | Đóng gói, thử gói nộp và bàn giao | ZIP/RAR tên năm MSSV; Drive nếu cần → người nộp |
 

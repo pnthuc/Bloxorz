@@ -50,7 +50,7 @@ Src/
   web/              Flask API và chuyển State sang/từ JSON
   solvers/          Bốn thuật toán, profiler và cost chung
   benchmarks/       CLI thực nghiệm và worker đo cho GUI
-  levels/           level_01.json đến level_33.json
+  levels/           level_01.json đến level_25.json
   static/           JavaScript, CSS, texture tạo sẵn, font, âm thanh và thư viện local
   templates/        HTML
   tests/            Regression và dữ liệu ca kiểm thử
@@ -71,8 +71,7 @@ Chạy solver thật trên một số ca, có kiểm chứng lời giải:
 python run_tests.py --cases 1 2 3 4
 ```
 
-Bỏ `--cases` để chạy toàn bộ 43 ca, gồm 33 màn và 10 ca biên.
-Các màn stress có thể mất nhiều thời gian; lệnh này không giới hạn thời gian tìm kiếm.
+Bỏ `--cases` để chạy toàn bộ 35 ca, gồm 25 màn và 10 ca biên.
 `--solver bfs|dfs|ucs|astar` chọn riêng một thuật toán.
 
 Test UI/audio cần Node.js 18+. Từ `Src/tests`:
@@ -87,18 +86,18 @@ Test UI mô phỏng GPU; kết quả này không thay cho kiểm tra hình ảnh
 
 ## Thực nghiệm
 
-Chạy thử nhỏ từ `Src`, xuất vào thư mục riêng để không trộn số đo cũ:
+Chạy benchmark và tổng hợp từ thư mục `Src`:
 
 ```bash
-python -m benchmarks.cli --levels 1 4 --solvers bfs dfs ucs astar --repeats 1 --timeout 5 --output-dir ../handoff/quan/benchmarks/trial
+python -m benchmarks.cli --levels all --solvers bfs dfs ucs astar --repeats 3 --timeout 120 --output-dir ../handoff/quan/benchmarks
+python ../handoff/quan/summarize.py ../handoff/quan/benchmarks
 ```
 
-CLI xuất `raw.csv`, `runs/*.json`, `environment.json` và `run-config.json`.
-Nó chưa tạo CSV tổng hợp hoặc biểu đồ. Chốt phiên bản và cách đo trong
-[baseline](handoff/shared/baseline.md) trước lượt thực nghiệm chính thức.
-Chế độ so sánh trong GUI là phép đo một lượt để minh họa, không thay bộ số liệu lặp của báo cáo.
+- CLI xuất `raw.csv`, `runs/*.json`, `environment.json` và `run-config.json`.
+- `handoff/quan/summarize.py` tổng hợp kết quả ra `summary.csv`.
+- Xem chi tiết tại [Src/benchmarks/README.md](Src/benchmarks/README.md).
 
-Quy ước hiện tại:
+Quy ước:
 
 - Tìm kiếm dùng `UP LEFT RIGHT DOWN SUP SLEFT SRIGHT SDOWN`. Tiền tố `S`
   là đổi khối rồi lăn, chỉ hợp lệ khi SPLIT; mỗi hành động tính một bước.
@@ -110,5 +109,4 @@ Quy ước hiện tại:
 - Profiler đo thời gian tìm kiếm bằng ms và đỉnh cấp phát Python bằng KiB
   (trường API tên `memory_kb`), không phải tổng RAM hay bộ nhớ GPU.
 
-Dữ liệu đo theo quy ước SPACE riêng trước đây cần đo lại trước khi dùng để so sánh bản này.
 Giữ kèm giấy phép [font](Src/static/fonts/OFL.txt) và [Three.js](Src/static/vendor/THREE-LICENSE.txt).
