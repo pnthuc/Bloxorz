@@ -41,10 +41,10 @@ Thức tổng hợp; Phúc xác nhận cost; Thiện xác nhận heuristic; Quâ
 Lấy commit bằng `git rev-parse HEAD` trên đúng checkout đã chọn; không coi HEAD là đủ
 nếu còn sửa code chưa commit. Mỗi đợt dùng thư mục riêng để không trộn dữ liệu/metadata.
 
-- [ ] Phúc xác nhận cost và diễn giải.
-- [ ] Thiện xác nhận heuristic và giả thiết.
-- [ ] Quân xác nhận cấu hình, schema, đơn vị và cách tổng hợp.
-- [ ] Thức xác nhận snapshot và kết quả kiểm tra.
+- [X] Phúc xác nhận cost và diễn giải.
+- [X] Thiện xác nhận heuristic và giả thiết.
+- [X] Quân xác nhận cấu hình, schema, đơn vị và cách tổng hợp.
+- [X] Thức xác nhận snapshot và kết quả kiểm tra.
 
 Sau khi đủ xác nhận, ghi commit/ngày thật và đổi trạng thái thành ĐÃ CHỐT.
 Nếu đổi engine, solver, cost, heuristic hoặc cách đo, tạo mốc mới và xác định dữ liệu cần chạy lại.
