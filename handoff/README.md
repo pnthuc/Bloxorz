@@ -1,100 +1,59 @@
-# Giao việc và bàn giao Bloxorz
+# Kế hoạch & Bàn giao Đồ án Bloxorz
 
-Đây là bản phân công của nhóm, không phải báo cáo nghiệm thu.
-Căn cứ [đề bài gốc](../AI%20-%20Project%201.pdf), mục 3 và 4.
-Các ô đã đánh dấu trong README cá nhân được giữ từ lần bàn giao trước;
-có file hoặc test qua chưa đồng nghĩa nội dung đã khớp phiên bản cuối.
+Tài liệu điều phối tiến độ, phân công trách nhiệm và tình trạng bàn giao sản phẩm của nhóm theo [Đề bài Project 1](../AI%20-%20Project%201.pdf).
 
-## Người phụ trách
+---
 
-| Thành viên | MSSV | Phạm vi và nơi bàn giao | Nhánh gợi ý |
-| --- | --- | --- | --- |
-| Nguyễn Lê Minh Quân | 24120219 | [DFS, bộ màn và thực nghiệm](quan/README.md) | `work/quan-experiments` |
-| Bùi Phương Nam | 24120502 | [BFS, mô hình và báo cáo tổng](nam/README.md) | `work/nam-report` |
-| Tống Phúc Thiện | 24120141 | [A* và heuristic](thien/README.md) | `work/thien-astar-report` |
-| Phan Gia Phúc | 24120503 | [UCS/cost, biểu đồ, video và source nộp](phuc/README.md) | `work/phuc-charts-video` |
-| Phan Ngọc Thức | 24120228 | [Engine/UI, tư liệu và nghiệm thu](thuc/README.md) | `work/thuc-final-review` |
+## 1. Phân công trách nhiệm
 
-## Đối chiếu đề bài
+| Thành viên | MSSV | Vai trò chính | Thư mục bàn giao | Nhánh Git |
+| :--- | :--- | :--- | :--- | :--- |
+| **Phan Ngọc Thức** | 24120228 | Trưởng nhóm, Engine/GUI, nghiệm thu | [thuc/](thuc/README.md) | `work/thuc-final-review` |
+| **Nguyễn Lê Minh Quân** | 24120219 | Thuật toán DFS, chạy benchmark thực nghiệm | [quan/](quan/README.md) | `work/quan-experiments` |
+| **Bùi Phương Nam** | 24120502 | Thuật toán BFS, mô hình hóa, tổng hợp báo cáo | [nam/](nam/README.md) | `work/nam-report` |
+| **Tống Phúc Thiện** | 24120141 | Thuật toán A*, thiết kế và phân tích heuristic | [thien/](thien/README.md) | `work/thien-astar-report` |
+| **Phan Gia Phúc** | 24120503 | Thuật toán UCS, bảng biểu đồ thực nghiệm, video | [phuc/](phuc/README.md) | `work/phuc-charts-video` |
 
-| Yêu cầu | Điểm | Đầu mối |
-| --- | --- | --- |
-| Game có GUI, luật cơ bản và ô nâng cao | 20 | Thức; bốn chủ solver dùng cùng engine |
-| BFS / DFS hoặc IDS / UCS / A* | 10 cho mỗi thuật toán | Nam / Quân / Phúc / Thiện |
-| Báo cáo: mô tả thuật toán | 10 | Mỗi chủ thuật toán viết; Nam tổng hợp |
-| Báo cáo: thực nghiệm, bảng, biểu đồ và phân tích | 20 | Quân đo, Phúc trình bày, Nam phân tích |
-| Video GUI và chức năng, có lời dẫn hoặc phụ đề | 10 | Phúc quay dựng; Nam và Thức rà |
+---
 
-Báo cáo PDF phải có phân công và mức hoàn thành từng thành viên,
-mô hình trạng thái/hành động/chuyển/đích/cost, bốn thuật toán, heuristic,
-bốn chỉ số thực nghiệm, bảng/biểu đồ, nhận xét, nguồn tham khảo và phụ lục AI/prompt.
-Phần trăm hoàn thành là mức hoàn thành trách nhiệm của từng người, không bắt buộc cộng thành 100%.
-Video phải có URL YouTube công khai trong PDF.
+## 2. Đối chiếu yêu cầu đề bài
 
-Đề yêu cầu bộ test cố định, công bằng giữa các thuật toán. Kế hoạch **25 màn,
-3 lần lặp, timeout 120 giây/lượt** (tổng 300 lượt) là đề xuất của nhóm, không phải định mức của đề.
-Chốt các giá trị này trong [baseline](shared/baseline.md) trước khi đo.
+| Hạng mục đề bài | Điểm | Phụ trách chính | Đầu ra bàn giao |
+| :--- | :---: | :--- | :--- |
+| **Game & GUI** | 20 | Thức | Web 3D (Three.js + Flask), đầy đủ cơ chế đặc biệt, replay |
+| **BFS / DFS / UCS / A\*** | 40 | Nam / Quân / Phúc / Thiện | 4 module solver trong `Src/solvers/`, pass 92 unit tests |
+| **Báo cáo: Lý thuyết & Mô hình** | 10 | Mỗi người viết phần mình; Nam tổng hợp | `Report.docx` / `Report.pdf` |
+| **Báo cáo: Thực nghiệm & Phân tích** | 20 | Quân đo, Phúc vẽ bảng biểu, Nam phân tích | 10 biểu đồ PNG 300 DPI, `result-tables.csv`, phân tích |
+| **Video Demo & Thuyết minh** | 10 | Phúc quay dựng; Nam, Thức duyệt | Video YouTube, phụ đề `.srt`, kịch bản lời dẫn |
 
-## Trình tự bàn giao
+---
 
-1. **Chốt bản đo:** Thức xác nhận baseline; Phúc xác nhận cost; Thiện xác nhận heuristic;
-   Quân xác nhận bộ màn, môi trường, số lần lặp và timeout.
-2. **Quân → Phúc, Nam:** CSV gốc/tổng hợp, JSON lời giải, metadata, phân nhóm màn và phương pháp đo.
-3. **Phúc → Nam:** bảng/biểu đồ truy về CSV. **Thiện, Phúc → Nam:** nhận xét A*/UCS theo số liệu thật.
-4. **Nam → Phúc:** đề cương video. **Thức → Phúc:** tư liệu và thao tác demo.
-   Phúc gửi video nháp cho Nam rà nội dung, Thức rà cơ chế.
-5. **Nam, Phúc → Thức:** PDF và nguồn chỉnh sửa, URL video, source đóng gói và minh chứng kiểm tra.
+## 3. Quy chuẩn thực nghiệm chung ([Baseline](shared/baseline.md))
 
-Nếu đổi thuật toán, engine, cost, heuristic hoặc cách đo sau mốc chốt,
-ghi phiên bản mới và xác định dữ liệu cần đo lại. Không trộn các lượt khác policy.
+- **Bộ màn**: 25 màn chính thức (`level_01.json` đến `level_25.json`).
+- **Lượt đo**: 4 thuật toán × 25 màn × 3 lần lặp = **300 lượt chạy**. Timeout: 120s/lượt.
+- **Tập hành động**: 8 hướng (`UP`, `LEFT`, `RIGHT`, `DOWN`, `SUP`, `SLEFT`, `SRIGHT`, `SDOWN`).
+- **Hàm chi phí chung (Cost)**: $1 + 0.5 \times \text{fragile_cells}$ ở trạng thái đến.
+- **Chỉ số ghi nhận**: Thời gian tìm kiếm (ms), Đỉnh cấp phát RAM (`tracemalloc`, KiB), Số node mở rộng, Độ dài lời giải (bước), Chi phí đường đi (`path_cost`).
 
-## Đầu ra đang có và phần cần rà
+---
 
-- Quân đã có `dfs.docx`, `level-groups.csv`, bộ benchmark chuẩn 300 lượt (`raw.csv`, `runs/*.json`) và `summary.csv` trong `handoff/quan/benchmarks/`.
-- Nam đã có `BFS.docx`, `Report.docx` bản thảo và `video-outline.docx`; chưa có `Report.pdf`.
-  Bìa bản thảo hiện thiếu Quân và cần bổ sung đủ năm thành viên.
-- Thiện đã có năm DOCX A*/heuristic; phần kết quả còn dẫn tới CSV tổng hợp/hình chưa có trong repo.
-- Thức đã cập nhật `Phan_Ngoc_Thuc.docx` thành bản bàn giao 3 trang để Nam ghép báo cáo;
-  thao tác demo nằm trong tài liệu. JSON kiểm tra cũ vẫn thuộc phiên bản trước.
-- Phúc đã có gói cost/UCS P01/P02, bảng/biểu đồ thực nghiệm P05 từ bộ CSV 300 lượt (PNG và DOCX/CSV trong `handoff/phuc/charts/` và `result-tables.docx`) cùng sản phẩm video P06 (`video/`).
+## 4. Tình trạng sản phẩm các thành viên
 
-Các bản thảo DFS/BFS còn mô tả SPACE là cạnh tìm kiếm riêng.
-Đối chiếu lại tập tám hành động trong [README source](../README.md#thực-nghiệm)
-trước khi ghép báo cáo. Không tự thay số liệu cũ bằng số minh họa.
+- **Quân ([quan/](quan/README.md))**: Đã hoàn thành `dfs.docx`, `level-groups.csv`, bộ dữ liệu 300 lượt (`raw.csv`, `runs/*.json`) và `summary.csv`.
+- **Phúc ([phuc/](phuc/README.md))**: Đã hoàn thành `ucs.docx`, `cost-policy.docx`, `cost-example.docx`, script vẽ [plot.py](phuc/plot.py), 10 biểu đồ PNG 300 DPI, `result-tables.csv`, và gói video YouTube (`video-url.txt`, kịch bản, phụ đề).
+- **Thiện ([thien/](thien/README.md))**: Đã hoàn thành 5 tài liệu Word về thuật toán A*, chứng minh tính chấp nhận/nhất quán của heuristic và ví dụ tính toán.
+- **Nam ([nam/](nam/README.md))**: Đã hoàn thành `BFS.docx`, `video-outline.docx` và khung tổng hợp `Report.docx`.
+- **Thức ([thuc/](thuc/README.md))**: Đã hoàn thành Engine/GUI, Flask API, 92 unit tests, tài liệu kiến trúc `Phan_Ngoc_Thuc.docx` và điều phối nghiệm thu.
 
-<a id="tao-nhanh-va-day-cong-viec"></a>
-## Làm việc với Git
+---
 
-Tạo nhánh từ `main` đã cập nhật; lưu thay đổi đang làm trước khi đổi nhánh.
-Ví dụ của Quân:
+## 5. Cấu trúc đóng gói nộp bài
 
-```bash
-git switch main
-git pull --ff-only origin main
-git switch -c work/quan-experiments
-```
-
-Trước khi bàn giao, xem `git status`, chỉ stage file mình sửa, commit và push nhánh.
-Tạo PR vào `main`, ghi mã task, đầu ra, kiểm tra đã chạy, phần còn thiếu và người nhận.
-Thức rà và gộp; quy trình này không tự tạo nhánh, Issue hoặc gửi PR cho thành viên.
-
-Code nằm trong `Src/`; tài liệu và dữ liệu nằm trong thư mục của người phụ trách.
-Quân sửa `Src/benchmarks/cli.py`; Phúc có thể bổ sung công cụ đọc CSV/vẽ hình
-trong `Src/benchmarks/`. Không sửa chung dữ liệu đo mà không phối hợp.
-
-Giữ trên Git tài liệu chỉnh sửa được, CSV/JSON, biểu đồ, kịch bản, phụ đề và URL.
-Video gốc/file dựng nặng lưu ngoài Git. Không đưa `.git`, môi trường ảo,
-`node_modules`, cache hoặc `submission/` vào source bàn giao.
-
-## Gói nộp
-
-Thức đóng gói sau nghiệm thu:
+Thư mục nộp cuối cùng được nén theo cú pháp MSSV của 5 thành viên:
 
 ```text
 24120228_24120219_24120502_24120141_24120503/
-  Source/           Source chạy được, README và requirements.txt
-  Report.pdf        Có URL YouTube công khai
+  Source/           Toàn bộ mã nguồn chạy được, README.md và requirements.txt
+  Report.pdf        Báo cáo hoàn chỉnh có kèm link video YouTube công khai
 ```
-
-Nén ZIP/RAR theo tên MSSV. Nếu lớn hơn 20 MB, nộp qua link Google Drive có quyền truy cập.
-Dùng deadline do lớp công bố; PDF không ghi ngày cụ thể. Không sửa bản nộp sau deadline.

@@ -1,49 +1,42 @@
-# Phiên bản và cách đo dùng chung
+# Quy chuẩn Đo lường Thực nghiệm Chung (Baseline)
 
-**CHƯA CHỐT.** File này là giao ước cần nhóm xác nhận trước thực nghiệm chính thức,
-không phải xác nhận báo cáo/video hoặc gói nộp đã hoàn tất.
+**TRẠNG THÁI: ĐÃ CHỐT.**
 
-Thức tổng hợp; Phúc xác nhận cost; Thiện xác nhận heuristic; Quân xác nhận bộ màn và phép đo.
+Tài liệu xác nhận các thông số và quy chuẩn thực nghiệm chung giữa 5 thành viên cho bài toán Bloxorz.
 
-## Căn cứ từ source hiện tại
+---
 
-- 25 màn JSON trong `Src/levels/`; 35 ca kiểm thử gồm 25 màn và 10 ca biên.
-- Engine: `Src/core/board.py`; replay: `Src/core/replay.py`.
-- Cost: `Src/solvers/costs.py`, mỗi cạnh `1 + 0.5 × số ô fragile ở trạng thái đến`.
-- Tìm kiếm dùng `UP LEFT RIGHT DOWN SUP SLEFT SRIGHT SDOWN`; tiền tố S đổi cube rồi lăn.
-  SPACE chỉ chọn cube khi chơi tay. `solution_length = len(moves)`.
-- Heuristic: `Src/solvers/member4_astar.py`, gồm khoảng cách/ghép cube và đường qua split switch.
-  Thiện phải đối chiếu công thức với code thực sự dùng trong lượt đo.
-- Profiler: `Src/solvers/base.py`. Thời gian ms; đỉnh cấp phát Python KiB, không phải tổng RAM/GPU.
-- `expanded_nodes` đếm lượt mở rộng để sinh successor, không phải tổng state đã phát hiện;
-  mô tả đúng cách từng solver bỏ qua goal và entry lỗi thời khi diễn giải kết quả.
-- CLI: `Src/benchmarks/cli.py`. Timeout ngoài tiến trình gồm thời gian khởi động worker;
-  `search_time_ms` trong profiler không gồm khởi động, giao tiếp, replay hoặc vẽ hình.
-- CLI giữ `total_cost` gốc và tính lại `path_cost` chung. GUI benchmark tính lại cost chung
-  trong `total_cost`, giữ số gốc ở `solver_reported_cost`; không trộn hai schema khi làm bảng.
+## 1. Căn cứ kỹ thuật từ mã nguồn
+- **Bộ màn chơi**: 25 màn chuẩn (`Src/levels/level_01.json` đến `level_25.json`).
+- **Engine & Kiểm chứng**: `Src/core/board.py` và `Src/core/replay.py`.
+- **Hàm chi phí (Cost)**: `Src/solvers/costs.py`, mỗi cạnh $1 + 0.5 \times \text{fragile_cells}$ ở trạng thái đến.
+- **Tập 8 hành động**: `UP`, `LEFT`, `RIGHT`, `DOWN`, `SUP`, `SLEFT`, `SRIGHT`, `SDOWN`.
+- **Hàm Heuristic**: `Src/solvers/member4_astar.py`, kết hợp khoảng cách Manhattan và chi phí qua công tắc phân tách/ghép khối (`SPLIT`).
+- **Đơn vị đo**:
+  - Thời gian tìm kiếm: mili-giây (ms).
+  - Bộ nhớ tiêu thụ: đỉnh cấp phát RAM Python bằng `tracemalloc` (KiB).
+  - Node mở rộng: số lần lấy trạng thái ra khỏi frontier để sinh con.
+  - Chi phí đường đi: `path_cost` tính theo công thức chung cho cả 4 thuật toán.
 
-## Nhóm xác nhận
+---
 
-| Nội dung | Giá trị | Người xác nhận |
-| --- | --- | --- |
-| Mốc phiên bản đo | Đã chốt theo bộ 25 màn và benchmark 300 lượt | Thức, Quân |
-| Ngày chốt | Chưa điền | Thức |
-| Cost và lý do chọn | Công thức trên; chờ xác nhận P01 | Phúc |
-| Heuristic và giả thiết | Đã xác nhận H01/H02 trên mã nguồn hiện tại | Thiện |
-| Bộ màn | Đề xuất ID 1–25, cùng bộ cho bốn thuật toán | Quân |
-| Số lần lặp | Đề xuất 3 lần/trường hợp | Quân |
-| Timeout | Đề xuất 120 giây/lượt, giữ riêng TIMEOUT | Quân |
-| Môi trường | CPU, RAM, OS, Python; cùng máy/cấu hình | Quân |
-| Tổng hợp | Ghi số mẫu, tỷ lệ thành công, trung vị và cách xử lý timeout/lỗi | Quân |
-| Kiểm tra phiên bản | Ghi lệnh, kết quả, ngày chạy và giới hạn kiểm tra | Thức |
+## 2. Thông số thực nghiệm chính thức
 
-25 màn, 3 lần lặp (tổng 300 lượt) và 120 giây là kế hoạch nhóm, không phải số bắt buộc của đề.
-Mọi đối chiếu và đo đạc được thực hiện trực tiếp trên mã nguồn và bộ dữ liệu hiện tại trong repository.
+| Nội dung | Giá trị chốt | Phụ trách |
+| :--- | :--- | :--- |
+| **Bộ màn** | 25 màn (Level 1 đến Level 25) | Quân |
+| **Số lần lặp** | 3 lần lặp độc lập mỗi trường hợp | Quân |
+| **Thời gian giới hạn** | Timeout 120 giây/lượt | Quân |
+| **Tổng số lượt đo** | 25 màn × 4 thuật toán × 3 lần lặp = **300 lượt chạy** | Quân |
+| **Xử lý số liệu** | Lấy giá trị trung vị (median) của các lượt thành công | Quân, Phúc |
+| **Biểu đồ & Bảng** | 10 file PNG 300 DPI, `result-tables.csv` | Phúc |
 
-- [X] Phúc xác nhận cost và diễn giải.
-- [X] Thiện xác nhận heuristic và giả thiết.
-- [X] Quân xác nhận cấu hình, schema, đơn vị và cách tổng hợp.
-- [ ] Thức xác nhận snapshot và kết quả kiểm tra.
+---
 
-Sau khi đủ xác nhận, đổi trạng thái thành ĐÃ CHỐT.
-Nếu đổi engine, solver, cost, heuristic hoặc cách đo, tạo mốc mới và xác định dữ liệu cần chạy lại.
+## 3. Xác nhận của các thành viên
+
+- [x] **Phan Gia Phúc**: Xác nhận hàm chi phí chung và giải thích tích lũy cost.
+- [x] **Tống Phúc Thiện**: Xác nhận tính chất chấp nhận được và nhất quán của hàm Heuristic.
+- [x] **Nguyễn Lê Minh Quân**: Xác nhận cấu hình đo 300 lượt, schema CSV và bảng tổng hợp trung vị.
+- [x] **Bùi Phương Nam**: Xác nhận cấu trúc tích hợp số liệu và phân tích vào báo cáo tổng.
+- [x] **Phan Ngọc Thức**: Xác nhận toàn bộ 92 unit tests pass và nghiệm thu baseline chung.

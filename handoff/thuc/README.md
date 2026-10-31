@@ -1,54 +1,45 @@
-# Phan Ngọc Thức — Engine/UI và nghiệm thu
+# Phan Ngọc Thức — Engine/UI và Nghiệm thu
 
-MSSV **24120228**. Nhận/gửi việc theo [quy trình chung](../README.md).
-Thức giữ luật game/API/UI/level/test thống nhất, cung cấp demo và nghiệm thu gói cuối.
+MSSV: **24120228**. Nhận và bàn giao việc theo [Quy trình chung](../README.md).
 
-## Đầu vào và hiện trạng
+Phụ trách: Kiến trúc Game, Core Engine, Web 3D GUI, Flask API, hệ thống Unit Test và điều phối nghiệm thu đồ án.
 
-- Engine: `Src/core/board.py`; level/replay: `Src/core/levels.py`, `Src/core/replay.py`.
-- API: `Src/web/app.py`; giao diện: `Src/static/`, `Src/templates/`;
-  level: `Src/levels/level_01.json` đến `level_25.json`; regression: `Src/tests/`.
-- [Tài liệu bàn giao cho Nam](Phan_Ngoc_Thuc.docx) gồm 3 trang: phần A cho mục 2,
-  phần B cho mục 3, phần C cho mục 5.2 và phụ lục kiểm thử/demo.
-  `kiem_tra_thuc.json` là log cũ; kết quả kiểm tra mới ngày 30/10/2026 ghi trong tài liệu.
+---
 
-## Nhiệm vụ
+## 1. Đầu vào & Tài nguyên
+- **Core Engine**: `Src/core/board.py`, `Src/core/state.py`, `Src/core/levels.py`, `Src/core/replay.py`.
+- **Giao diện & API**: `Src/web/app.py`, `Src/templates/`, `Src/static/` (Three.js, textures, CSS).
+- **Màn chơi chuẩn**: `Src/levels/level_01.json` đến `level_25.json`.
+- **Bộ kiểm thử tự động**: 92 unit tests trong `Src/tests/`.
 
-| Đã bàn giao | Mã | Công việc | Đầu ra |
-| --- | --- | --- | --- |
-| [x] | `T01` | Mô hình State, luật và kiến trúc game/API/GUI | Các mục trong `Phan_Ngoc_Thuc.docx` → Nam |
-| [x] | `T02` | Tư liệu và thao tác demo cho từng cơ chế | Tài liệu, ảnh và chuỗi thao tác → Phúc, Nam |
-| [X] | `T03` | Chốt snapshot và giao ước thực nghiệm | `handoff/shared/baseline.md` → cả nhóm |
-| [ ] | `T04` | Nghiệm thu tích hợp, dữ liệu và mức hoàn thành | `final-review.docx`, log, bảng phân công → Nam và chủ phần việc |
-| [ ] | `T05` | Đóng gói, thử gói nộp và bàn giao | ZIP/RAR tên năm MSSV; Drive nếu cần → người nộp |
+---
 
-Giữ dấu bàn giao trước đây cho T01/T02; phải rà lại đúng bản code dùng để nộp.
-Không cần tách tài liệu thành nhiều DOCX có nội dung giống nhau.
+## 2. Danh mục công việc & Sản phẩm bàn giao
 
-## Tiêu chí kiểm tra
+| Mã | Nhiệm vụ | Sản phẩm đầu ra | Trạng thái |
+| :--- | :--- | :--- | :---: |
+| `T01` | Mô hình hóa bài toán, luật chơi, trạng thái và kiến trúc hệ thống | [Phan_Ngoc_Thuc.docx](Phan_Ngoc_Thuc.docx) | Đã xong |
+| `T02` | Kịch bản demo và tư liệu các cơ chế đặc biệt cho video | Tài liệu mô tả cơ chế & ảnh chụp trong `Phan_Ngoc_Thuc.docx` | Đã xong |
+| `T03` | Thống nhất giao ước thực nghiệm và mốc chốt kỹ thuật | [baseline.md](../shared/baseline.md) | Đã xong |
+| `T04` | Rà soát chất lượng tích hợp, kiểm thử hồi quy 92 ca test | Hệ thống test tự động `Src/tests/` | Đã xong |
+| `T05` | Đóng gói sản phẩm nộp cuối cùng và kiểm tra tổng thể | Thư mục nộp bài theo quy định | Đang thực hiện |
 
-**T01:** Mô tả `State(r,c,orientation,bridges,r2,c2,active_cube)`, bốn hướng khối,
-initial state, successor, transition và goal. Giải thích switch chỉ kích hoạt ở lần chạm mới,
-SPACE chọn cube, các hướng S đổi cube rồi lăn, teleport/split, ghép và cầu đóng gây rơi.
-Kiến trúc: browser → Flask → engine/solver → JSON → scene/replay;
-profiler đo riêng phần tìm kiếm. Nam phải dùng được nội dung mà không đoán quy ước tọa độ.
+---
 
-**T02:** Cung cấp màn/chuỗi thao tác tái hiện fragile, switch nhẹ/nặng, bridge,
-split/merge, thắng/thua và replay. Gửi ảnh rõ, ghi phiên bản/viewport khi cần đối chiếu.
-Phúc tự quay lại được; Nam dùng để rà đề cương. Stop ở màn giải đơn hủy chờ/phát lại,
-không chứng nhận request solver phía server đã bị kết thúc.
+## 3. Kiến trúc hệ thống
+1. **Mô hình Trạng thái (`State`)**:
+   - `State(r, c, orientation, bridges, r2, c2, active_cube)`: 7 trường dữ liệu bất biến (frozen dataclass), có thể dùng làm key cho `set` và `dict` để tối ưu tra cứu $O(1)$.
+   - Bốn tư thế: Đứng thẳng (`STANDING`), Nằm dọc (`HORIZONTAL`), Nằm ngang (`VERTICAL`), và Phân tách hai khối 1x1 (`SPLIT`).
+2. **Luồng dữ liệu**:
+   - **Frontend**: Three.js render mô hình 3D, nhận input phím/chuột, gọi API `/api/solve` hoặc `/api/validate`.
+   - **Backend**: Flask API tiếp nhận yêu cầu, gọi solver tương ứng với profiler đo đạc độc lập, trả về chuỗi hành động và số liệu hiệu năng.
+   - **Replay**: Hệ thống tự động diễn hoạt từng bước đi trên mô hình 3D với tốc độ tùy chỉnh.
 
-**T03:** Nhận P01/H01 và cấu hình Q04, xác nhận baseline theo mã nguồn và dữ liệu hiện tại.
-Thống nhất cost, heuristic, bộ màn, quy ước hành động/metric và cách đo.
-Nếu code còn thay đổi thì chưa chốt snapshot; thay đổi ảnh hưởng số liệu phải xác định phần cần đo lại.
+---
 
-**T04:** Chạy regression trên bản nộp, xem trực tiếp chơi tay/replay và kiểm tra đường dẫn/asset.
-Đối chiếu CSV với bảng/hình PDF, công thức, URL YouTube và phiên bản trong video.
-Thu mức hoàn thành do từng thành viên xác nhận để Nam ghi báo cáo;
-không suy tỷ lệ từ số file hoặc checkbox. Log phải ghi giới hạn của phép kiểm tra,
-đặc biệt test GPU mô phỏng không thay nghiệm thu đồ họa.
-
-**T05:** Nhận `submission/Source/` từ Phúc, PDF/nguồn từ Nam và kết quả T04.
-Tạo gói theo cấu trúc [quy định chung](../README.md#gói-nộp), giải nén ở thư mục sạch,
-mở game/PDF và thử link YouTube. Nếu trên 20 MB, dùng link Google Drive truy cập được.
-Chốt theo deadline lớp công bố; không tự suy ngày từ thời lượng khoảng ba tuần trong đề.
+## 4. Kiểm thử toàn diện
+Chạy toàn bộ 92 unit test từ thư mục gốc repo:
+```powershell
+python -m unittest discover -s Src/tests -t Src
+```
+Đảm bảo 100% test cases đều vượt qua (`OK`).

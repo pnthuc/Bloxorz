@@ -36,7 +36,12 @@ Phúc không thay số đo của Quân; nhận dữ liệu CSV để vẽ biểu
 
 Công cụ tạo bảng và vẽ biểu đồ: `handoff/phuc/plot.py` (hoặc `Src/benchmarks/plot.py`).
 
-Từ thư mục gốc dự án:
+Cài đặt thư viện vẽ (nếu chưa có):
+```powershell
+python -m pip install -r handoff/phuc/requirements-plot.txt
+```
+
+Chạy vẽ từ thư mục gốc dự án:
 ```powershell
 python handoff/phuc/plot.py
 ```

@@ -1,112 +1,105 @@
-# Bloxorz Solver
+# Bloxorz Solver & 3D Web Game
 
-Game Bloxorz với GUI web, BFS, DFS, UCS, A* và chế độ so sánh/phát lại lời giải.
-Engine và thuật toán viết bằng Python; Flask phục vụ API, Three.js hiển thị bàn chơi.
+Trò chơi trí tuệ Bloxorz trên nền tảng Web 3D, tích hợp 4 thuật toán tìm kiếm (BFS, DFS, UCS, A*) cùng chế độ phát lại và so sánh trực quan hiệu năng lời giải.
 
-- [Đề bài gốc](AI%20-%20Project%201.pdf).
-- [Phân công và bàn giao của nhóm](handoff/README.md).
+- [Đề bài Project 1](AI%20-%20Project%201.pdf).
+- [Phân công và tiến độ bàn giao của nhóm](handoff/README.md).
 
-## Chạy game
+---
 
-Cần Python 3.10+ và trình duyệt hỗ trợ WebGL. Từ gốc repo:
+## 1. Cài đặt & Khởi chạy
+
+Yêu cầu: **Python 3.10+** và trình duyệt hỗ trợ WebGL.
+
+Từ thư mục gốc repository:
 
 ```bash
 cd Src
 python -m venv .venv
 ```
 
-Kích hoạt môi trường: PowerShell dùng `.venv\Scripts\Activate.ps1`,
-macOS/Linux dùng `source .venv/bin/activate`. Sau đó:
+Kích hoạt môi trường ảo:
+- **Windows (PowerShell)**: `.venv\Scripts\Activate.ps1`
+- **macOS / Linux**: `source .venv/bin/activate`
 
+Cài đặt thư viện và khởi động game:
 ```bash
 python -m pip install -r requirements.txt
 python main.py
 ```
 
-Mở `http://127.0.0.1:5000`. Không mở HTML trực tiếp vì game cần API.
-Không cần Node.js để chơi; font, Three.js và âm thanh đã có sẵn trong source.
-Nhạc và hiệu ứng được phát từ file, không cần tạo lại.
+Mở trình duyệt tại địa chỉ: `http://127.0.0.1:5000`
 
-| Thao tác | Điều khiển |
-| --- | --- |
-| Lăn khối | Mũi tên hoặc WASD; giữ phím để lăn liên tục |
-| Đổi khối sau khi tách | Space |
-| Chơi lại | R |
-| Góc nhìn toàn bàn / xem gần khối | C / F |
-| Menu | Esc |
-| Xoay / thu phóng | Kéo / cuộn chuột |
+---
 
-Hướng di chuyển theo hàng/cột của bàn, không theo góc camera.
-Chọn màn, tùy chỉnh, trợ giúp và AI Solver nằm trong menu.
+## 2. Hướng dẫn điều khiển
 
-## Cấu trúc
+| Thao tác | Phím tắt / Chuột |
+| :--- | :--- |
+| **Lăn khối gỗ** | Các phím mũi tên hoặc `W`, `A`, `S`, `D` (giữ phím để lăn liên tục) |
+| **Đổi khối đang chọn** | `Space` (khi khối gỗ đang ở trạng thái phân tách thành 2 khối 1x1) |
+| **Chơi lại màn hiện tại** | `R` |
+| **Góc nhìn toàn bàn / gần khối** | `C` / `F` |
+| **Mở Menu tùy chọn** | `Esc` |
+| **Xoay / Thu phóng góc nhìn** | Kéo chuột trái / Cuộn con lăn chuột |
+
+*Lưu ý:* Hướng lăn khối theo đúng hàng và cột của bàn chơi, không phụ thuộc vào góc quay của camera. Bảng điều khiển thuật toán AI Solver nằm sẵn trong giao diện menu.
+
+---
+
+## 3. Cấu trúc thư mục
 
 ```text
-Src/
-  main.py           Chạy game, export Flask app
-  run_tests.py      Lệnh kiểm thử chung
-  requirements.txt
-  core/             Board, State, nạp level và kiểm tra replay
-  web/              Flask API và chuyển State sang/từ JSON
-  solvers/          Bốn thuật toán, profiler và cost chung
-  benchmarks/       CLI thực nghiệm và worker đo cho GUI
-  levels/           level_01.json đến level_25.json
-  static/           JavaScript, CSS, texture tạo sẵn, font, âm thanh và thư viện local
-  templates/        HTML
-  tests/            Regression và dữ liệu ca kiểm thử
-handoff/            Giao việc, bản thảo và đầu ra của từng thành viên
+Bloxorz/
+├── Src/
+│   ├── main.py           Điểm khởi chạy ứng dụng Flask và game
+│   ├── run_tests.py      Script chạy bộ kiểm thử tổng hợp
+│   ├── requirements.txt  Danh sách thư viện phụ thuộc Python
+│   ├── core/             Xử lý bàn chơi, trạng thái khối gỗ, luật và kiểm tra replay
+│   ├── web/              Flask API phục vụ giao diện và solver
+│   ├── solvers/          Cài đặt 4 thuật toán tìm kiếm (BFS, DFS, UCS, A*) và profiler
+│   ├── benchmarks/       Công cụ chạy thực nghiệm và đo hiệu năng
+│   ├── levels/           Dữ liệu 25 màn chơi chuẩn (level_01.json đến level_25.json)
+│   ├── static/           Three.js, textures, CSS, fonts, audio
+│   ├── templates/        Giao diện HTML chính (index.html)
+│   └── tests/            92 bài kiểm thử tự động (unit tests và regression tests)
+└── handoff/              Thư mục bàn giao công việc của từng thành viên
 ```
 
-## Kiểm thử
+---
 
-Từ `Src`, kiểm tra engine, API, dữ liệu và công cụ đo:
+## 4. Kiểm thử tự động (Unit Tests)
 
-```bash
-python -m unittest discover -s tests -p "test_*.py" -v
+Từ thư mục gốc repo:
+
+```powershell
+python -m unittest discover -s Src/tests -t Src
 ```
 
-Chạy solver thật trên một số ca, có kiểm chứng lời giải:
-
-```bash
+Chạy bộ kiểm thử solver trên các màn chơi cụ thể với tính năng replay:
+```powershell
+cd Src
 python run_tests.py --cases 1 2 3 4
+python run_tests.py --solver astar
 ```
 
-Bỏ `--cases` để chạy toàn bộ 35 ca, gồm 25 màn và 10 ca biên.
-`--solver bfs|dfs|ucs|astar` chọn riêng một thuật toán.
+---
 
-Test UI/audio cần Node.js 18+. Từ `Src/tests`:
+## 5. Thực nghiệm & Vẽ biểu đồ
 
-```bash
-npm ci
-npm test
-```
+Quy trình đo lường và kết xuất biểu đồ báo cáo:
 
-`python run_tests.py --ui` chạy thêm UI/audio sau test nền và các solver đã chọn.
-Test UI mô phỏng GPU; kết quả này không thay cho kiểm tra hình ảnh trong trình duyệt.
-
-## Thực nghiệm
-
-Chạy benchmark và tổng hợp từ thư mục `Src`:
-
-```bash
+```powershell
+# 1. Chạy đo đạc 300 lượt benchmark (25 màn × 4 thuật toán × 3 lần lặp)
+cd Src
 python -m benchmarks.cli --levels all --solvers bfs dfs ucs astar --repeats 3 --timeout 120 --output-dir ../handoff/quan/benchmarks
 python ../handoff/quan/summarize.py ../handoff/quan/benchmarks
+cd ..
+
+# 2. Xuất 10 biểu đồ PNG 300 DPI và bảng kết quả CSV
+python handoff/phuc/plot.py
 ```
 
-- CLI xuất `raw.csv`, `runs/*.json`, `environment.json` và `run-config.json`.
-- `handoff/quan/summarize.py` tổng hợp kết quả ra `summary.csv`.
-- Xem chi tiết tại [Src/benchmarks/README.md](Src/benchmarks/README.md).
-
-Quy ước:
-
-- Tìm kiếm dùng `UP LEFT RIGHT DOWN SUP SLEFT SRIGHT SDOWN`. Tiền tố `S`
-  là đổi khối rồi lăn, chỉ hợp lệ khi SPLIT; mỗi hành động tính một bước.
-  SPACE chỉ đổi khối khi chơi tay, không sinh cạnh tìm kiếm.
-- `State(r,c,orientation,bridges,r2,c2,active_cube)` bất biến (frozen), dùng làm khóa tra cứu từ điển/tập hợp được.
-- `solvers/costs.py`: mỗi cạnh có cost `1 + 0.5 × số ô fragile bị chiếm ở trạng thái đến`.
-  BFS/DFS trả `total_cost` bằng số hành động; UCS/A* trả cost có trọng số.
-  CLI lưu thêm `path_cost` tính lại bằng cùng công thức để so chéo.
-- Profiler đo thời gian tìm kiếm bằng ms và đỉnh cấp phát Python bằng KiB
-  (trường API tên `memory_kb`), không phải tổng RAM hay bộ nhớ GPU.
-
-Giữ kèm giấy phép [font](Src/static/fonts/OFL.txt) và [Three.js](Src/static/vendor/THREE-LICENSE.txt).
+- Bảng số liệu tổng hợp: `handoff/quan/benchmarks/summary.csv` và `handoff/phuc/result-tables.csv`.
+- Biểu đồ chuẩn báo cáo: lưu tại `handoff/phuc/charts/` (5 biểu đồ đường `hinh_6_1` đến `hinh_6_5` và 5 biểu đồ cột phân nhóm `01` đến `05`).
+- Xem chi tiết phương pháp tại [Src/benchmarks/README.md](Src/benchmarks/README.md).
