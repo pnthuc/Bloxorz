@@ -1,0 +1,174 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,Be Vietnam Pro,32,&H00FFFFFF,&H00FFFFFF,&H00000000,&H80000000,0,0,0,0,100,100,0,0,1,1,0.8,5,0,0,0,1
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:01.00,0:00:03.15,Default,,0,0,0,,{\an5\q2\pos(960,863)}Xin chào thầy và các bạn.
+Dialogue: 0,0:00:03.15,0:00:08.53,Default,,0,0,0,,{\an5\q2\pos(960,836)}Đây là phần demo Bloxorz Solver của
+Dialogue: 0,0:00:03.15,0:00:08.53,Default,,0,0,0,,{\an5\q2\pos(960,890)}nhóm em, kết hợp trò chơi giải đố
+Dialogue: 0,0:00:08.53,0:00:13.56,Default,,0,0,0,,{\an5\q2\pos(960,863)}ba chiều với bốn thuật toán tìm kiếm: BFS, DFS, UCS và A*.
+Dialogue: 0,0:00:13.56,0:00:19.30,Default,,0,0,0,,{\an5\q2\pos(960,836)}Trong video này, nhóm em sẽ giới thiệu
+Dialogue: 0,0:00:13.56,0:00:19.30,Default,,0,0,0,,{\an5\q2\pos(960,890)}cách chơi, các cơ chế đặc biệt, giao
+Dialogue: 0,0:00:19.30,0:00:25.05,Default,,0,0,0,,{\an5\q2\pos(960,836)}diện tùy chỉnh, sau đó giải và so
+Dialogue: 0,0:00:19.30,0:00:25.05,Default,,0,0,0,,{\an5\q2\pos(960,890)}sánh thuật toán trên cùng một màn chơi.
+Dialogue: 0,0:00:25.05,0:00:29.00,Default,,0,0,0,,{\an5\q2\pos(960,863)}Các thao tác đều được thực hiện trực tiếp trong game.
+Dialogue: 0,0:00:31.00,0:00:35.07,Default,,0,0,0,,{\an5\q2\pos(960,863)}Mục tiêu của Bloxorz là đưa khối đứng thẳng vào ô đích.
+Dialogue: 0,0:00:35.07,0:00:38.80,Default,,0,0,0,,{\an5\q2\pos(960,863)}Khối có thể đứng, nằm theo hàng hoặc nằm theo cột.
+Dialogue: 0,0:00:41.50,0:00:46.50,Default,,0,0,0,,{\an5\q2\pos(960,863)}Nhấn F để xem gần khối đang điều khiển.
+Dialogue: 0,0:00:46.50,0:00:48.63,Default,,0,0,0,,{\an5\q2\pos(960,863)}Góc nhìn này hữu ích với màn chơi lớn.
+Dialogue: 0,0:00:48.63,0:00:53.04,Default,,0,0,0,,{\an5\q2\pos(960,863)}Người chơi sử dụng các phím mũi tên hoặc W, A, S, D.
+Dialogue: 0,0:00:53.04,0:00:58.81,Default,,0,0,0,,{\an5\q2\pos(960,836)}Hướng di chuyển gắn với hàng và cột
+Dialogue: 0,0:00:53.04,0:00:58.81,Default,,0,0,0,,{\an5\q2\pos(960,890)}của bàn chơi, không thay đổi theo góc camera.
+Dialogue: 0,0:00:58.81,0:01:02.54,Default,,0,0,0,,{\an5\q2\pos(960,863)}Số bước ở phía dưới giúp theo dõi quá trình giải.
+Dialogue: 0,0:01:02.54,0:01:06.27,Default,,0,0,0,,{\an5\q2\pos(960,863)}Kéo chuột để xoay; nhấn C để trở về toàn cảnh.
+Dialogue: 0,0:01:06.27,0:01:10.00,Default,,0,0,0,,{\an5\q2\pos(960,863)}Mỗi lần lăn thay đổi cả vị trí và tư thế.
+Dialogue: 0,0:01:10.00,0:01:13.39,Default,,0,0,0,,{\an5\q2\pos(960,863)}Cần căn đúng tư thế để đưa khối vào đích.
+Dialogue: 0,0:01:13.39,0:01:18.14,Default,,0,0,0,,{\an5\q2\pos(960,863)}Camera chuyển động mượt để người xem vẫn nhận ra vị trí của khối.
+Dialogue: 0,0:01:18.14,0:01:22.55,Default,,0,0,0,,{\an5\q2\pos(960,863)}Ở ví dụ này, khối được căn đúng tư thế trước bước cuối.
+Dialogue: 0,0:01:22.55,0:01:29.00,Default,,0,0,0,,{\an5\q2\pos(960,836)}Khi khối đứng vào ô đích, game xác nhận
+Dialogue: 0,0:01:22.55,0:01:29.00,Default,,0,0,0,,{\an5\q2\pos(960,890)}chiến thắng và cung cấp các thao tác tiếp theo.
+Dialogue: 0,0:01:31.00,0:01:34.97,Default,,0,0,0,,{\an5\q2\pos(960,863)}Toàn bộ phần khối đang chiếm phải được bàn chơi đỡ.
+Dialogue: 0,0:01:34.97,0:01:40.03,Default,,0,0,0,,{\an5\q2\pos(960,863)}Nếu lăn ra ngoài mép, khối rơi xuống nước và màn chơi kết thúc.
+Dialogue: 0,0:01:40.03,0:01:46.17,Default,,0,0,0,,{\an5\q2\pos(960,836)}Góc nhìn được giữ lại để người chơi
+Dialogue: 0,0:01:40.03,0:01:46.17,Default,,0,0,0,,{\an5\q2\pos(960,890)}hiểu vì sao thao tác vừa rồi thất bại.
+Dialogue: 0,0:01:46.17,0:01:48.34,Default,,0,0,0,,{\an5\q2\pos(960,863)}Phím R khởi động lại màn.
+Dialogue: 0,0:01:48.34,0:01:52.31,Default,,0,0,0,,{\an5\q2\pos(960,863)}Khối được đưa trở về vị trí ban đầu bằng chuyển
+Dialogue: 0,0:01:52.31,0:01:55.93,Default,,0,0,0,,{\an5\q2\pos(960,863)}động hồi phục, còn bộ đếm bước được đặt lại.
+Dialogue: 0,0:01:55.93,0:01:58.46,Default,,0,0,0,,{\an5\q2\pos(960,863)}Ô màu cam là ô dễ vỡ.
+Dialogue: 0,0:01:58.46,0:02:05.32,Default,,0,0,0,,{\an5\q2\pos(960,836)}Khối nằm hoặc khối đơn có thể đi qua,
+Dialogue: 0,0:01:58.46,0:02:05.32,Default,,0,0,0,,{\an5\q2\pos(960,890)}nhưng khối đứng thẳng sẽ làm ô vỡ và rơi.
+Dialogue: 0,0:02:05.32,0:02:09.66,Default,,0,0,0,,{\an5\q2\pos(960,863)}Vì vậy, khi tìm đường cần xét cả tư thế, thay vì
+Dialogue: 0,0:02:09.66,0:02:14.00,Default,,0,0,0,,{\an5\q2\pos(960,863)}chỉ kiểm tra xem tọa độ đó có ô sàn hay không.
+Dialogue: 0,0:02:16.00,0:02:19.12,Default,,0,0,0,,{\an5\q2\pos(960,863)}Màn tiếp theo bổ sung công tắc và cầu.
+Dialogue: 0,0:02:19.12,0:02:22.25,Default,,0,0,0,,{\an5\q2\pos(960,863)}Công tắc nhẹ được ký hiệu bằng vòng tròn.
+Dialogue: 0,0:02:22.25,0:02:26.07,Default,,0,0,0,,{\an5\q2\pos(960,863)}Khi khối chạm vào công tắc, trạng thái cầu liên quan
+Dialogue: 0,0:02:26.07,0:02:29.89,Default,,0,0,0,,{\an5\q2\pos(960,863)}thay đổi, tạo ra hoặc đóng lại một đoạn đường đi.
+Dialogue: 0,0:02:29.89,0:02:34.75,Default,,0,0,0,,{\an5\q2\pos(960,863)}Ở đây, khối nằm chạm công tắc tròn và cầu đầu tiên được mở.
+Dialogue: 0,0:02:34.75,0:02:38.22,Default,,0,0,0,,{\an5\q2\pos(960,863)}Người chơi có thể quan sát đường đi mới xuất
+Dialogue: 0,0:02:38.22,0:02:41.70,Default,,0,0,0,,{\an5\q2\pos(960,863)}hiện trước khi tiếp tục sang khu vực bên kia.
+Dialogue: 0,0:02:41.70,0:02:47.60,Default,,0,0,0,,{\an5\q2\pos(960,836)}Công tắc nặng mang ký hiệu X có
+Dialogue: 0,0:02:41.70,0:02:47.60,Default,,0,0,0,,{\an5\q2\pos(960,890)}điều kiện khác: khối phải đứng thẳng trên nó.
+Dialogue: 0,0:02:47.60,0:02:51.77,Default,,0,0,0,,{\an5\q2\pos(960,863)}Việc khối chỉ nằm ngang qua ô chưa đủ để kích hoạt.
+Dialogue: 0,0:02:51.77,0:02:56.63,Default,,0,0,0,,{\an5\q2\pos(960,863)}Nhóm em dừng tại hai tư thế này để làm rõ sự khác biệt.
+Dialogue: 0,0:02:56.63,0:03:01.49,Default,,0,0,0,,{\an5\q2\pos(960,863)}Khi căn khối đứng đúng trên công tắc X, cầu tiếp theo được mở.
+Dialogue: 0,0:03:01.49,0:03:05.66,Default,,0,0,0,,{\an5\q2\pos(960,863)}Trạng thái cầu cũng là một phần của trạng thái bài toán.
+Dialogue: 0,0:03:05.66,0:03:09.83,Default,,0,0,0,,{\an5\q2\pos(960,863)}Hai khối ở cùng tọa độ nhưng có các cầu đang mở
+Dialogue: 0,0:03:09.83,0:03:14.00,Default,,0,0,0,,{\an5\q2\pos(960,863)}khác nhau sẽ dẫn đến những khả năng di chuyển khác nhau.
+Dialogue: 0,0:03:16.00,0:03:19.55,Default,,0,0,0,,{\an5\q2\pos(960,863)}Cơ chế tách khối làm bài toán phức tạp hơn.
+Dialogue: 0,0:03:19.55,0:03:23.47,Default,,0,0,0,,{\an5\q2\pos(960,863)}Khi khối đứng trên ô tách, nó trở thành hai khối
+Dialogue: 0,0:03:23.47,0:03:27.38,Default,,0,0,0,,{\an5\q2\pos(960,863)}đơn tại các vị trí được cấu hình trong màn chơi.
+Dialogue: 0,0:03:27.38,0:03:30.94,Default,,0,0,0,,{\an5\q2\pos(960,863)}Người chơi dùng Space để đổi khối đang điều khiển.
+Dialogue: 0,0:03:30.94,0:03:35.21,Default,,0,0,0,,{\an5\q2\pos(960,863)}Mỗi khối có thể đi theo một đường riêng; chẳng hạn một
+Dialogue: 0,0:03:35.21,0:03:39.12,Default,,0,0,0,,{\an5\q2\pos(960,863)}khối tới công tắc để mở cầu cho khối còn lại.
+Dialogue: 0,0:03:39.12,0:03:43.75,Default,,0,0,0,,{\an5\q2\pos(960,863)}Dấu nhận biết trên khối giúp theo dõi lượt điều khiển hiện tại.
+Dialogue: 0,0:03:43.75,0:03:50.51,Default,,0,0,0,,{\an5\q2\pos(960,836)}Khi hai khối đơn nằm sát cạnh theo điều
+Dialogue: 0,0:03:43.75,0:03:50.51,Default,,0,0,0,,{\an5\q2\pos(960,890)}kiện của game, chúng tự ghép thành khối ban đầu.
+Dialogue: 0,0:03:50.51,0:03:55.49,Default,,0,0,0,,{\an5\q2\pos(960,863)}Từ đó, người chơi tiếp tục căn hướng và tư thế để vào đích.
+Dialogue: 0,0:03:55.49,0:04:00.12,Default,,0,0,0,,{\an5\q2\pos(960,863)}Trong mô hình tìm kiếm, trạng thái phải ghi được vị trí của
+Dialogue: 0,0:04:00.12,0:04:04.39,Default,,0,0,0,,{\an5\q2\pos(960,863)}cả hai khối, khối đang điều khiển và trạng thái các cầu.
+Dialogue: 0,0:04:04.39,0:04:09.37,Default,,0,0,0,,{\an5\q2\pos(960,863)}Các hành động đổi khối rồi di chuyển cũng được xử lý theo quy
+Dialogue: 0,0:04:09.37,0:04:14.00,Default,,0,0,0,,{\an5\q2\pos(960,863)}ước chung, để lời giải có thể phát lại bằng đúng luật chơi.
+Dialogue: 0,0:04:16.00,0:04:19.98,Default,,0,0,0,,{\an5\q2\pos(960,863)}Menu Esc tập trung các chức năng chính: tiếp tục
+Dialogue: 0,0:04:19.98,0:04:23.96,Default,,0,0,0,,{\an5\q2\pos(960,863)}chơi, chọn màn, AI Solver, tùy chỉnh và trợ giúp.
+Dialogue: 0,0:04:23.96,0:04:27.94,Default,,0,0,0,,{\an5\q2\pos(960,863)}Mở menu không làm mất trạng thái ván đang chơi.
+Dialogue: 0,0:04:27.94,0:04:35.11,Default,,0,0,0,,{\an5\q2\pos(960,836)}Trong phần chọn màn, màn hiện tại được đánh
+Dialogue: 0,0:04:27.94,0:04:35.11,Default,,0,0,0,,{\an5\q2\pos(960,890)}dấu để người dùng biết mình đang ở đâu.
+Dialogue: 0,0:04:35.11,0:04:39.09,Default,,0,0,0,,{\an5\q2\pos(960,863)}Có thể xem trước màn khác rồi chủ động bắt
+Dialogue: 0,0:04:39.09,0:04:43.07,Default,,0,0,0,,{\an5\q2\pos(960,863)}đầu, thay vì chuyển màn ngay khi vừa lựa chọn.
+Dialogue: 0,0:04:43.07,0:04:49.84,Default,,0,0,0,,{\an5\q2\pos(960,836)}Trợ giúp được chia thành ba trang ngắn:
+Dialogue: 0,0:04:43.07,0:04:49.84,Default,,0,0,0,,{\an5\q2\pos(960,890)}mục tiêu, điều khiển và các ô đặc biệt.
+Dialogue: 0,0:04:49.84,0:04:54.62,Default,,0,0,0,,{\an5\q2\pos(960,863)}Hình minh họa đi cùng mô tả giúp đối chiếu ký hiệu
+Dialogue: 0,0:04:54.62,0:04:59.00,Default,,0,0,0,,{\an5\q2\pos(960,863)}trong hướng dẫn với ký hiệu xuất hiện trên bàn chơi.
+Dialogue: 0,0:05:01.00,0:05:05.37,Default,,0,0,0,,{\an5\q2\pos(960,863)}Game có ba môi trường: Di tích, Vườn hoa và Băng tuyết.
+Dialogue: 0,0:05:05.37,0:05:10.11,Default,,0,0,0,,{\an5\q2\pos(960,863)}Mỗi môi trường có vật liệu và bộ trang trí riêng, nhưng giữ
+Dialogue: 0,0:05:10.11,0:05:14.86,Default,,0,0,0,,{\an5\q2\pos(960,863)}nguyên cấu trúc màn chơi cùng ý nghĩa của các ô chức năng.
+Dialogue: 0,0:05:14.86,0:05:21.06,Default,,0,0,0,,{\an5\q2\pos(960,836)}Di tích sử dụng kiến trúc đá, vòm
+Dialogue: 0,0:05:14.86,0:05:21.06,Default,,0,0,0,,{\an5\q2\pos(960,890)}gãy và những phần nền móng chìm dưới nước.
+Dialogue: 0,0:05:21.06,0:05:26.89,Default,,0,0,0,,{\an5\q2\pos(960,836)}Vườn hoa tăng các tầng thực vật với
+Dialogue: 0,0:05:21.06,0:05:26.89,Default,,0,0,0,,{\an5\q2\pos(960,890)}cây, bụi hoa, dây leo và lá nổi.
+Dialogue: 0,0:05:26.89,0:05:32.73,Default,,0,0,0,,{\an5\q2\pos(960,836)}Băng tuyết chuyển sang đá lạnh, tuyết tích
+Dialogue: 0,0:05:26.89,0:05:32.73,Default,,0,0,0,,{\an5\q2\pos(960,890)}tụ, cây mùa đông và băng ven nước.
+Dialogue: 0,0:05:32.73,0:05:39.00,Default,,0,0,0,,{\an5\q2\pos(960,863)}Ba môi trường dùng chung cấu trúc màn chơi và các cơ chế đặc biệt.
+Dialogue: 0,0:05:39.00,0:05:45.50,Default,,0,0,0,,{\an5\q2\pos(960,863)}Ký hiệu ô thường, ô dễ vỡ, công tắc và đích vẫn được giữ rõ ràng.
+Dialogue: 0,0:05:45.50,0:05:50.00,Default,,0,0,0,,{\an5\q2\pos(960,863)}Tiếp theo là phần tùy chỉnh vật liệu của khối.
+Dialogue: 0,0:05:50.00,0:05:57.00,Default,,0,0,0,,{\an5\q2\pos(960,772)}Có thể thay vật liệu của khối để
+Dialogue: 0,0:05:50.00,0:05:57.00,Default,,0,0,0,,{\an5\q2\pos(960,826)}nhận biết rõ hơn trên từng môi trường.
+Dialogue: 0,0:05:57.00,0:06:06.00,Default,,0,0,0,,{\an5\q2\pos(960,772)}Việc đổi diện mạo không làm thay đổi
+Dialogue: 0,0:05:57.00,0:06:06.00,Default,,0,0,0,,{\an5\q2\pos(960,826)}luật giải hoặc làm mất trạng thái ván chơi.
+Dialogue: 0,0:06:06.00,0:06:11.00,Default,,0,0,0,,{\an5\q2\pos(960,799)}Tùy chỉnh cũng có âm lượng và tốc độ diễn hoạt lời giải.
+Dialogue: 0,0:06:11.00,0:06:14.00,Default,,0,0,0,,{\an5\q2\pos(960,799)}Tốc độ phát không ảnh hưởng thời gian tìm kiếm.
+Dialogue: 0,0:06:15.00,0:06:17.80,Default,,0,0,0,,{\an5\q2\pos(960,863)}Phần trọng tâm của đề tài là AI Solver.
+Dialogue: 0,0:06:17.80,0:06:21.55,Default,,0,0,0,,{\an5\q2\pos(960,863)}Chế độ từng thuật toán cho phép chọn BFS, DFS, UCS hoặc
+Dialogue: 0,0:06:21.55,0:06:24.98,Default,,0,0,0,,{\an5\q2\pos(960,863)}A* rồi giải từ trạng thái ban đầu của màn.
+Dialogue: 0,0:06:24.98,0:06:30.29,Default,,0,0,0,,{\an5\q2\pos(960,836)}Sau khi tìm được đường đi, giao diện
+Dialogue: 0,0:06:24.98,0:06:30.29,Default,,0,0,0,,{\an5\q2\pos(960,890)}cung cấp kết quả và khả năng phát lại.
+Dialogue: 0,0:06:30.29,0:06:33.41,Default,,0,0,0,,{\an5\q2\pos(960,863)}BFS mở rộng trạng thái theo từng lớp độ sâu.
+Dialogue: 0,0:06:33.41,0:06:39.02,Default,,0,0,0,,{\an5\q2\pos(960,836)}Khi mỗi hành động được xem là một bước,
+Dialogue: 0,0:06:33.41,0:06:39.02,Default,,0,0,0,,{\an5\q2\pos(960,890)}BFS hướng tới lời giải có ít bước nhất.
+Dialogue: 0,0:06:39.02,0:06:44.33,Default,,0,0,0,,{\an5\q2\pos(960,836)}Đổi lại, số trạng thái cần lưu có
+Dialogue: 0,0:06:39.02,0:06:44.33,Default,,0,0,0,,{\an5\q2\pos(960,890)}thể tăng nhanh khi không gian tìm kiếm lớn.
+Dialogue: 0,0:06:44.33,0:06:48.07,Default,,0,0,0,,{\an5\q2\pos(960,863)}DFS đi sâu theo một nhánh trước rồi quay lui khi cần.
+Dialogue: 0,0:06:48.07,0:06:51.19,Default,,0,0,0,,{\an5\q2\pos(960,863)}DFS có thể tìm ra lời giải khác với BFS;
+Dialogue: 0,0:06:51.19,0:06:54.31,Default,,0,0,0,,{\an5\q2\pos(960,863)}không nên mặc định lời giải đó là ngắn nhất.
+Dialogue: 0,0:06:54.31,0:06:58.37,Default,,0,0,0,,{\an5\q2\pos(960,863)}Thứ tự sinh hành động cũng ảnh hưởng đường đi được tìm thấy.
+Dialogue: 0,0:06:58.37,0:07:02.43,Default,,0,0,0,,{\an5\q2\pos(960,863)}UCS ưu tiên trạng thái có tổng chi phí đã đi nhỏ hơn.
+Dialogue: 0,0:07:02.43,0:07:05.86,Default,,0,0,0,,{\an5\q2\pos(960,863)}Trong dự án này, chi phí mỗi bước còn xét số
+Dialogue: 0,0:07:05.86,0:07:08.98,Default,,0,0,0,,{\an5\q2\pos(960,863)}ô dễ vỡ bị khối chiếm ở trạng thái đến.
+Dialogue: 0,0:07:08.98,0:07:12.10,Default,,0,0,0,,{\an5\q2\pos(960,863)}Vì vậy, tối ưu số bước và tối ưu tổng
+Dialogue: 0,0:07:12.10,0:07:15.22,Default,,0,0,0,,{\an5\q2\pos(960,863)}chi phí là hai tiêu chí cần được phân biệt.
+Dialogue: 0,0:07:15.22,0:07:20.84,Default,,0,0,0,,{\an5\q2\pos(960,836)}A* kết hợp chi phí đã đi với
+Dialogue: 0,0:07:15.22,0:07:20.84,Default,,0,0,0,,{\an5\q2\pos(960,890)}một giá trị ước lượng phần đường còn lại.
+Dialogue: 0,0:07:20.84,0:07:23.96,Default,,0,0,0,,{\an5\q2\pos(960,863)}Hàm đánh giá có dạng f bằng g cộng h.
+Dialogue: 0,0:07:23.96,0:07:27.08,Default,,0,0,0,,{\an5\q2\pos(960,863)}Heuristic của dự án xét khoảng cách và các tình
+Dialogue: 0,0:07:27.08,0:07:30.20,Default,,0,0,0,,{\an5\q2\pos(960,863)}huống tách khối, nhằm định hướng quá trình tìm kiếm.
+Dialogue: 0,0:07:30.20,0:07:34.88,Default,,0,0,0,,{\an5\q2\pos(960,863)}Các đường đi đang hiển thị là kết quả thực tế của từng thuật toán.
+Dialogue: 0,0:07:34.88,0:07:38.94,Default,,0,0,0,,{\an5\q2\pos(960,863)}Hoạt ảnh giúp quan sát và kiểm chứng lời giải; nó không phải
+Dialogue: 0,0:07:38.94,0:07:43.00,Default,,0,0,0,,{\an5\q2\pos(960,863)}hoạt ảnh mô phỏng toàn bộ cây tìm kiếm bên trong thuật toán.
+Dialogue: 0,0:07:45.00,0:07:49.05,Default,,0,0,0,,{\an5\q2\pos(960,261)}Để đối chiếu thuận tiện hơn, chế độ so sánh chạy lần lượt cả
+Dialogue: 0,0:07:49.05,0:07:52.81,Default,,0,0,0,,{\an5\q2\pos(960,261)}bốn thuật toán trên cùng một màn và cùng giới hạn thời gian.
+Dialogue: 0,0:07:52.81,0:07:57.73,Default,,0,0,0,,{\an5\q2\pos(960,234)}Các lượt được chạy tuần tự, tránh việc
+Dialogue: 0,0:07:52.81,0:07:57.73,Default,,0,0,0,,{\an5\q2\pos(960,288)}bốn phép đo cạnh tranh tài nguyên cùng lúc.
+Dialogue: 0,0:07:57.73,0:08:01.50,Default,,0,0,0,,{\an5\q2\pos(960,261)}Trước khi đọc số liệu, cần kiểm tra trạng thái của từng lượt.
+Dialogue: 0,0:08:01.50,0:08:06.13,Default,,0,0,0,,{\an5\q2\pos(960,234)}Có lời giải, vô nghiệm, quá thời gian
+Dialogue: 0,0:08:01.50,0:08:06.13,Default,,0,0,0,,{\an5\q2\pos(960,288)}hoặc lỗi là các kết quả khác nhau.
+Dialogue: 0,0:08:06.13,0:08:11.34,Default,,0,0,0,,{\an5\q2\pos(960,234)}Một lượt quá hạn không được diễn giải thành
+Dialogue: 0,0:08:06.13,0:08:11.34,Default,,0,0,0,,{\an5\q2\pos(960,288)}thuật toán đã chứng minh màn chơi vô nghiệm.
+Dialogue: 0,0:08:11.34,0:08:14.23,Default,,0,0,0,,{\an5\q2\pos(960,261)}Chỉ số thời gian thể hiện thời gian tìm kiếm.
+Dialogue: 0,0:08:14.23,0:08:18.86,Default,,0,0,0,,{\an5\q2\pos(960,234)}Nó khác với thời gian tải trang, dựng
+Dialogue: 0,0:08:14.23,0:08:18.86,Default,,0,0,0,,{\an5\q2\pos(960,288)}cảnh hoặc thời gian hoạt ảnh khối lăn.
+Dialogue: 0,0:08:18.86,0:08:23.78,Default,,0,0,0,,{\an5\q2\pos(960,234)}Vì thế, tăng tốc replay không làm cho
+Dialogue: 0,0:08:18.86,0:08:23.78,Default,,0,0,0,,{\an5\q2\pos(960,288)}kết quả đo thuật toán trở nên nhanh hơn.
+Dialogue: 0,0:08:23.78,0:08:27.55,Default,,0,0,0,,{\an5\q2\pos(960,261)}Chỉ số bộ nhớ ghi nhận đỉnh cấp phát Python trong lượt tìm
+Dialogue: 0,0:08:27.55,0:08:31.31,Default,,0,0,0,,{\an5\q2\pos(960,261)}kiếm, không phải toàn bộ bộ nhớ máy hay bộ nhớ đồ họa.
+Dialogue: 0,0:08:31.31,0:08:34.50,Default,,0,0,0,,{\an5\q2\pos(960,261)}Số trạng thái đã xét phản ánh lượng công việc tìm
+Dialogue: 0,0:08:34.50,0:08:37.39,Default,,0,0,0,,{\an5\q2\pos(960,261)}kiếm, còn số bước phản ánh độ dài lời giải.
+Dialogue: 0,0:08:37.39,0:08:41.44,Default,,0,0,0,,{\an5\q2\pos(960,261)}Tổng cost dùng công thức chung để tính lại đường đi khi so sánh.
+Dialogue: 0,0:08:41.44,0:08:45.21,Default,,0,0,0,,{\an5\q2\pos(960,261)}Điều này đặc biệt quan trọng ở màn có ô dễ vỡ: hai
+Dialogue: 0,0:08:45.21,0:08:48.97,Default,,0,0,0,,{\an5\q2\pos(960,261)}lời giải cùng số bước vẫn có thể khác nhau về chi phí.
+Dialogue: 0,0:08:48.97,0:08:53.31,Default,,0,0,0,,{\an5\q2\pos(960,261)}Các con số ở đây là một lượt minh họa trên môi trường đang chạy.
+Dialogue: 0,0:08:53.31,0:08:58.81,Default,,0,0,0,,{\an5\q2\pos(960,234)}Để kết luận hiệu năng cho báo cáo, cần
+Dialogue: 0,0:08:53.31,0:08:58.81,Default,,0,0,0,,{\an5\q2\pos(960,288)}đo lặp trên nhiều màn với cấu hình cố định.
+Dialogue: 0,0:08:58.81,0:09:02.00,Default,,0,0,0,,{\an5\q2\pos(960,261)}Không thể chỉ nhìn một màn nhỏ rồi khẳng định một
+Dialogue: 0,0:09:02.00,0:09:04.89,Default,,0,0,0,,{\an5\q2\pos(960,261)}thuật toán luôn tốt hơn ba thuật toán còn lại.
+Dialogue: 0,0:09:04.89,0:09:08.65,Default,,0,0,0,,{\an5\q2\pos(960,261)}Sau khi đo, người dùng chủ động chọn một lời giải để xem.
+Dialogue: 0,0:09:08.65,0:09:13.00,Default,,0,0,0,,{\an5\q2\pos(960,234)}Việc đo tự nó không chuyển màn
+Dialogue: 0,0:09:08.65,0:09:13.00,Default,,0,0,0,,{\an5\q2\pos(960,288)}và cũng không thay thế ván đang chơi.
+Dialogue: 0,0:09:15.00,0:09:18.33,Default,,0,0,0,,{\an5\q2\pos(960,863)}Thanh replay hỗ trợ phát, tạm dừng, tiến hoặc lùi
+Dialogue: 0,0:09:18.33,0:09:21.66,Default,,0,0,0,,{\an5\q2\pos(960,863)}từng bước và chọn vị trí trên dòng thời gian.
+Dialogue: 0,0:09:21.66,0:09:26.66,Default,,0,0,0,,{\an5\q2\pos(960,863)}Nhờ đó có thể kiểm tra tại sao thuật toán chọn một đoạn đường, hoặc
+Dialogue: 0,0:09:26.66,0:09:31.66,Default,,0,0,0,,{\an5\q2\pos(960,863)}quan sát chính xác tư thế khi đi qua công tắc và ô dễ vỡ.
+Dialogue: 0,0:09:31.66,0:09:38.00,Default,,0,0,0,,{\an5\q2\pos(960,836)}Khi mở Esc rồi quay lại, lời giải và
+Dialogue: 0,0:09:31.66,0:09:38.00,Default,,0,0,0,,{\an5\q2\pos(960,890)}vị trí phát được giữ để tiếp tục theo dõi.
+Dialogue: 0,0:09:38.00,0:09:41.66,Default,,0,0,0,,{\an5\q2\pos(960,863)}Hoàn thành replay được thể hiện trong luồng kết quả AI,
+Dialogue: 0,0:09:41.66,0:09:45.00,Default,,0,0,0,,{\an5\q2\pos(960,863)}tránh bật một hộp thoại chơi tay không liên quan.
+Dialogue: 0,0:09:45.00,0:09:49.00,Default,,0,0,0,,{\an5\q2\pos(960,863)}Mỗi hành động trong lời giải vẫn được đối chiếu với engine.
+Dialogue: 0,0:09:49.00,0:09:53.66,Default,,0,0,0,,{\an5\q2\pos(960,863)}Phần hiển thị ba chiều trình bày kết quả, còn tính hợp lệ của
+Dialogue: 0,0:09:53.66,0:09:58.00,Default,,0,0,0,,{\an5\q2\pos(960,863)}trạng thái và điều kiện đích được quyết định bằng luật của game.
+Dialogue: 0,0:10:00.00,0:10:04.91,Default,,0,0,0,,{\an5\q2\pos(960,863)}Qua phần demo, nhóm em đã giới thiệu cách chơi Bloxorz, các cơ chế
+Dialogue: 0,0:10:04.91,0:10:09.83,Default,,0,0,0,,{\an5\q2\pos(960,863)}đặc biệt, bốn thuật toán và chức năng so sánh, phát lại lời giải.
+Dialogue: 0,0:10:09.83,0:10:13.00,Default,,0,0,0,,{\an5\q2\pos(960,863)}Cảm ơn thầy và các bạn đã theo dõi.

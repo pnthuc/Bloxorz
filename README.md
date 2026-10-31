@@ -102,7 +102,7 @@ Quy ước:
 - Tìm kiếm dùng `UP LEFT RIGHT DOWN SUP SLEFT SRIGHT SDOWN`. Tiền tố `S`
   là đổi khối rồi lăn, chỉ hợp lệ khi SPLIT; mỗi hành động tính một bước.
   SPACE chỉ đổi khối khi chơi tay, không sinh cạnh tìm kiếm.
-- `State(r,c,orientation,bridges,r2,c2,active_cube)` bất biến, hash được.
+- `State(r,c,orientation,bridges,r2,c2,active_cube)` bất biến (frozen), dùng làm khóa tra cứu từ điển/tập hợp được.
 - `solvers/costs.py`: mỗi cạnh có cost `1 + 0.5 × số ô fragile bị chiếm ở trạng thái đến`.
   BFS/DFS trả `total_cost` bằng số hành động; UCS/A* trả cost có trọng số.
   CLI lưu thêm `path_cost` tính lại bằng cùng công thức để so chéo.

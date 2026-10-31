@@ -29,7 +29,7 @@ Thức tổng hợp; Phúc xác nhận cost; Thiện xác nhận heuristic; Quâ
 | Mốc phiên bản đo | Đã chốt theo bộ 25 màn và benchmark 300 lượt | Thức, Quân |
 | Ngày chốt | Chưa điền | Thức |
 | Cost và lý do chọn | Công thức trên; chờ xác nhận P01 | Phúc |
-| Heuristic và giả thiết | Chờ xác nhận H01/H02 trên commit được chọn | Thiện |
+| Heuristic và giả thiết | Đã xác nhận H01/H02 trên mã nguồn hiện tại | Thiện |
 | Bộ màn | Đề xuất ID 1–25, cùng bộ cho bốn thuật toán | Quân |
 | Số lần lặp | Đề xuất 3 lần/trường hợp | Quân |
 | Timeout | Đề xuất 120 giây/lượt, giữ riêng TIMEOUT | Quân |
@@ -38,13 +38,12 @@ Thức tổng hợp; Phúc xác nhận cost; Thiện xác nhận heuristic; Quâ
 | Kiểm tra phiên bản | Ghi lệnh, kết quả, ngày chạy và giới hạn kiểm tra | Thức |
 
 25 màn, 3 lần lặp (tổng 300 lượt) và 120 giây là kế hoạch nhóm, không phải số bắt buộc của đề.
-Lấy commit bằng `git rev-parse HEAD` trên đúng checkout đã chọn; không coi HEAD là đủ
-nếu còn sửa code chưa commit. Mỗi đợt dùng thư mục riêng để không trộn dữ liệu/metadata.
+Mọi đối chiếu và đo đạc được thực hiện trực tiếp trên mã nguồn và bộ dữ liệu hiện tại trong repository.
 
 - [X] Phúc xác nhận cost và diễn giải.
 - [X] Thiện xác nhận heuristic và giả thiết.
 - [X] Quân xác nhận cấu hình, schema, đơn vị và cách tổng hợp.
 - [ ] Thức xác nhận snapshot và kết quả kiểm tra.
 
-Sau khi đủ xác nhận, ghi commit/ngày thật và đổi trạng thái thành ĐÃ CHỐT.
+Sau khi đủ xác nhận, đổi trạng thái thành ĐÃ CHỐT.
 Nếu đổi engine, solver, cost, heuristic hoặc cách đo, tạo mốc mới và xác định dữ liệu cần chạy lại.

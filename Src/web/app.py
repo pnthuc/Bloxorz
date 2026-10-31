@@ -1,5 +1,5 @@
 """Flask routes; gameplay and search remain in core/ and solvers/."""
-import hashlib
+import zlib
 import json
 from pathlib import Path
 from threading import BoundedSemaphore
@@ -141,7 +141,7 @@ def api_benchmark():
     level = load_all_levels().get(level_id)
     if level is None:
         return jsonify(error="Màn chơi không tồn tại."), 404
-    revision = hashlib.sha256(json.dumps(level, sort_keys=True).encode()).hexdigest()
+    revision = f"{zlib.crc32(json.dumps(level, sort_keys=True).encode()):08x}"
     if data.get("level_revision") not in (None, revision):
         return jsonify(error="Dữ liệu màn chơi đã đổi. Hãy chạy lại cả lượt so sánh.",
                        code="LEVEL_CHANGED"), 409

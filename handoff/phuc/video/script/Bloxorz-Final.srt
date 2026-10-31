@@ -1,0 +1,571 @@
+1
+00:00:01,000 --> 00:00:03,154
+Xin chào thầy và các bạn.
+
+2
+00:00:03,154 --> 00:00:08,538
+Đây là phần demo Bloxorz Solver của
+nhóm em, kết hợp trò chơi giải đố
+
+3
+00:00:08,538 --> 00:00:13,564
+ba chiều với bốn thuật toán tìm kiếm: BFS, DFS, UCS và A*.
+
+4
+00:00:13,564 --> 00:00:19,308
+Trong video này, nhóm em sẽ giới thiệu
+cách chơi, các cơ chế đặc biệt, giao
+
+5
+00:00:19,308 --> 00:00:25,051
+diện tùy chỉnh, sau đó giải và so
+sánh thuật toán trên cùng một màn chơi.
+
+6
+00:00:25,051 --> 00:00:29,000
+Các thao tác đều được thực hiện trực tiếp trong game.
+
+7
+00:00:31,000 --> 00:00:35,070
+Mục tiêu của Bloxorz là đưa khối đứng thẳng vào ô đích.
+
+8
+00:00:35,070 --> 00:00:38,801
+Khối có thể đứng, nằm theo hàng hoặc nằm theo cột.
+
+9
+00:00:41,500 --> 00:00:46,500
+Nhấn F để xem gần khối đang điều khiển.
+
+10
+00:00:46,500 --> 00:00:48,637
+Góc nhìn này hữu ích với màn chơi lớn.
+
+11
+00:00:48,637 --> 00:00:53,047
+Người chơi sử dụng các phím mũi tên hoặc W, A, S, D.
+
+12
+00:00:53,047 --> 00:00:58,813
+Hướng di chuyển gắn với hàng và cột
+của bàn chơi, không thay đổi theo góc camera.
+
+13
+00:00:58,813 --> 00:01:02,544
+Số bước ở phía dưới giúp theo dõi quá trình giải.
+
+14
+00:01:02,544 --> 00:01:06,275
+Kéo chuột để xoay; nhấn C để trở về toàn cảnh.
+
+15
+00:01:06,275 --> 00:01:10,006
+Mỗi lần lăn thay đổi cả vị trí và tư thế.
+
+16
+00:01:10,006 --> 00:01:13,398
+Cần căn đúng tư thế để đưa khối vào đích.
+
+17
+00:01:13,398 --> 00:01:18,146
+Camera chuyển động mượt để người xem vẫn nhận ra vị trí của khối.
+
+18
+00:01:18,146 --> 00:01:22,556
+Ở ví dụ này, khối được căn đúng tư thế trước bước cuối.
+
+19
+00:01:22,556 --> 00:01:29,000
+Khi khối đứng vào ô đích, game xác nhận
+chiến thắng và cung cấp các thao tác tiếp theo.
+
+20
+00:01:31,000 --> 00:01:34,975
+Toàn bộ phần khối đang chiếm phải được bàn chơi đỡ.
+
+21
+00:01:34,975 --> 00:01:40,034
+Nếu lăn ra ngoài mép, khối rơi xuống nước và màn chơi kết thúc.
+
+22
+00:01:40,034 --> 00:01:46,176
+Góc nhìn được giữ lại để người chơi
+hiểu vì sao thao tác vừa rồi thất bại.
+
+23
+00:01:46,176 --> 00:01:48,345
+Phím R khởi động lại màn.
+
+24
+00:01:48,345 --> 00:01:52,319
+Khối được đưa trở về vị trí ban đầu bằng chuyển
+
+25
+00:01:52,319 --> 00:01:55,933
+động hồi phục, còn bộ đếm bước được đặt lại.
+
+26
+00:01:55,933 --> 00:01:58,462
+Ô màu cam là ô dễ vỡ.
+
+27
+00:01:58,462 --> 00:02:05,328
+Khối nằm hoặc khối đơn có thể đi qua,
+nhưng khối đứng thẳng sẽ làm ô vỡ và rơi.
+
+28
+00:02:05,328 --> 00:02:09,664
+Vì vậy, khi tìm đường cần xét cả tư thế, thay vì
+
+29
+00:02:09,664 --> 00:02:14,000
+chỉ kiểm tra xem tọa độ đó có ô sàn hay không.
+
+30
+00:02:16,000 --> 00:02:19,126
+Màn tiếp theo bổ sung công tắc và cầu.
+
+31
+00:02:19,126 --> 00:02:22,251
+Công tắc nhẹ được ký hiệu bằng vòng tròn.
+
+32
+00:02:22,251 --> 00:02:26,072
+Khi khối chạm vào công tắc, trạng thái cầu liên quan
+
+33
+00:02:26,072 --> 00:02:29,892
+thay đổi, tạo ra hoặc đóng lại một đoạn đường đi.
+
+34
+00:02:29,892 --> 00:02:34,754
+Ở đây, khối nằm chạm công tắc tròn và cầu đầu tiên được mở.
+
+35
+00:02:34,754 --> 00:02:38,228
+Người chơi có thể quan sát đường đi mới xuất
+
+36
+00:02:38,228 --> 00:02:41,701
+hiện trước khi tiếp tục sang khu vực bên kia.
+
+37
+00:02:41,701 --> 00:02:47,605
+Công tắc nặng mang ký hiệu X có
+điều kiện khác: khối phải đứng thẳng trên nó.
+
+38
+00:02:47,605 --> 00:02:51,772
+Việc khối chỉ nằm ngang qua ô chưa đủ để kích hoạt.
+
+39
+00:02:51,772 --> 00:02:56,635
+Nhóm em dừng tại hai tư thế này để làm rõ sự khác biệt.
+
+40
+00:02:56,635 --> 00:03:01,497
+Khi căn khối đứng đúng trên công tắc X, cầu tiếp theo được mở.
+
+41
+00:03:01,497 --> 00:03:05,665
+Trạng thái cầu cũng là một phần của trạng thái bài toán.
+
+42
+00:03:05,665 --> 00:03:09,832
+Hai khối ở cùng tọa độ nhưng có các cầu đang mở
+
+43
+00:03:09,832 --> 00:03:14,000
+khác nhau sẽ dẫn đến những khả năng di chuyển khác nhau.
+
+44
+00:03:16,000 --> 00:03:19,558
+Cơ chế tách khối làm bài toán phức tạp hơn.
+
+45
+00:03:19,558 --> 00:03:23,472
+Khi khối đứng trên ô tách, nó trở thành hai khối
+
+46
+00:03:23,472 --> 00:03:27,387
+đơn tại các vị trí được cấu hình trong màn chơi.
+
+47
+00:03:27,387 --> 00:03:30,945
+Người chơi dùng Space để đổi khối đang điều khiển.
+
+48
+00:03:30,945 --> 00:03:35,215
+Mỗi khối có thể đi theo một đường riêng; chẳng hạn một
+
+49
+00:03:35,215 --> 00:03:39,129
+khối tới công tắc để mở cầu cho khối còn lại.
+
+50
+00:03:39,129 --> 00:03:43,755
+Dấu nhận biết trên khối giúp theo dõi lượt điều khiển hiện tại.
+
+51
+00:03:43,755 --> 00:03:50,515
+Khi hai khối đơn nằm sát cạnh theo điều
+kiện của game, chúng tự ghép thành khối ban đầu.
+
+52
+00:03:50,515 --> 00:03:55,497
+Từ đó, người chơi tiếp tục căn hướng và tư thế để vào đích.
+
+53
+00:03:55,497 --> 00:04:00,123
+Trong mô hình tìm kiếm, trạng thái phải ghi được vị trí của
+
+54
+00:04:00,123 --> 00:04:04,393
+cả hai khối, khối đang điều khiển và trạng thái các cầu.
+
+55
+00:04:04,393 --> 00:04:09,374
+Các hành động đổi khối rồi di chuyển cũng được xử lý theo quy
+
+56
+00:04:09,374 --> 00:04:14,000
+ước chung, để lời giải có thể phát lại bằng đúng luật chơi.
+
+57
+00:04:16,000 --> 00:04:19,981
+Menu Esc tập trung các chức năng chính: tiếp tục
+
+58
+00:04:19,981 --> 00:04:23,963
+chơi, chọn màn, AI Solver, tùy chỉnh và trợ giúp.
+
+59
+00:04:23,963 --> 00:04:27,944
+Mở menu không làm mất trạng thái ván đang chơi.
+
+60
+00:04:27,944 --> 00:04:35,111
+Trong phần chọn màn, màn hiện tại được đánh
+dấu để người dùng biết mình đang ở đâu.
+
+61
+00:04:35,111 --> 00:04:39,093
+Có thể xem trước màn khác rồi chủ động bắt
+
+62
+00:04:39,093 --> 00:04:43,074
+đầu, thay vì chuyển màn ngay khi vừa lựa chọn.
+
+63
+00:04:43,074 --> 00:04:49,843
+Trợ giúp được chia thành ba trang ngắn:
+mục tiêu, điều khiển và các ô đặc biệt.
+
+64
+00:04:49,843 --> 00:04:54,620
+Hình minh họa đi cùng mô tả giúp đối chiếu ký hiệu
+
+65
+00:04:54,620 --> 00:04:59,000
+trong hướng dẫn với ký hiệu xuất hiện trên bàn chơi.
+
+66
+00:05:01,000 --> 00:05:05,377
+Game có ba môi trường: Di tích, Vườn hoa và Băng tuyết.
+
+67
+00:05:05,377 --> 00:05:10,119
+Mỗi môi trường có vật liệu và bộ trang trí riêng, nhưng giữ
+
+68
+00:05:10,119 --> 00:05:14,862
+nguyên cấu trúc màn chơi cùng ý nghĩa của các ô chức năng.
+
+69
+00:05:14,862 --> 00:05:21,063
+Di tích sử dụng kiến trúc đá, vòm
+gãy và những phần nền móng chìm dưới nước.
+
+70
+00:05:21,063 --> 00:05:26,899
+Vườn hoa tăng các tầng thực vật với
+cây, bụi hoa, dây leo và lá nổi.
+
+71
+00:05:26,899 --> 00:05:32,736
+Băng tuyết chuyển sang đá lạnh, tuyết tích
+tụ, cây mùa đông và băng ven nước.
+
+72
+00:05:32,736 --> 00:05:39,000
+Ba môi trường dùng chung cấu trúc màn chơi và các cơ chế đặc biệt.
+
+73
+00:05:39,000 --> 00:05:45,500
+Ký hiệu ô thường, ô dễ vỡ, công tắc và đích vẫn được giữ rõ ràng.
+
+74
+00:05:45,500 --> 00:05:50,000
+Tiếp theo là phần tùy chỉnh vật liệu của khối.
+
+75
+00:05:50,000 --> 00:05:57,000
+Có thể thay vật liệu của khối để
+nhận biết rõ hơn trên từng môi trường.
+
+76
+00:05:57,000 --> 00:06:06,000
+Việc đổi diện mạo không làm thay đổi
+luật giải hoặc làm mất trạng thái ván chơi.
+
+77
+00:06:06,000 --> 00:06:11,000
+Tùy chỉnh cũng có âm lượng và tốc độ diễn hoạt lời giải.
+
+78
+00:06:11,000 --> 00:06:14,000
+Tốc độ phát không ảnh hưởng thời gian tìm kiếm.
+
+79
+00:06:15,000 --> 00:06:17,809
+Phần trọng tâm của đề tài là AI Solver.
+
+80
+00:06:17,809 --> 00:06:21,553
+Chế độ từng thuật toán cho phép chọn BFS, DFS, UCS hoặc
+
+81
+00:06:21,553 --> 00:06:24,986
+A* rồi giải từ trạng thái ban đầu của màn.
+
+82
+00:06:24,986 --> 00:06:30,291
+Sau khi tìm được đường đi, giao diện
+cung cấp kết quả và khả năng phát lại.
+
+83
+00:06:30,291 --> 00:06:33,411
+BFS mở rộng trạng thái theo từng lớp độ sâu.
+
+84
+00:06:33,411 --> 00:06:39,028
+Khi mỗi hành động được xem là một bước,
+BFS hướng tới lời giải có ít bước nhất.
+
+85
+00:06:39,028 --> 00:06:44,333
+Đổi lại, số trạng thái cần lưu có
+thể tăng nhanh khi không gian tìm kiếm lớn.
+
+86
+00:06:44,333 --> 00:06:48,078
+DFS đi sâu theo một nhánh trước rồi quay lui khi cần.
+
+87
+00:06:48,078 --> 00:06:51,199
+DFS có thể tìm ra lời giải khác với BFS;
+
+88
+00:06:51,199 --> 00:06:54,319
+không nên mặc định lời giải đó là ngắn nhất.
+
+89
+00:06:54,319 --> 00:06:58,376
+Thứ tự sinh hành động cũng ảnh hưởng đường đi được tìm thấy.
+
+90
+00:06:58,376 --> 00:07:02,433
+UCS ưu tiên trạng thái có tổng chi phí đã đi nhỏ hơn.
+
+91
+00:07:02,433 --> 00:07:05,865
+Trong dự án này, chi phí mỗi bước còn xét số
+
+92
+00:07:05,865 --> 00:07:08,986
+ô dễ vỡ bị khối chiếm ở trạng thái đến.
+
+93
+00:07:08,986 --> 00:07:12,106
+Vì vậy, tối ưu số bước và tối ưu tổng
+
+94
+00:07:12,106 --> 00:07:15,227
+chi phí là hai tiêu chí cần được phân biệt.
+
+95
+00:07:15,227 --> 00:07:20,844
+A* kết hợp chi phí đã đi với
+một giá trị ước lượng phần đường còn lại.
+
+96
+00:07:20,844 --> 00:07:23,965
+Hàm đánh giá có dạng f bằng g cộng h.
+
+97
+00:07:23,965 --> 00:07:27,085
+Heuristic của dự án xét khoảng cách và các tình
+
+98
+00:07:27,085 --> 00:07:30,206
+huống tách khối, nhằm định hướng quá trình tìm kiếm.
+
+99
+00:07:30,206 --> 00:07:34,887
+Các đường đi đang hiển thị là kết quả thực tế của từng thuật toán.
+
+100
+00:07:34,887 --> 00:07:38,943
+Hoạt ảnh giúp quan sát và kiểm chứng lời giải; nó không phải
+
+101
+00:07:38,943 --> 00:07:43,000
+hoạt ảnh mô phỏng toàn bộ cây tìm kiếm bên trong thuật toán.
+
+102
+00:07:45,000 --> 00:07:49,053
+Để đối chiếu thuận tiện hơn, chế độ so sánh chạy lần lượt cả
+
+103
+00:07:49,053 --> 00:07:52,816
+bốn thuật toán trên cùng một màn và cùng giới hạn thời gian.
+
+104
+00:07:52,816 --> 00:07:57,737
+Các lượt được chạy tuần tự, tránh việc
+bốn phép đo cạnh tranh tài nguyên cùng lúc.
+
+105
+00:07:57,737 --> 00:08:01,500
+Trước khi đọc số liệu, cần kiểm tra trạng thái của từng lượt.
+
+106
+00:08:01,500 --> 00:08:06,132
+Có lời giải, vô nghiệm, quá thời gian
+hoặc lỗi là các kết quả khác nhau.
+
+107
+00:08:06,132 --> 00:08:11,342
+Một lượt quá hạn không được diễn giải thành
+thuật toán đã chứng minh màn chơi vô nghiệm.
+
+108
+00:08:11,342 --> 00:08:14,237
+Chỉ số thời gian thể hiện thời gian tìm kiếm.
+
+109
+00:08:14,237 --> 00:08:18,868
+Nó khác với thời gian tải trang, dựng
+cảnh hoặc thời gian hoạt ảnh khối lăn.
+
+110
+00:08:18,868 --> 00:08:23,789
+Vì thế, tăng tốc replay không làm cho
+kết quả đo thuật toán trở nên nhanh hơn.
+
+111
+00:08:23,789 --> 00:08:27,553
+Chỉ số bộ nhớ ghi nhận đỉnh cấp phát Python trong lượt tìm
+
+112
+00:08:27,553 --> 00:08:31,316
+kiếm, không phải toàn bộ bộ nhớ máy hay bộ nhớ đồ họa.
+
+113
+00:08:31,316 --> 00:08:34,500
+Số trạng thái đã xét phản ánh lượng công việc tìm
+
+114
+00:08:34,500 --> 00:08:37,395
+kiếm, còn số bước phản ánh độ dài lời giải.
+
+115
+00:08:37,395 --> 00:08:41,447
+Tổng cost dùng công thức chung để tính lại đường đi khi so sánh.
+
+116
+00:08:41,447 --> 00:08:45,211
+Điều này đặc biệt quan trọng ở màn có ô dễ vỡ: hai
+
+117
+00:08:45,211 --> 00:08:48,974
+lời giải cùng số bước vẫn có thể khác nhau về chi phí.
+
+118
+00:08:48,974 --> 00:08:53,316
+Các con số ở đây là một lượt minh họa trên môi trường đang chạy.
+
+119
+00:08:53,316 --> 00:08:58,816
+Để kết luận hiệu năng cho báo cáo, cần
+đo lặp trên nhiều màn với cấu hình cố định.
+
+120
+00:08:58,816 --> 00:09:02,000
+Không thể chỉ nhìn một màn nhỏ rồi khẳng định một
+
+121
+00:09:02,000 --> 00:09:04,895
+thuật toán luôn tốt hơn ba thuật toán còn lại.
+
+122
+00:09:04,895 --> 00:09:08,658
+Sau khi đo, người dùng chủ động chọn một lời giải để xem.
+
+123
+00:09:08,658 --> 00:09:13,000
+Việc đo tự nó không chuyển màn
+và cũng không thay thế ván đang chơi.
+
+124
+00:09:15,000 --> 00:09:18,333
+Thanh replay hỗ trợ phát, tạm dừng, tiến hoặc lùi
+
+125
+00:09:18,333 --> 00:09:21,667
+từng bước và chọn vị trí trên dòng thời gian.
+
+126
+00:09:21,667 --> 00:09:26,667
+Nhờ đó có thể kiểm tra tại sao thuật toán chọn một đoạn đường, hoặc
+
+127
+00:09:26,667 --> 00:09:31,667
+quan sát chính xác tư thế khi đi qua công tắc và ô dễ vỡ.
+
+128
+00:09:31,667 --> 00:09:38,000
+Khi mở Esc rồi quay lại, lời giải và
+vị trí phát được giữ để tiếp tục theo dõi.
+
+129
+00:09:38,000 --> 00:09:41,667
+Hoàn thành replay được thể hiện trong luồng kết quả AI,
+
+130
+00:09:41,667 --> 00:09:45,000
+tránh bật một hộp thoại chơi tay không liên quan.
+
+131
+00:09:45,000 --> 00:09:49,000
+Mỗi hành động trong lời giải vẫn được đối chiếu với engine.
+
+132
+00:09:49,000 --> 00:09:53,667
+Phần hiển thị ba chiều trình bày kết quả, còn tính hợp lệ của
+
+133
+00:09:53,667 --> 00:09:58,000
+trạng thái và điều kiện đích được quyết định bằng luật của game.
+
+134
+00:10:00,000 --> 00:10:04,919
+Qua phần demo, nhóm em đã giới thiệu cách chơi Bloxorz, các cơ chế
+
+135
+00:10:04,919 --> 00:10:09,838
+đặc biệt, bốn thuật toán và chức năng so sánh, phát lại lời giải.
+
+136
+00:10:09,838 --> 00:10:13,000
+Cảm ơn thầy và các bạn đã theo dõi.

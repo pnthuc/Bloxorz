@@ -38,7 +38,7 @@ split/merge, thắng/thua và replay. Gửi ảnh rõ, ghi phiên bản/viewport
 Phúc tự quay lại được; Nam dùng để rà đề cương. Stop ở màn giải đơn hủy chờ/phát lại,
 không chứng nhận request solver phía server đã bị kết thúc.
 
-**T03:** Nhận P01/H01 và cấu hình Q04, ghi commit thật vào baseline.
+**T03:** Nhận P01/H01 và cấu hình Q04, xác nhận baseline theo mã nguồn và dữ liệu hiện tại.
 Thống nhất cost, heuristic, bộ màn, quy ước hành động/metric và cách đo.
 Nếu code còn thay đổi thì chưa chốt snapshot; thay đổi ảnh hưởng số liệu phải xác định phần cần đo lại.
 

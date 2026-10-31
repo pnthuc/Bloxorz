@@ -47,22 +47,10 @@ thư mục đang đứng. Dùng `--batch`, `--groups`, `--output-dir` để ch�
 - Script chỉ đọc CSV/JSON đã lưu, không gọi solver hoặc thay dữ liệu đo.
 - Kiểm tra đủ lượt, CSV khớp JSON, số trạng thái và mọi trung vị khớp `summary.csv`
   trước khi xuất hình. Sai lệch làm lệnh thất bại thay vì tự sửa số liệu.
-- Xuất năm hình PNG 300 dpi/SVG: thời gian, bộ nhớ Python, node mở rộng,
-  độ dài và cost chung; mỗi hình chia thành các cụm tối đa năm màn.
-- Màu thuật toán nhất quán; trục log được ghi trên hình. Số 0 thật dùng symlog;
-  thiếu mẫu dùng NA, timeout/lỗi có mã riêng, không thay bằng 0.
-- `result-tables.csv` giữ đủ giá trị và số mẫu; hai file Markdown là nguồn bảng
-  và chú thích. `provenance.json` ghi commit checkout và SHA-256 đầu vào;
-  `charts/manifest.json` ghi số mẫu, màu và kiểu trục của từng hình.
-
-Chuyển tài liệu Markdown thành DOCX rồi đọc lại DOCX thành PDF bằng Pandoc/XeLaTeX:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File ../handoff/phuc/build-documents.ps1
-```
-
-Cần `pandoc`, `xelatex` trên PATH và font Arial/Consolas cho bước tài liệu.
-Matplotlib là thư viện tùy chọn cho P05, không cần để chơi game hay đo benchmark.
+- Xuất các biểu đồ PNG 300 dpi (cả biểu đồ đường toàn bộ 25 màn và biểu đồ cột phân nhóm).
+- Màu thuật toán nhất quán; trục log được ghi trên hình. Số 0 thật dùng symlog; thiếu mẫu dùng NA, timeout/lỗi có mã riêng, không thay bằng 0.
+- `result-tables.csv` giữ đủ giá trị và số mẫu; các bản báo cáo bảng và biểu đồ lưu sẵn dưới định dạng Word (`result-tables.docx`, `chart-notes.docx`). `charts/manifest.json` ghi số mẫu, màu và kiểu trục của từng hình.
+- Matplotlib là thư viện tùy chọn cho P05, không cần để chơi game hay đo benchmark.
 
 ```powershell
 python -m unittest tests.test_plot tests.test_summary -v

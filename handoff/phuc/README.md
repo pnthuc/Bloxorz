@@ -1,16 +1,18 @@
 # Phan Gia Phúc — UCS/cost, biểu đồ, video và source nộp
 
 MSSV **24120503**. Nhận/gửi việc theo [quy trình chung](../README.md).
-Phúc không thay số đo của Quân; nhận dữ liệu để trình bày và cùng Thiện thống nhất cost–heuristic.
+Phúc không thay số đo của Quân; nhận dữ liệu CSV để vẽ biểu đồ, lập bảng và cùng Thiện thống nhất cost–heuristic.
 
 ## Đầu vào và hiện trạng
 
-- UCS/cost: `Src/solvers/member5_ucs.py`, `Src/solvers/costs.py`;
-  kiểm tra đường đi: `Src/core/replay.py`.
-- Nhận CSV/metadata/nhóm màn từ Quân, đề cương video từ Nam,
-  tư liệu và thao tác demo từ Thức. Dùng [baseline](../shared/baseline.md) chung.
-- Đã có tài liệu P01/P02, [phân tích UCS/cost P03](ucs-results.docx) và gói P05: [biểu đồ](charts/),
-  [bảng](result-tables.docx), [chú thích](chart-notes.docx) cùng nguồn Markdown/CSV.
+- UCS/cost: `Src/solvers/member5_ucs.py`, `Src/solvers/costs.py`; kiểm tra đường đi: `Src/core/replay.py`.
+- Nhận CSV/metadata từ Quân, đề cương video từ Nam, tư liệu demo từ Thức. Dùng [baseline](../shared/baseline.md) chung.
+- Đã bàn giao:
+  - Tài liệu thuật toán UCS: [ucs.docx](ucs.docx) và ví dụ [cost-example.docx](cost-example.docx).
+  - Quy định chi phí chung: [cost-policy.docx](cost-policy.docx).
+  - Biểu đồ thực nghiệm: [charts/](charts/) (gồm cả biểu đồ đường so sánh 4 thuật toán và biểu đồ cột phân nhóm).
+  - Bảng số liệu: [result-tables.docx](result-tables.docx), [result-tables.csv](result-tables.csv) và ghi chú [chart-notes.docx](chart-notes.docx).
+  - Sản phẩm video P06: [video/video-url.txt](video/video-url.txt) và kịch bản [video/script/](video/script/).
 
 ## Nhiệm vụ
 
@@ -18,116 +20,48 @@ Phúc không thay số đo của Quân; nhận dữ liệu để trình bày và
 | --- | --- | --- | --- |
 | [X] | `P01` | Giải thích và chốt cost chung | `cost-policy.docx` → Thiện, Quân, Nam, Thức |
 | [X] | `P02` | UCS, giả mã và ví dụ tích lũy cost | `ucs.docx`, `cost-example.docx` → Nam, Thiện |
-| [X] | `P03` | Phân tích UCS và rà kết luận về cost | `ucs-results.docx` → Nam; Quân rà nguồn dữ liệu |
-| [ ] | `P04` | README và source giải nén chạy được | `submission/Source/`, `run-check.docx` → Thức |
-| [X] | `P05` | Bảng/biểu đồ từ CSV đã kiểm chứng | `charts/`, `result-tables.docx`, `chart-notes.docx` và lệnh tái tạo → Nam, Quân |
-| [X] | `P06` | Kịch bản, quay dựng, phụ đề/lời dẫn và YouTube | `video/video-script.docx`, `video/video-url.txt`, phụ đề → Nam, Thức |
-
-Có thể gộp các phần viết liên quan vào một tài liệu có mục rõ ràng, tránh tạo bản sao cùng nội dung.
+| [X] | `P05` | Bảng và biểu đồ thực nghiệm từ dữ liệu benchmark | `charts/`, `result-tables.docx`, `chart-notes.docx` → Nam, Quân |
+| [X] | `P06` | Kịch bản, quay dựng, phụ đề/lời dẫn và YouTube | `video/video-url.txt`, `video/script/` → Nam, Thức |
+| [ ] | `P04` | Source nộp đóng gói và README | `submission/Source/` → Thức |
 
 ## Cost và UCS
 
-P01 mô tả đúng hàm hiện tại: `1 + 0.5 × số ô fragile bị chiếm ở trạng thái đến`.
-Mỗi cạnh có cost dương; lời giải rỗng khi start=goal có tổng cost 0.
-SPACE chơi tay miễn phí, không là cạnh tìm kiếm; hướng có tiền tố S tính một hành động.
-Giải thích ý nghĩa mức phạt và ví dụ; không đổi policy mà không báo nhóm/đo lại.
+- Hàm cost: `1 + 0.5 × số ô fragile bị chiếm ở trạng thái đến`.
+- Mỗi cạnh có cost dương; lời giải rỗng khi start=goal có tổng cost 0.
+- SPACE chơi tay miễn phí, không là cạnh tìm kiếm; hướng có tiền tố S tính một hành động.
+- `State` là dataclass bất biến (immutable), dùng làm khóa tập hợp và từ điển được.
+- Chi tiết thuật toán và bảng trace từng bước xem tại [ucs.docx](ucs.docx).
 
-P02 đối chiếu heap theo g, best_g, parent, entry cũ và goal test khi lấy khỏi heap.
-Bảng tính tay ghi state, action, step_cost và tổng cost; phân biệt tối ưu số bước với cost có trọng số.
-P03 dùng ID màn và CSV để nhận xét UCS/BFS/A*. CLI giữ `total_cost` gốc của solver;
-so chéo bằng `path_cost` chung, không so hai cột khác nghĩa.
+## Bảng và biểu đồ thực nghiệm
 
-### P03 - Kết quả và phần rà bản thảo
+Công cụ tạo bảng và vẽ biểu đồ: `handoff/phuc/plot.py` (hoặc `Src/benchmarks/plot.py`).
 
-[ucs-results.md](ucs-results.md) là nguồn soạn; [DOCX](ucs-results.docx) và
-[PDF](ucs-results.pdf) có 6 trang: kết quả tổng hợp, số bước/cost, hiệu năng,
-chi phí xử lý theo code, đoạn để ghép mục 6.2 Report và câu sửa cho các bản thảo.
-Bản phân tích dùng checkout `ce04ee45ead1702365646e41b4cbad92b8818304`
-và cùng dữ liệu P05.
-
-UCS giảm cost so với BFS ở L16/L24/L25; L24/L25 minh họa 20 hành động/cost 20
-của UCS so với 16 hành động/cost 23 của BFS. A* khớp cost UCS trên cả 25 màn,
-nhưng không luôn nhanh hơn hoặc dùng ít bộ nhớ hơn. Phần rà nêu rõ mục/câu
-trong Report, video-outline, astar-results và review-notes; các bản thảo gốc được
-giữ nguyên để người phụ trách ghép/sửa nội dung.
-
-`ucs-results-selected.csv` giữ 21 dòng màn/thuật toán đại diện;
-`ucs-results-data.json` ghi các phép so sánh trên 25 màn, phần trăm chênh lệch,
-hash dữ liệu và bản thảo được rà. Từ gốc repo:
-
+Từ thư mục gốc dự án:
 ```powershell
-python handoff/phuc/analyze_ucs.py
-powershell -ExecutionPolicy Bypass `
-  -File handoff/phuc/build-documents.ps1 -Documents ucs-results
+python handoff/phuc/plot.py
 ```
 
-Đã đối chiếu 300 lượt/JSON và mọi trung vị, kiểm tra dữ liệu trùng hash P05,
-chuyển Markdown → DOCX → PDF qua Pandoc/XeLaTeX và kiểm tra trực quan 6 trang.
-Phần suy luận về thời gian của heuristic/cost được ghi riêng với số đã đo;
-không coi khớp cost trên bộ test là chứng minh admissibility tổng quát.
+Lệnh trên tự động đọc `summary.csv` và `raw.csv` từ Quân, kiểm chứng tính hợp lệ và xuất ra:
+1. **Biểu đồ đường so sánh 4 thuật toán trên toàn bộ 25 màn (chuẩn báo cáo):**
+   - `charts/hinh_6_1_thoi_gian_tim_kiem.png`: Thời gian tìm kiếm (ms, thang logarit).
+   - `charts/hinh_6_2_bo_nho.png`: Đỉnh cấp phát bộ nhớ (KiB, thang logarit).
+   - `charts/hinh_6_3_so_node_mo_rong.png`: Số node mở rộng (thang logarit).
+   - `charts/hinh_6_4_do_dai_loi_giai.png`: Độ dài lời giải / số bước đi (thang logarit).
+   - `charts/hinh_6_5_chi_phi_duong_di.png`: Chi phí đường đi chung (thang logarit).
+2. **Biểu đồ cột chi tiết:** `01_search_time_ms.png`, `02_memory_kb.png`, `03_expanded_nodes.png`, `04_solution_length.png`, `05_path_cost.png` (định dạng PNG 300 dpi).
+3. **Bảng số liệu tổng hợp:** `result-tables.docx`, `result-tables.csv` và `chart-notes.docx`.
 
-## Bảng và biểu đồ
+## Video demo đồ án (P06)
 
-P05 đọc `raw.csv`, `summary.csv`, metadata và nhóm màn của Q05.
-Đủ bốn chỉ số bắt buộc: thời gian tìm kiếm, peak memory, expanded nodes và solution length;
-có thể thêm cost chung. Ghi đơn vị ms, KiB, node, hành động, cost và số mẫu.
-Timeout/lỗi có ký hiệu riêng; giải thích trục log hoặc việc loại mẫu nếu dùng.
+- Video đã được quay dựng hoàn chỉnh, có phụ đề tiếng Việt và lời thuyết minh chi tiết:
+  - Demo tương tác GUI đầy đủ: điều khiển bàn phím, restart, chọn màn chơi, xem luật.
+  - Minh họa các cơ chế đặc biệt: gạch cam fragile, công tắc tròn (soft), công tắc chéo (heavy), công tắc phân tách (split), ghép khối (merge), cầu đóng/mở.
+  - Minh họa tính năng chạy tự động và replay lời giải của cả 4 thuật toán (BFS, DFS, UCS, A*).
+- **Link xem video trên YouTube:** https://www.youtube.com/watch?v=7Mk2lOTqOCM (lưu trong `video/video-url.txt`).
+- Kịch bản chi tiết và file phụ đề (.srt, .ass) được lưu trữ tại `video/script/`.
 
-Công cụ vẽ: `Src/benchmarks/plot.py`, tách khỏi bước chạy solver.
-Gói P05 được tạo theo checkout `9f4aa41937b1004b009d55616df0c6f9cffa6c17`,
-dùng bộ 300 lượt hiện có. Commit này xác định checkout trình bày; metadata đo
-không ghi commit gốc của lượt chạy. Hash đầu vào nằm trong [provenance.json](provenance.json).
+## Đóng gói Source nộp (P04)
 
-Đầu ra:
-
-- `charts/01_search_time_ms`, `02_memory_kb`, `03_expanded_nodes`,
-  `04_solution_length`, `05_path_cost`: mỗi hình có PNG 300 dpi và SVG.
-- `result-tables.md` → `result-tables.docx` → `result-tables.pdf`:
-  năm bảng trung vị và danh mục 25 màn. `result-tables.csv` chứa 100 dòng
-  màn/thuật toán với số mẫu tìm kiếm/lời giải và số trạng thái.
-- `chart-notes.md` → `chart-notes.docx` → `chart-notes.pdf`:
-  định nghĩa, đơn vị, xử lý mẫu, chú thích tiếng Việt, nguồn và khai báo AI.
-- `charts/manifest.json`: màu, kiểu trục và số mẫu; `provenance.json`:
-  SHA-256 CSV/metadata, 300 JSON và script vẽ.
-
-Từ gốc repo:
-
-```powershell
-python -m pip install -r Src/benchmarks/requirements-plot.txt
-python Src/benchmarks/plot.py
-powershell -ExecutionPolicy Bypass -File handoff/phuc/build-documents.ps1
-```
-
-Script vẽ tạo lại hai file Markdown. Sau khi sửa Markdown thủ công, chỉ chạy
-`build-documents.ps1` để chuyển tài liệu; lần chạy script vẽ tiếp theo sẽ tạo lại
-nội dung từ CSV. `page-layout.lua` giữ ngắt trang giữa các cặp bảng trong cả hai
-bước Pandoc. Cần Pandoc, XeLaTeX và font Arial/Consolas cho bước tài liệu.
-
-Kiểm tra P05: đủ 300 lượt/300 JSON, 100 nhóm tổng hợp, mọi trung vị khớp CSV thô;
-13 test `tests.test_plot` và `tests.test_summary` đạt. Tài liệu đã chuyển theo
-chuỗi Markdown → DOCX → PDF bằng Pandoc 3.13 và XeLaTeX (TeX Live 2026),
-rồi kiểm tra trực quan PDF. Các file đo đầu vào được giữ nguyên.
-
-## Video
-
-P06 nhận N05/T02, viết kịch bản có cảnh, thao tác và lời dẫn/phụ đề.
-Quay GUI, điều khiển tay, thắng/thua, fragile, soft/heavy, cầu, split/merge,
-chọn màn, restart và solver/replay. Theo kế hoạch nhóm, minh họa đủ bốn thuật toán trên màn nhỏ.
-Phân biệt thời gian tìm kiếm với animation; không cần ép một thời lượng cố định vì đề không quy định.
-
-Gửi bản nháp cho Nam rà nội dung, Thức rà luật. Video có phụ đề hoặc lời dẫn Việt/Anh,
-đăng YouTube công khai và kiểm tra xem được khi chưa đăng nhập.
-Lưu URL cuối ở `video/video-url.txt` để Nam chèn vào PDF.
-MP4 gốc/file dựng lưu ngoài Git; gửi link kèm kịch bản, phụ đề và nguồn tư liệu.
-
-## Source bàn giao
-
-P04 dùng snapshot đã chốt; sao chép nội dung `Src/` vào `submission/Source/`
-và đặt README hướng dẫn chạy trong đó. Giữ `core`, `web`, `benchmarks`, `solvers`,
-`levels`, `static`, `templates`, `tests`, các lệnh chạy và `requirements.txt`.
-Font, Three.js, âm thanh đã có sẵn; giữ giấy phép và ghi nguồn.
-
-Loại Git metadata, môi trường ảo, cache, node_modules và file tạm.
-Sửa đường dẫn chạy cho đúng thư mục Source, giải nén vào nơi sạch rồi thử cài/chạy/test.
-Node.js chỉ cần cho test UI; không cần để chơi. Ghi môi trường, lệnh và kết quả ở `run-check.docx`.
-Thức nhận source để ghép Report.pdf và đóng gói cuối.
+- Sao chép toàn bộ mã nguồn sạch từ `Src/` vào `submission/Source/`.
+- Loại bỏ các thư mục tạm, cache, `.git`, `node_modules` và môi trường ảo.
+- Kèm theo file hướng dẫn chạy `README.md` độc lập, dễ dàng cài đặt qua `pip install -r requirements.txt`.
