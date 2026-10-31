@@ -160,4 +160,4 @@ powershell -ExecutionPolicy Bypass `
 
 Nguồn soạn là `ucs-results.md`. Pandoc chuyển Markdown sang DOCX; bước sau đọc lại DOCX và dùng XeLaTeX xuất PDF. Lệnh phân tích kiểm tra 300 lượt/JSON, các trung vị, hash trùng P05 và tính lại các so sánh, không tạo số đo mới. Hash các bản thảo được rà nằm trong `ucs-results-data.json`.
 
-**Khai báo AI:** Codex hỗ trợ đọc mã nguồn, trích nội dung DOCX, viết công cụ đối chiếu CSV, tính chênh lệch, soạn nhận xét/câu sửa và chuyển đổi, kiểm tra tài liệu. Số liệu gốc thuộc bộ đo của Quân; không dùng số minh họa thay dữ liệu. Phân tích mô tả và các suy luận từ code được phân biệt trong nội dung. Tác vụ đã yêu cầu: “làm P03”; quy trình soạn đã yêu cầu: tạo Markdown trước, chuyển qua DOCX bằng Pandoc rồi dùng XeLaTeX tạo PDF để kiểm tra. Phản hồi của Nam/Quân/Thiện sau bàn giao được ghi riêng, không được suy ra từ việc có file này.
+**Khai báo AI:** Codex hỗ trợ đọc mã nguồn, trích nội dung DOCX, viết công cụ đối chiếu CSV, tính chênh lệch, dàn ý cho các nhận xét/câu sửa và chuyển đổi, kiểm tra tài liệu. Số liệu gốc thuộc bộ đo của Quân; không dùng số minh họa thay dữ liệu.

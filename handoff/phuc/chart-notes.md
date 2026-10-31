@@ -67,4 +67,4 @@ Lệnh đầu chỉ cài thư viện vẽ, không cần cho chạy game. Bước
 
 Nguồn số liệu: bộ CSV/JSON và metadata do Quân bàn giao trong repo. Nguồn định nghĩa chỉ số: Src/benchmarks/README.md và Src/solvers/base.py; policy cost: Src/solvers/costs.py. Màu biểu đồ dùng bốn màu từ bảng Okabe–Ito.
 
-Codex hỗ trợ viết script trình bày, kiểm tra tính nhất quán, dựng bảng và soạn chú thích. Không tạo số đo thực nghiệm mới. Việc xác nhận số liệu của Quân và tiếp nhận hình/bảng của Nam được theo dõi riêng khi bàn giao.
+Codex hỗ trợ dàn ý script trình bày, kiểm tra tính nhất quán, dựng bảng và dàn ý chú thích. Không tạo số đo thực nghiệm mới. Việc xác nhận số liệu của Quân và tiếp nhận hình/bảng của Nam được theo dõi riêng khi bàn giao.
