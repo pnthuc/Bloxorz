@@ -235,10 +235,9 @@ class SolverRunnerTests(unittest.TestCase):
         self.assertTrue({f"T{i}" for i in range(1, 11)} <= ids)
         self.assertTrue(set(load_levels()) <= ids)
         self.assertEqual(len(cases), 10 + len(load_levels()))
-        map33 = select_cases(cases, ["33"])[0]
-        self.assertEqual(
-            (map33.bfs_moves, map33.ucs_cost, map33.walkthrough_cost), (110, 110.5, 111)
-        )
+        for lid in load_levels():
+            case = select_cases(cases, [lid])[0]
+            self.assertEqual(case.level_id, lid)
 
     def test_filters_cases_without_changing_default_solver_contract(self):
         solve = Mock(

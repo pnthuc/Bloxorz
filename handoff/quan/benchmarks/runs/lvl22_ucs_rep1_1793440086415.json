@@ -1,0 +1,33 @@
+{
+  "run_id": "lvl22_ucs_rep1_1793440086415",
+  "level_id": "22",
+  "level_name": "Stage 22: Open Field Turned",
+  "solver": "ucs",
+  "repeat_index": 1,
+  "status": "SOLVED",
+  "search_time_ms": 77.298,
+  "memory_kb": 180.6,
+  "expanded_nodes": 617,
+  "solution_length": 16,
+  "path_cost": 16.0,
+  "timestamp": "2026-10-31T16:48:06.415655",
+  "error_message": "",
+  "moves": [
+    "LEFT",
+    "LEFT",
+    "LEFT",
+    "LEFT",
+    "LEFT",
+    "LEFT",
+    "LEFT",
+    "LEFT",
+    "DOWN",
+    "DOWN",
+    "DOWN",
+    "DOWN",
+    "DOWN",
+    "DOWN",
+    "DOWN",
+    "DOWN"
+  ]
+}

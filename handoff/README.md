@@ -31,13 +31,13 @@ bốn chỉ số thực nghiệm, bảng/biểu đồ, nhận xét, nguồn tham
 Phần trăm hoàn thành là mức hoàn thành trách nhiệm của từng người, không bắt buộc cộng thành 100%.
 Video phải có URL YouTube công khai trong PDF.
 
-Đề yêu cầu bộ test cố định, công bằng giữa các thuật toán. Kế hoạch **33 màn,
-3 lần lặp, timeout 120 giây/lượt** là đề xuất của nhóm, không phải định mức của đề.
+Đề yêu cầu bộ test cố định, công bằng giữa các thuật toán. Kế hoạch **25 màn,
+3 lần lặp, timeout 120 giây/lượt** (tổng 300 lượt) là đề xuất của nhóm, không phải định mức của đề.
 Chốt các giá trị này trong [baseline](shared/baseline.md) trước khi đo.
 
 ## Trình tự bàn giao
 
-1. **Chốt bản đo:** Thức ghi commit; Phúc xác nhận cost; Thiện xác nhận heuristic;
+1. **Chốt bản đo:** Thức xác nhận baseline; Phúc xác nhận cost; Thiện xác nhận heuristic;
    Quân xác nhận bộ màn, môi trường, số lần lặp và timeout.
 2. **Quân → Phúc, Nam:** CSV gốc/tổng hợp, JSON lời giải, metadata, phân nhóm màn và phương pháp đo.
 3. **Phúc → Nam:** bảng/biểu đồ truy về CSV. **Thiện, Phúc → Nam:** nhận xét A*/UCS theo số liệu thật.
@@ -50,8 +50,7 @@ ghi phiên bản mới và xác định dữ liệu cần đo lại. Không tr�
 
 ## Đầu ra đang có và phần cần rà
 
-- Quân đã có `dfs.docx`, `level-groups.csv` và một đợt chạy thử 8 lượt trên màn 1, 4.
-  Chưa có `summary.csv` và `methodology.docx` trong repo.
+- Quân đã có `dfs.docx`, `level-groups.csv`, bộ benchmark chuẩn 300 lượt (`raw.csv`, `runs/*.json`) và `summary.csv` trong `handoff/quan/benchmarks/`.
 - Nam đã có `BFS.docx`, `Report.docx` bản thảo và `video-outline.docx`; chưa có `Report.pdf`.
   Bìa bản thảo hiện thiếu Quân và cần bổ sung đủ năm thành viên.
 - Thiện đã có năm DOCX A*/heuristic; phần kết quả còn dẫn tới CSV tổng hợp/hình chưa có trong repo.

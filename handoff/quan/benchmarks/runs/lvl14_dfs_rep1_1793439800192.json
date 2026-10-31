@@ -1,0 +1,26 @@
+{
+  "run_id": "lvl14_dfs_rep1_1793439800192",
+  "level_id": "14",
+  "level_name": "Stage 14: Fragile Shortcut",
+  "solver": "dfs",
+  "repeat_index": 1,
+  "status": "SOLVED",
+  "search_time_ms": 0.938,
+  "memory_kb": 4.25,
+  "expanded_nodes": 9,
+  "solution_length": 9,
+  "path_cost": 10.0,
+  "timestamp": "2026-10-31T16:43:20.192175",
+  "error_message": "",
+  "moves": [
+    "DOWN",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "UP"
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "run_id": "lvl4_bfs_rep3_1793439767935",
+  "level_id": "4",
+  "level_name": "Stage 4: Split and Merge",
+  "solver": "bfs",
+  "repeat_index": 3,
+  "status": "SOLVED",
+  "search_time_ms": 346.808,
+  "memory_kb": 543.01,
+  "expanded_nodes": 1789,
+  "solution_length": 16,
+  "path_cost": 16.5,
+  "timestamp": "2026-10-31T16:42:47.935308",
+  "error_message": "",
+  "moves": [
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "DOWN",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "UP",
+    "SUP",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "DOWN"
+  ]
+}

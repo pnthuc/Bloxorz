@@ -201,7 +201,7 @@ def run_benchmarks(
     print("=" * 105)
 
     try:
-        for lvl_id in sorted(levels.keys(), key=lambda x: int(x) if x.isdigit() else 999):
+        for lvl_id in sorted(levels.keys(), key=lambda x: (0, int(x)) if x.isdigit() else (1, x)):
             lvl_data = levels[lvl_id]
             for rep in range(1, repeats + 1):
                 for solver_name in solvers:
@@ -258,9 +258,6 @@ def run_benchmarks(
 
 def main(argv=None):
     argv = list(sys.argv[1:] if argv is None else argv)
-    if argv and argv[0] == "summarize":
-        from .summary import summarize_main
-        return summarize_main(argv[1:])
     parser = argparse.ArgumentParser(description="Bloxorz Benchmarking CLI with Progressive Logging")
     parser.add_argument("--levels", nargs="+", default=["all"], help="Danh sách ID màn cần chạy")
     parser.add_argument("--solvers", nargs="+", default=["all"], help="Danh sách thuật toán: bfs dfs ucs astar")

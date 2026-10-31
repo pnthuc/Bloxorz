@@ -7,7 +7,9 @@ import unittest
 from unittest.mock import patch
 
 from benchmarks.cli import CSV_HEADERS
-from benchmarks.summary import summarize_batch
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from handoff.quan.summarize import summarize_batch
 from benchmarks.cli import run_benchmarks
 
 

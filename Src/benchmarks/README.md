@@ -4,7 +4,7 @@ Chạy từ thư mục Src, chọn một thư mục mới cho mỗi đợt đo:
 
 ```powershell
 python -m benchmarks.cli --levels all --solvers bfs dfs ucs astar --repeats 3 --timeout 120 --output-dir ../handoff/quan/benchmarks/new-run
-python -m benchmarks.cli summarize ../handoff/quan/benchmarks/new-run
+python ../handoff/quan/summarize.py ../handoff/quan/benchmarks/new-run
 ```
 
 - raw.csv gồm 9 cột: level_id, solver, repeat_index, status, search_time_ms, memory_kb, expanded_nodes, solution_length, path_cost.
@@ -22,7 +22,7 @@ Tool tổng hợp kiểm tra đủ lượt, không trùng, CSV khớp JSON và m
 Nếu summary.csv đã tồn tại, chọn tên mới:
 
 ```powershell
-python -m benchmarks.cli summarize ../handoff/quan/benchmarks/new-run --output ../handoff/quan/benchmarks/new-run/summary-new.csv
+python ../handoff/quan/summarize.py ../handoff/quan/benchmarks/new-run --output ../handoff/quan/benchmarks/new-run/summary-new.csv
 ```
 
 Kiểm tra:

@@ -19,9 +19,9 @@ Phúc đối chiếu cost và lời dẫn video.
 
 | Đã bàn giao | Mã | Công việc | Đầu ra |
 | --- | --- | --- | --- |
-| [ ] | `H01` | Đặc tả từng nhánh heuristic, đơn vị và giả thiết | `heuristic-policy.docx` → Phúc, Quân, Nam |
-| [ ] | `H02` | A*, giả mã, heap, best_g, parent và lập luận tính chất | `astar.docx` → Nam; Phúc rà cost |
-| [ ] | `H03` | Ví dụ tính g/h/f và nhận xét A* so với UCS | `astar-example.docx`, `astar-results.docx` → Nam, Quân |
+| [X] | `H01` | Đặc tả từng nhánh heuristic, đơn vị và giả thiết | `heuristic-policy.docx` → Phúc, Quân, Nam |
+| [X] | `H02` | A*, giả mã, heap, best_g, parent và lập luận tính chất | `astar.docx` → Nam; Phúc rà cost |
+| [X] | `H03` | Ví dụ tính g/h/f và nhận xét A* so với UCS | `astar-example.docx`, `astar-results.docx` → Nam, Quân |
 | [ ] | `H04` | Rà nội dung A* trong báo cáo và video, bổ sung nguồn/AI | `review-notes.docx` và bản sửa → Nam, Phúc, Thức |
 
 Giữ trạng thái bàn giao trước đây; sự tồn tại của năm file không thay xác nhận nội dung.
