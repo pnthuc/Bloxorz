@@ -16,12 +16,12 @@ Phúc không thay số đo của Quân; nhận dữ liệu để trình bày và
 
 | Đã bàn giao | Mã | Công việc | Đầu ra |
 | --- | --- | --- | --- |
-| [ ] | `P01` | Giải thích và chốt cost chung | `cost-policy.docx` → Thiện, Quân, Nam, Thức |
-| [ ] | `P02` | UCS, giả mã và ví dụ tích lũy cost | `ucs.docx`, `cost-example.docx` → Nam, Thiện |
+| [X] | `P01` | Giải thích và chốt cost chung | `cost-policy.docx` → Thiện, Quân, Nam, Thức |
+| [X] | `P02` | UCS, giả mã và ví dụ tích lũy cost | `ucs.docx`, `cost-example.docx` → Nam, Thiện |
 | [ ] | `P03` | Phân tích UCS và rà kết luận về cost | `ucs-results.docx` → Nam; Quân rà nguồn dữ liệu |
 | [ ] | `P04` | README và source giải nén chạy được | `submission/Source/`, `run-check.docx` → Thức |
 | [ ] | `P05` | Bảng/biểu đồ từ CSV đã kiểm chứng | `charts/`, bảng, chú thích và lệnh tái tạo → Nam, Quân |
-| [ ] | `P06` | Kịch bản, quay dựng, phụ đề/lời dẫn và YouTube | `video/video-script.docx`, `video/video-url.txt`, phụ đề → Nam, Thức |
+| [X] | `P06` | Kịch bản, quay dựng, phụ đề/lời dẫn và YouTube | `video/video-script.docx`, `video/video-url.txt`, phụ đề → Nam, Thức |
 
 Có thể gộp các phần viết liên quan vào một tài liệu có mục rõ ràng, tránh tạo bản sao cùng nội dung.
 

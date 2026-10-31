@@ -1,0 +1,19 @@
+{
+  "run_id": "lvl20_dfs_rep3_1793440082690",
+  "level_id": "20",
+  "level_name": "Stage 20: Goal Down",
+  "solver": "dfs",
+  "repeat_index": 3,
+  "status": "SOLVED",
+  "search_time_ms": 0.281,
+  "memory_kb": 3.68,
+  "expanded_nodes": 2,
+  "solution_length": 2,
+  "path_cost": 2.0,
+  "timestamp": "2026-10-31T16:48:02.690528",
+  "error_message": "",
+  "moves": [
+    "DOWN",
+    "DOWN"
+  ]
+}

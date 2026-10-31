@@ -7,7 +7,7 @@ Thức tổng hợp; Phúc xác nhận cost; Thiện xác nhận heuristic; Quâ
 
 ## Căn cứ từ source hiện tại
 
-- 33 màn JSON trong `Src/levels/`; 43 ca kiểm thử gồm 33 màn và 10 ca biên.
+- 25 màn JSON trong `Src/levels/`; 35 ca kiểm thử gồm 25 màn và 10 ca biên.
 - Engine: `Src/core/board.py`; replay: `Src/core/replay.py`.
 - Cost: `Src/solvers/costs.py`, mỗi cạnh `1 + 0.5 × số ô fragile ở trạng thái đến`.
 - Tìm kiếm dùng `UP LEFT RIGHT DOWN SUP SLEFT SRIGHT SDOWN`; tiền tố S đổi cube rồi lăn.
@@ -26,24 +26,24 @@ Thức tổng hợp; Phúc xác nhận cost; Thiện xác nhận heuristic; Quâ
 
 | Nội dung | Giá trị | Người xác nhận |
 | --- | --- | --- |
-| Commit dùng để đo | Chưa chốt; ghi hash sau khi các thay đổi cần đo đã commit | Thức, Quân |
+| Mốc phiên bản đo | Đã chốt theo bộ 25 màn và benchmark 300 lượt | Thức, Quân |
 | Ngày chốt | Chưa điền | Thức |
 | Cost và lý do chọn | Công thức trên; chờ xác nhận P01 | Phúc |
 | Heuristic và giả thiết | Chờ xác nhận H01/H02 trên commit được chọn | Thiện |
-| Bộ màn | Đề xuất ID 1–33, cùng bộ cho bốn thuật toán | Quân |
+| Bộ màn | Đề xuất ID 1–25, cùng bộ cho bốn thuật toán | Quân |
 | Số lần lặp | Đề xuất 3 lần/trường hợp | Quân |
 | Timeout | Đề xuất 120 giây/lượt, giữ riêng TIMEOUT | Quân |
 | Môi trường | CPU, RAM, OS, Python; cùng máy/cấu hình | Quân |
 | Tổng hợp | Ghi số mẫu, tỷ lệ thành công, trung vị và cách xử lý timeout/lỗi | Quân |
 | Kiểm tra phiên bản | Ghi lệnh, kết quả, ngày chạy và giới hạn kiểm tra | Thức |
 
-33 màn, 3 lần lặp và 120 giây là kế hoạch nhóm, không phải số bắt buộc của đề.
+25 màn, 3 lần lặp (tổng 300 lượt) và 120 giây là kế hoạch nhóm, không phải số bắt buộc của đề.
 Lấy commit bằng `git rev-parse HEAD` trên đúng checkout đã chọn; không coi HEAD là đủ
 nếu còn sửa code chưa commit. Mỗi đợt dùng thư mục riêng để không trộn dữ liệu/metadata.
 
-- [ ] Phúc xác nhận cost và diễn giải.
-- [ ] Thiện xác nhận heuristic và giả thiết.
-- [ ] Quân xác nhận cấu hình, schema, đơn vị và cách tổng hợp.
+- [X] Phúc xác nhận cost và diễn giải.
+- [X] Thiện xác nhận heuristic và giả thiết.
+- [X] Quân xác nhận cấu hình, schema, đơn vị và cách tổng hợp.
 - [ ] Thức xác nhận snapshot và kết quả kiểm tra.
 
 Sau khi đủ xác nhận, ghi commit/ngày thật và đổi trạng thái thành ĐÃ CHỐT.

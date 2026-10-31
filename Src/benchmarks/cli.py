@@ -33,37 +33,9 @@ SOLVER_MAP = {
 }
 
 CSV_HEADERS = [
-    "run_id",
-    "level_id",
-    "level_name",
-    "solver",
-    "repeat_index",
-    "status",
-    "search_time_ms",
-    "memory_kb",
-    "expanded_nodes",
-    "solution_length",
-    "rolling_steps",
-    "total_cost",
-    "path_cost",
-    "timeout_sec",
-    "timestamp",
-    "error_message",
+    "level_id", "solver", "repeat_index", "status", "search_time_ms",
+    "memory_kb", "expanded_nodes", "solution_length", "path_cost",
 ]
-
-
-def get_git_commit() -> str:
-    """Lấy commit hash hiện tại của repository."""
-    try:
-        out = subprocess.check_output(
-            ["git", "rev-parse", "HEAD"],
-            cwd=str(SRC_DIR),
-            text=True,
-            stderr=subprocess.DEVNULL,
-        )
-        return out.strip()
-    except Exception:
-        return "UNKNOWN"
 
 
 def get_cpu_and_ram() -> tuple[str, str]:
@@ -97,10 +69,7 @@ def save_environment_metadata(out_dir: Path, config: dict) -> None:
         "ram": ram_str,
         "os": platform.platform(),
         "python_version": sys.version,
-        "git_commit": get_git_commit(),
         "date": datetime.now().isoformat(),
-        "timeout_sec": config.get("timeout_sec"),
-        "repeats": config.get("repeats"),
     }
     with open(out_dir / "environment.json", "w", encoding="utf-8") as f:
         json.dump(env_info, f, indent=2, ensure_ascii=False)
@@ -206,6 +175,8 @@ def run_benchmarks(
         solvers = list(SOLVER_MAP.keys())
 
     out_path = Path(output_dir).resolve()
+    if (out_path / "raw.csv").exists():
+        raise ValueError("Thư mục đã có raw.csv. Hãy chọn --output-dir mới để không trộn các đợt đo.")
     runs_dir = out_path / "runs"
     runs_dir.mkdir(parents=True, exist_ok=True)
 
@@ -220,19 +191,17 @@ def run_benchmarks(
 
     # Thiết lập file CSV ghi lũy tiến
     raw_csv_path = out_path / "raw.csv"
-    csv_exists = raw_csv_path.exists() and raw_csv_path.stat().st_size > 0
-    csv_file = open(raw_csv_path, "a", newline="", encoding="utf-8")
+    csv_file = open(raw_csv_path, "x", newline="", encoding="utf-8")
     writer = csv.DictWriter(csv_file, fieldnames=CSV_HEADERS)
-    if not csv_exists:
-        writer.writeheader()
-        csv_file.flush()
+    writer.writeheader()
+    csv_file.flush()
 
     print("=" * 105)
     print(f"{'Stage':<24} | {'Algo':<5} | {'Status':<10} | {'Time (ms)':>10} | {'Mem (KB)':>9} | {'Expanded':>8} | {'Moves':>5} | {'PathCost':>8}")
     print("=" * 105)
 
     try:
-        for lvl_id in sorted(levels.keys(), key=lambda x: int(x) if x.isdigit() else 999):
+        for lvl_id in sorted(levels.keys(), key=lambda x: (0, int(x)) if x.isdigit() else (1, x)):
             lvl_data = levels[lvl_id]
             for rep in range(1, repeats + 1):
                 for solver_name in solvers:
@@ -253,16 +222,13 @@ def run_benchmarks(
                         "memory_kb": res["memory_kb"],
                         "expanded_nodes": res["expanded_nodes"],
                         "solution_length": res["solution_length"],
-                        "rolling_steps": res["rolling_steps"],
-                        "total_cost": res["total_cost"],
                         "path_cost": res["path_cost"],
-                        "timeout_sec": timeout,
                         "timestamp": now_iso,
                         "error_message": res["error_message"],
                     }
 
                     # Ghi ngay dòng CSV (Streaming)
-                    writer.writerow(record)
+                    writer.writerow({key: record[key] for key in CSV_HEADERS})
                     csv_file.flush()
 
                     # Lưu JSON chi tiết lượt chạy
@@ -290,14 +256,15 @@ def run_benchmarks(
     print(f"\nĐã xuất kết quả vào: {out_path}")
 
 
-def main():
+def main(argv=None):
+    argv = list(sys.argv[1:] if argv is None else argv)
     parser = argparse.ArgumentParser(description="Bloxorz Benchmarking CLI with Progressive Logging")
     parser.add_argument("--levels", nargs="+", default=["all"], help="Danh sách ID màn cần chạy")
     parser.add_argument("--solvers", nargs="+", default=["all"], help="Danh sách thuật toán: bfs dfs ucs astar")
     parser.add_argument("--repeats", type=int, default=1, help="Số lần lặp lại cho mỗi màn")
     parser.add_argument("--timeout", type=float, default=60.0, help="Giới hạn thời gian (giây), mặc định 60s")
     parser.add_argument("--output-dir", type=str, default=DEFAULT_OUTPUT_DIR, help="Thư mục xuất CSV/JSON")
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
     run_benchmarks(
         selected_levels=args.levels,

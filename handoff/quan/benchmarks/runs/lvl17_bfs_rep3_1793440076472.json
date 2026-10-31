@@ -1,0 +1,19 @@
+{
+  "run_id": "lvl17_bfs_rep3_1793440076472",
+  "level_id": "17",
+  "level_name": "Stage 17: Goal Left",
+  "solver": "bfs",
+  "repeat_index": 3,
+  "status": "SOLVED",
+  "search_time_ms": 0.399,
+  "memory_kb": 5.29,
+  "expanded_nodes": 3,
+  "solution_length": 2,
+  "path_cost": 2.0,
+  "timestamp": "2026-10-31T16:47:56.472529",
+  "error_message": "",
+  "moves": [
+    "LEFT",
+    "LEFT"
+  ]
+}
