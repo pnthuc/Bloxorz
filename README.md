@@ -115,5 +115,5 @@ Giữ kèm giấy phép [font](Src/static/fonts/OFL.txt) và [Three.js](Src/stat
 
 ## Bộ màn đã tinh gọn
 
-Bộ chơi có 25 màn, với 37 testcase gồm 12 ca biên. Các ID có khoảng trống để giữ nguyên tham chiếu lịch sử.
-Xem [vai trò các màn](Src/levels/README.md) và [công cụ chạy thử](Src/benchmarks/README.md).
+Bộ chơi có 25 màn đánh số liên tục 1–25, với 37 testcase gồm 12 ca biên.
+Phân nhóm nằm trong [CSV bàn giao](handoff/quan/level-groups.csv); xem [lệnh đo và tổng hợp](handoff/quan/README.md).
