@@ -33,7 +33,7 @@ Tài liệu điều phối tiến độ, phân công trách nhiệm và tình tr
 - **Bộ màn**: 25 màn chính thức (`level_01.json` đến `level_25.json`).
 - **Lượt đo**: 4 thuật toán × 25 màn × 3 lần lặp = **300 lượt chạy**. Timeout: 120s/lượt.
 - **Tập hành động**: 8 hướng (`UP`, `LEFT`, `RIGHT`, `DOWN`, `SUP`, `SLEFT`, `SRIGHT`, `SDOWN`).
-- **Hàm chi phí chung (Cost)**: $1 + 0.5 \times \text{fragile_cells}$ ở trạng thái đến.
+- **Hàm chi phí chung (Cost)**: `1 + 0.5 × số ô fragile bị chiếm` ở trạng thái đến.
 - **Chỉ số ghi nhận**: Thời gian tìm kiếm (ms), Đỉnh cấp phát RAM (`tracemalloc`, KiB), Số node mở rộng, Độ dài lời giải (bước), Chi phí đường đi (`path_cost`).
 
 ---

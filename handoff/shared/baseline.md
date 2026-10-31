@@ -9,7 +9,7 @@ Tài liệu xác nhận các thông số và quy chuẩn thực nghiệm chung g
 ## 1. Căn cứ kỹ thuật từ mã nguồn
 - **Bộ màn chơi**: 25 màn chuẩn (`Src/levels/level_01.json` đến `level_25.json`).
 - **Engine & Kiểm chứng**: `Src/core/board.py` và `Src/core/replay.py`.
-- **Hàm chi phí (Cost)**: `Src/solvers/costs.py`, mỗi cạnh $1 + 0.5 \times \text{fragile_cells}$ ở trạng thái đến.
+- **Hàm chi phí (Cost)**: `Src/solvers/costs.py`, mỗi cạnh `1 + 0.5 × số ô fragile bị chiếm` ở trạng thái đến.
 - **Tập 8 hành động**: `UP`, `LEFT`, `RIGHT`, `DOWN`, `SUP`, `SLEFT`, `SRIGHT`, `SDOWN`.
 - **Hàm Heuristic**: `Src/solvers/member4_astar.py`, kết hợp khoảng cách Manhattan và chi phí qua công tắc phân tách/ghép khối (`SPLIT`).
 - **Đơn vị đo**:

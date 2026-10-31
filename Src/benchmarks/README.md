@@ -24,7 +24,7 @@ python ../handoff/quan/summarize.py ../handoff/quan/benchmarks/new-run
 - **Bộ nhớ (memory_kb)**: Đỉnh cấp phát RAM Python (`tracemalloc`, KiB).
 - **Node mở rộng (expanded_nodes)**: Số trạng thái lấy ra khỏi frontier.
 - **Độ dài lời giải (solution_length)**: Số bước lăn khối (`len(moves)`).
-- **Chi phí (path_cost)**: Tính theo công thức chung $1 + 0.5 \times \text{fragile_cells}$ (được kiểm chứng qua replay).
+- **Chi phí (path_cost)**: Tính theo công thức chung `1 + 0.5 × số ô fragile bị chiếm` (được kiểm chứng qua replay).
 
 ---
 
@@ -34,7 +34,7 @@ Kịch bản vẽ được duy trì chính thức tại `handoff/phuc/plot.py` (
 
 Cài đặt thư viện vẽ (nếu chưa có):
 ```powershell
-python -m pip install -r handoff/phuc/requirements-plot.txt
+python -m pip install -r handoff/phuc/requirements.txt
 ```
 
 Chạy vẽ từ thư mục gốc repo:

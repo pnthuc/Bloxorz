@@ -38,7 +38,7 @@ Công cụ tạo bảng và vẽ biểu đồ: `handoff/phuc/plot.py` (hoặc `S
 
 Cài đặt thư viện vẽ (nếu chưa có):
 ```powershell
-python -m pip install -r handoff/phuc/requirements-plot.txt
+python -m pip install -r handoff/phuc/requirements.txt
 ```
 
 Chạy vẽ từ thư mục gốc dự án:
