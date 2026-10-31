@@ -324,7 +324,8 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json), len(self.levels))
         self.assertEqual(set(response.json), set(self.levels))
-        self.assertEqual(response.json["12"]["name"], "Hành trình liên hoàn")
+        self.assertEqual({key: value["name"] for key, value in response.json.items()},
+                         {key: value["name"] for key, value in self.levels.items()})
         for id in self.levels:
             with self.subTest(level=id):
                 data = self.client.get("/api/level/" + id).json
@@ -382,25 +383,20 @@ class ApiTests(unittest.TestCase):
                     self.assertTrue(BloxorzBoard(self.levels[level_id]).is_goal(
                         deserialize_state(state)))
 
-    def test_video2_failed_move_retains_closed_bridge(self):
-        state = self.client.get("/api/level/11").json["initial_state"]
-        for action in ["RIGHT", "DOWN", "RIGHT"]:
-            data = self.client.post(
-                "/api/move", json=dict(level_id="11", state=state, action=action)
-            ).json
-            self.assertTrue(data["valid"])
-            state = data["next_state"]
-        data = self.client.post(
-            "/api/move", json=dict(level_id="11", state=state, action="RIGHT")
-        ).json
+    def test_switch_closes_bridge_under_block(self):
+        fixture = read_json(ROOT / "tests" / "bridge_regression.json")
+        state = serialize_state(State(2, 1, STANDING, (True,)))
+        with patch("web.app.load_all_levels", return_value={"fixture": fixture}):
+            data = self.client.post("/api/move", json=dict(
+                level_id="fixture", state=state, action="RIGHT")).json
         self.assertFalse(data["valid"])
         self.assertEqual(data["failure_reason"], "bridge_closed")
-        self.assertEqual(data["failure_state"]["bridges"], [False, False])
-        b = BloxorzBoard(self.levels["11"])
+        self.assertEqual(data["failure_state"]["bridges"], [False])
+        board = BloxorzBoard(fixture)
         original = deserialize_state(state)
-        self.assertIsNone(b.apply_move(original, "RIGHT"))
-        self.assertNotIn("RIGHT", [a for a, st in b.get_successors(original)])
-        self.assertEqual(original.bridges, (True, False))
+        self.assertIsNone(board.apply_move(original, "RIGHT"))
+        self.assertNotIn("RIGHT", [a for a, _ in board.get_successors(original)])
+        self.assertEqual(original.bridges, (True,))
 
     def test_api_invalid_move_and_unknown_solver(self):
         state = self.client.get("/api/level/1").json["initial_state"]
@@ -484,7 +480,7 @@ class CaseDataTests(unittest.TestCase):
     def test_loader_rejects_missing_maps_and_bad_expectations(self):
         raw = read_json(ROOT / "tests" / "test_cases.json")
         broken = deepcopy(raw)
-        del broken["33"]
+        del broken[next(iter(self.levels))]
         with patch("tests.helpers.read_json", return_value=broken):
             with patch("tests.helpers.load_levels", return_value=self.levels):
                 with self.assertRaisesRegex(AssertionError, "thiếu map"):

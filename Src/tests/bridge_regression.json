@@ -1,0 +1,41 @@
+{
+  "id": "fixture",
+  "grid": [
+    [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    [
+      1,
+      1,
+      10,
+      3,
+      1
+    ]
+  ],
+  "start_pos": [
+    0,
+    0
+  ],
+  "initial_bridges": [
+    true
+  ],
+  "switches": {
+    "2,3": {
+      "behavior": "close",
+      "targets": [
+        0
+      ]
+    }
+  }
+}

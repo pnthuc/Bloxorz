@@ -6,7 +6,7 @@ from tempfile import TemporaryDirectory
 import unittest
 
 from benchmarks.cli import CSV_HEADERS
-from benchmarks.summary import summarize_batch
+from benchmarks.cli import summarize_batch
 
 
 class SummaryTests(unittest.TestCase):
@@ -18,7 +18,7 @@ class SummaryTests(unittest.TestCase):
         (root / 'run-config.json').write_text(json.dumps(config), encoding='utf-8')
         (root / 'environment.json').write_text(json.dumps(dict(config, git_commit='b' * 40)), encoding='utf-8')
         groups = root / 'groups.csv'
-        groups.write_text('level_id,level_name,primary_group,stress_test\n1,Màn thử,Cơ bản,Không\n', encoding='utf-8')
+        groups.write_text('level_id,level_name,primary_group\n1,Màn thử,Cơ bản\n', encoding='utf-8')
         rows = []
         for index, status in enumerate(statuses, 1):
             record = dict(run_id=f'run{index}', level_id='1', level_name='Màn thử', solver='bfs',

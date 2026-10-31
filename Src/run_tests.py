@@ -31,7 +31,7 @@ def build_parser(description="Kiểm thử solver: exit 0=PASS, 1=FAIL, 2=PENDIN
     parser = TestParser(description=description)
     parser.add_argument("--solver", choices=["all", *SOLVERS], default="all")
     parser.add_argument(
-        "--cases", nargs="+", metavar="ID", help="Chạy riêng các ID, ví dụ: T1 T10 33"
+        "--cases", nargs="+", metavar="ID", help="Chạy riêng các ID, ví dụ: T1 T10 1"
     )
     return parser
 

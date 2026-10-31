@@ -3,20 +3,23 @@
 Chạy từ thư mục `Src` sau khi hoàn tất một đợt đo:
 
 ```powershell
-python -m benchmarks.summary ../handoff/quan/benchmarks
+python -m benchmarks.cli summarize ../handoff/quan/benchmarks
 ```
 
 Tool đọc `raw.csv`, `run-config.json`, `environment.json` và `runs/*.json`,
-đối chiếu với `handoff/quan/level-groups.csv`, rồi tạo `summary.csv` trong thư mục đợt đo.
+phân nhóm theo cơ chế trong các JSON màn hiện tại, rồi tạo `summary.csv` trong thư mục đợt đo.
 Tool không chạy lại solver, không sửa dữ liệu gốc và không ghi đè file đầu ra đã có.
 CLI chạy benchmark vẫn dùng như trước.
 
 Nếu cần tên đầu ra hoặc bảng phân nhóm khác:
 
 ```powershell
-python -m benchmarks.summary ../handoff/quan/benchmarks --output ../handoff/quan/benchmarks/summary-new.csv
-python -m benchmarks.summary PATH_TO_BATCH --groups PATH_TO_GROUPS_CSV
+python -m benchmarks.cli summarize ../handoff/quan/benchmarks --output ../handoff/quan/benchmarks/summary-new.csv
+python -m benchmarks.cli summarize PATH_TO_BATCH --groups PATH_TO_GROUPS_CSV
 ```
+
+Khi tổng hợp đợt đo cũ, dùng `--groups` với bảng phân nhóm đã lưu cùng đợt đó.
+Tool kiểm tra tên/ID màn để tránh trộn các bộ dữ liệu khác nhau.
 
 Mỗi dòng đầu ra là một cặp màn–thuật toán, gồm số lượt theo từng trạng thái,
 tỷ lệ giải thành công và median/min/max/IQR của các chỉ số. IQR dùng quartile inclusive;

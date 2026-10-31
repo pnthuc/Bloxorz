@@ -50,7 +50,7 @@ Src/
   web/              Flask API và chuyển State sang/từ JSON
   solvers/          Bốn thuật toán, profiler và cost chung
   benchmarks/       CLI thực nghiệm và worker đo cho GUI
-  levels/           level_01.json đến level_33.json
+  levels/           các màn JSON được nạp tự động theo ID
   static/           JavaScript, CSS, texture tạo sẵn, font, âm thanh và thư viện local
   templates/        HTML
   tests/            Regression và dữ liệu ca kiểm thử
@@ -71,7 +71,12 @@ Chạy solver thật trên một số ca, có kiểm chứng lời giải:
 python run_tests.py --cases 1 2 3 4
 ```
 
-Bỏ `--cases` để chạy toàn bộ 43 ca, gồm 33 màn và 10 ca biên.
+Bỏ `--cases` để chạy toàn bộ ca trong danh mục kiểm thử, gồm các màn và ca biên.
+Danh sách màn, số trang chọn màn và benchmark `--levels all` được lấy từ các file JSON
+trong `Src/levels/`, không phụ thuộc số lượng hoặc ID liên tiếp. Tên, mô tả và độ khó
+hiển thị lấy từ dữ liệu màn. Thư mục rỗng không tự thay bằng bộ màn cũ.
+Khi thay đổi bản đồ, cập nhật lời giải tham chiếu trong `Src/tests/test_cases.json`;
+các kỳ vọng kiểm thử là dữ liệu đã kiểm chứng, không được tự suy ra từ solver khi chạy test.
 Các màn stress có thể mất nhiều thời gian; lệnh này không giới hạn thời gian tìm kiếm.
 `--solver bfs|dfs|ucs|astar` chọn riêng một thuật toán.
 
