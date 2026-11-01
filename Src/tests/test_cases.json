@@ -1251,5 +1251,121 @@
       "LEFT"
     ],
     "walkthrough_cost": 23.0
+  },
+  "26": {
+    "level": "26",
+    "solvable": true,
+    "bfs_moves": 9,
+    "ucs_cost": 9.5,
+    "walkthrough": [
+      "RIGHT",
+      "RIGHT",
+      "LEFT",
+      "DOWN",
+      "DOWN",
+      "SUP",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT"
+    ],
+    "walkthrough_cost": 9.5
+  },
+  "27": {
+    "level": "27",
+    "solvable": true,
+    "bfs_moves": 9,
+    "ucs_cost": 10.0,
+    "walkthrough": [
+      "RIGHT",
+      "RIGHT",
+      "SUP",
+      "UP",
+      "UP",
+      "RIGHT",
+      "DOWN",
+      "RIGHT",
+      "RIGHT"
+    ],
+    "walkthrough_cost": 10.0
+  },
+  "28": {
+    "level": "28",
+    "solvable": true,
+    "bfs_moves": 17,
+    "ucs_cost": 17.5,
+    "walkthrough": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "RIGHT",
+      "DOWN",
+      "DOWN",
+      "SRIGHT",
+      "UP",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "UP",
+      "RIGHT",
+      "RIGHT"
+    ],
+    "walkthrough_cost": 18.0
+  },
+  "29": {
+    "level": "29",
+    "solvable": true,
+    "bfs_moves": 27,
+    "ucs_cost": 29.0,
+    "walkthrough": [
+      "DOWN",
+      "RIGHT",
+      "UP",
+      "LEFT",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "RIGHT",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "SUP",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "UP",
+      "RIGHT",
+      "RIGHT",
+      "UP",
+      "UP",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT"
+    ],
+    "walkthrough_cost": 30.0
+  },
+  "30": {
+    "level": "30",
+    "solvable": true,
+    "bfs_moves": 9,
+    "ucs_cost": 9.5,
+    "walkthrough": [
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "DOWN",
+      "SUP",
+      "UP",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT"
+    ],
+    "walkthrough_cost": 9.5
   }
 }
