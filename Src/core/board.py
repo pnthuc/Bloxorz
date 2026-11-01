@@ -27,7 +27,7 @@ BRIDGE_BASE = 10  # Mã từ 10 trở lên đại diện cho các cây cầu (10
 @dataclass(frozen=True)
 class State:
     """
-    Trạng thái của bài toán tìm kiếm (Immutable & Hashable).
+    Trạng thái của bài toán tìm kiếm (Immutable, dùng làm khóa tra cứu).
     Bao gồm vị trí, hướng khối và trạng thái Đóng/Mở của mọi cây cầu.
     """
     r: int

@@ -1,3 +1,9 @@
+import sys; from pathlib import Path
+_ROOT_PARENT = Path(__file__).resolve().parents[2]
+if str(_ROOT_PARENT) not in sys.path: sys.path.insert(0, str(_ROOT_PARENT))
+import json
+from core.levels import load_all_levels
+from handoff.quan.generate_level_groups import level_groups
 """Kiểm tra luật game, API và dữ liệu; mỗi class phụ trách một phần."""
 
 from copy import deepcopy
@@ -324,7 +330,8 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json), len(self.levels))
         self.assertEqual(set(response.json), set(self.levels))
-        self.assertEqual(response.json["12"]["name"], "Hành trình liên hoàn")
+        self.assertEqual({key: value["name"] for key, value in response.json.items()},
+                         {key: value["name"] for key, value in self.levels.items()})
         for id in self.levels:
             with self.subTest(level=id):
                 data = self.client.get("/api/level/" + id).json
@@ -382,25 +389,30 @@ class ApiTests(unittest.TestCase):
                     self.assertTrue(BloxorzBoard(self.levels[level_id]).is_goal(
                         deserialize_state(state)))
 
-    def test_video2_failed_move_retains_closed_bridge(self):
-        state = self.client.get("/api/level/11").json["initial_state"]
-        for action in ["RIGHT", "DOWN", "RIGHT"]:
-            data = self.client.post(
-                "/api/move", json=dict(level_id="11", state=state, action=action)
-            ).json
-            self.assertTrue(data["valid"])
-            state = data["next_state"]
-        data = self.client.post(
-            "/api/move", json=dict(level_id="11", state=state, action="RIGHT")
-        ).json
+    def test_switch_closes_bridge_under_block(self):
+        fixture = {
+            "id": "fixture",
+            "grid": [
+                [1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1],
+                [1, 1, 10, 3, 1]
+            ],
+            "start_pos": [0, 0],
+            "initial_bridges": [True],
+            "switches": {"2,3": {"behavior": "close", "targets": [0]}}
+        }
+        state = serialize_state(State(2, 1, STANDING, (True,)))
+        with patch("web.app.load_all_levels", return_value={"fixture": fixture}):
+            data = self.client.post("/api/move", json=dict(
+                level_id="fixture", state=state, action="RIGHT")).json
         self.assertFalse(data["valid"])
         self.assertEqual(data["failure_reason"], "bridge_closed")
-        self.assertEqual(data["failure_state"]["bridges"], [False, False])
-        b = BloxorzBoard(self.levels["11"])
+        self.assertEqual(data["failure_state"]["bridges"], [False])
+        board = BloxorzBoard(fixture)
         original = deserialize_state(state)
-        self.assertIsNone(b.apply_move(original, "RIGHT"))
-        self.assertNotIn("RIGHT", [a for a, st in b.get_successors(original)])
-        self.assertEqual(original.bridges, (True, False))
+        self.assertIsNone(board.apply_move(original, "RIGHT"))
+        self.assertNotIn("RIGHT", [a for a, _ in board.get_successors(original)])
+        self.assertEqual(original.bridges, (True,))
 
     def test_api_invalid_move_and_unknown_solver(self):
         state = self.client.get("/api/level/1").json["initial_state"]
@@ -484,7 +496,7 @@ class CaseDataTests(unittest.TestCase):
     def test_loader_rejects_missing_maps_and_bad_expectations(self):
         raw = read_json(ROOT / "tests" / "test_cases.json")
         broken = deepcopy(raw)
-        del broken["33"]
+        del broken[next(iter(self.levels))]
         with patch("tests.helpers.read_json", return_value=broken):
             with patch("tests.helpers.load_levels", return_value=self.levels):
                 with self.assertRaisesRegex(AssertionError, "thiếu map"):
@@ -516,6 +528,58 @@ class CaseDataTests(unittest.TestCase):
             path.write_text('{"T1": {}, "T1": {}}', encoding="utf-8")
             with self.assertRaisesRegex(AssertionError, "key trùng"):
                 read_json(path)
+
+
+
+
+class LevelCatalogTests(unittest.TestCase):
+    def setUp(self):
+        self.client = app.test_client()
+
+    def test_discovery_add_remove_and_noncontiguous_ids(self):
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.assertEqual(load_all_levels(root), {})
+            for lid in ('42', '2', 'bonus'):
+                (root / f'{lid}.json').write_text(json.dumps(dict(id=lid, name=lid,
+                    grid=[[1, 1, 1, 9]], start_pos=[0, 0])), encoding='utf-8')
+            self.assertEqual(list(load_all_levels(root)), ['2', '42', 'bonus'])
+            (root / '2.json').unlink()
+            self.assertEqual(list(load_all_levels(root)), ['42', 'bonus'])
+            with patch('web.app.load_all_levels', return_value=load_all_levels(root)):
+                client = self.client
+                self.assertEqual(set(client.get('/api/levels').json), {'42', 'bonus'})
+                self.assertEqual(client.get('/api/level/2').status_code, 404)
+                self.assertEqual(client.get('/api/level/42').json['level']['name'], '42')
+                result = client.post('/api/solve', json={'solver': 'bfs'})
+                self.assertTrue(result.json['found'])
+
+    def test_empty_catalog_has_no_old_fallback(self):
+        with patch('web.app.load_all_levels', return_value={}):
+            client = self.client
+            self.assertEqual(client.get('/api/levels').json, {})
+            self.assertEqual(client.get('/api/level/1').status_code, 404)
+            self.assertEqual(client.post('/api/solve', json={}).status_code, 404)
+
+    def test_duplicate_or_invalid_files_fail_explicitly(self):
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            for name in ('one', 'two'):
+                (root / f'{name}.json').write_text('{"id":"same"}', encoding='utf-8')
+            with self.assertRaisesRegex(ValueError, 'Duplicate'):
+                load_all_levels(root)
+            (root / 'two.json').write_text('{', encoding='utf-8')
+            with self.assertRaisesRegex(ValueError, 'Invalid level file'):
+                load_all_levels(root)
+
+    def test_catalog_features_and_metadata(self):
+        levels = {name: dict(id=name, name=name, grid=[tiles], initial_bridges=[])
+                  for name, tiles in [('plain', [1, 9]), ('orange', [1, 2, 9]),
+                                      ('bridge', [1, 3, 9]), ('split', [2, 3, 5, 9])]}
+        groups = level_groups(levels)
+        self.assertEqual([r['fragile_cells'] for r in groups.values()], [0, 1, 0, 1])
+        self.assertEqual([r['switches_count'] for r in groups.values()], [0, 0, 1, 2])
+        self.assertEqual([r['split_switches'] for r in groups.values()], [0, 0, 0, 1])
 
 
 if __name__ == "__main__":

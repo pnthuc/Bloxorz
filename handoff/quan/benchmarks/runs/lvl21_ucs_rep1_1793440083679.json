@@ -1,0 +1,33 @@
+{
+  "run_id": "lvl21_ucs_rep1_1793440083679",
+  "level_id": "21",
+  "level_name": "Stage 21: Open Field",
+  "solver": "ucs",
+  "repeat_index": 1,
+  "status": "SOLVED",
+  "search_time_ms": 78.728,
+  "memory_kb": 180.55,
+  "expanded_nodes": 617,
+  "solution_length": 16,
+  "path_cost": 16.0,
+  "timestamp": "2026-10-31T16:48:03.679542",
+  "error_message": "",
+  "moves": [
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "DOWN",
+    "DOWN",
+    "DOWN",
+    "DOWN",
+    "DOWN",
+    "DOWN",
+    "DOWN",
+    "DOWN"
+  ]
+}

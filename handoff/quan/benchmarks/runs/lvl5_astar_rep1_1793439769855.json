@@ -1,0 +1,25 @@
+{
+  "run_id": "lvl5_astar_rep1_1793439769855",
+  "level_id": "5",
+  "level_name": "Stage 5: Narrow Path",
+  "solver": "astar",
+  "repeat_index": 1,
+  "status": "SOLVED",
+  "search_time_ms": 0.919,
+  "memory_kb": 5.43,
+  "expanded_nodes": 10,
+  "solution_length": 8,
+  "path_cost": 10.0,
+  "timestamp": "2026-10-31T16:42:49.855303",
+  "error_message": "",
+  "moves": [
+    "RIGHT",
+    "RIGHT",
+    "DOWN",
+    "DOWN",
+    "RIGHT",
+    "RIGHT",
+    "DOWN",
+    "DOWN"
+  ]
+}

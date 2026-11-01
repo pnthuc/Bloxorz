@@ -1,0 +1,19 @@
+{
+  "run_id": "lvl18_astar_rep1_1793440077648",
+  "level_id": "18",
+  "level_name": "Stage 18: Goal Up",
+  "solver": "astar",
+  "repeat_index": 1,
+  "status": "SOLVED",
+  "search_time_ms": 0.485,
+  "memory_kb": 4.67,
+  "expanded_nodes": 2,
+  "solution_length": 2,
+  "path_cost": 2.0,
+  "timestamp": "2026-10-31T16:47:57.648658",
+  "error_message": "",
+  "moves": [
+    "UP",
+    "UP"
+  ]
+}

@@ -1,0 +1,2 @@
+# Optional P05 presentation dependency; not needed to play or benchmark.
+matplotlib>=3.8,<4

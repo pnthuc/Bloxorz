@@ -1,0 +1,33 @@
+{
+  "run_id": "lvl21_astar_rep1_1793440083896",
+  "level_id": "21",
+  "level_name": "Stage 21: Open Field",
+  "solver": "astar",
+  "repeat_index": 1,
+  "status": "SOLVED",
+  "search_time_ms": 52.425,
+  "memory_kb": 198.38,
+  "expanded_nodes": 323,
+  "solution_length": 16,
+  "path_cost": 16.0,
+  "timestamp": "2026-10-31T16:48:03.896576",
+  "error_message": "",
+  "moves": [
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "DOWN",
+    "DOWN",
+    "DOWN",
+    "DOWN",
+    "DOWN",
+    "DOWN",
+    "DOWN",
+    "DOWN"
+  ]
+}

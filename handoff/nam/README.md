@@ -1,63 +1,43 @@
-# Bùi Phương Nam — BFS và báo cáo tổng
+# Bùi Phương Nam — BFS và Báo cáo tổng
 
-MSSV **24120502**. Nhận/gửi việc theo [quy trình chung](../README.md).
-Nam viết BFS, mô hình hóa, phân tích và ghép báo cáo; Phúc phụ trách quay dựng video.
+MSSV: **24120502**. Nhận và bàn giao việc theo [Quy trình chung](../README.md).
 
-## Đầu vào và hiện trạng
+Phụ trách: Thuật toán BFS, mô hình hóa bài toán Bloxorz và tổng hợp báo cáo toàn nhóm.
 
-- BFS: `Src/solvers/member3_bfs.py`; State/luật: `Src/core/board.py`.
-- Nhận DFS/phương pháp/số liệu từ Quân, A* từ Thiện, UCS/cost và hình từ Phúc,
-  kiến trúc/demo từ Thức. Dùng cùng [baseline](../shared/baseline.md).
-- Đã có [BFS.docx](BFS.docx) và [Report.docx](Report.docx) bản thảo.
-  Đã có [video-outline.docx](video-outline.docx) từ bàn giao mới trên main.
-  Bìa Report hiện thiếu Nguyễn Lê Minh Quân, MSSV 24120219; nội dung còn chỗ giữ chỗ.
-  Chưa có `Report.pdf` và URL video cuối trong repo.
-- Số node, độ sâu và bộ nhớ nêu trong BFS.docx cần đối chiếu CSV đúng phiên bản;
-  không coi các con số trong bản thảo là dữ liệu đã nghiệm thu.
+---
 
-## Nhiệm vụ
+## 1. Đầu vào & Tài nguyên
+- **Mã nguồn**: `Src/solvers/member3_bfs.py`, `Src/core/board.py`.
+- **Dữ liệu thực nghiệm**: Nhận từ Quân (`handoff/quan/benchmarks/summary.csv`).
+- **Biểu đồ & Bảng số liệu**: Nhận từ Phúc (`handoff/phuc/charts/` và `handoff/phuc/result-tables.csv`).
+- **Nội dung thành viên**:
+  - DFS: Quân (`handoff/quan/dfs.docx`).
+  - UCS & Cost: Phúc (`handoff/phuc/ucs.docx`, `cost-policy.docx`).
+  - A* & Heuristic: Thiện (`handoff/thien/astar.docx`, `heuristic-policy.docx`).
+  - Engine & GUI: Thức (`handoff/thuc/Phan_Ngoc_Thuc.docx`).
 
-| Đã bàn giao | Mã | Công việc | Đầu ra |
-| --- | --- | --- | --- |
-| [x] | `N01` | Khung báo cáo, BFS, giả mã và ví dụ | `Report.docx`, `BFS.docx` → cả nhóm |
-| [ ] | `N02` | Mô hình trạng thái, hành động, chuyển, đích và cost | `model.docx` hoặc mục tương ứng trong Report → Thức, Phúc, Thiện rà |
-| [ ] | `N03` | So sánh bốn thuật toán bằng dữ liệu thật | `discussion.docx` hoặc mục tương ứng trong Report → Quân, Phúc, Thiện rà |
-| [ ] | `N04` | Biên tập PDF hoàn chỉnh, nguồn và phụ lục | `Report.docx`, `Report.pdf` → Thức |
-| [x] | `N05` | Đề cương nội dung video và rà bản nháp | `video-outline.docx` → Phúc; phản hồi video → Phúc, Thức |
+---
 
-Có bản thảo chưa đồng nghĩa nhiệm vụ đã nghiệm thu; giữ trạng thái bàn giao hiện có.
-Không cần tạo thêm DOCX rời nếu nội dung đã có mục rõ ràng trong Report và người nhận sử dụng được.
+## 2. Danh mục công việc & Sản phẩm
 
-## Nội dung phải khớp source
+| Mã | Nhiệm vụ | Sản phẩm đầu ra | Trạng thái |
+| :--- | :--- | :--- | :---: |
+| `N01` | Mô tả thuật toán BFS, giả mã và ví dụ từng bước | [BFS.docx](BFS.docx) | Đã xong |
+| `N02` | Mô hình hóa trạng thái, hành động, chuyển trạng thái và đích | Mục 2 trong `Report.docx` | Đang tổng hợp |
+| `N03` | So sánh, nhận xét 4 thuật toán dựa trên số liệu thực nghiệm | Mục 5-6 trong `Report.docx` | Đang tổng hợp |
+| `N04` | Biên tập và xuất bản báo cáo PDF hoàn chỉnh | `Report.docx`, `Report.pdf` | Đang hoàn thiện |
+| `N05` | Đề cương nội dung kịch bản video demo | [video-outline.docx](video-outline.docx) | Đã xong |
 
-- BFS dùng deque FIFO, đánh dấu khi phát hiện bằng `parent`, kiểm tra goal khi sinh con,
-  truy vết bằng parent. Giải thích vì sao ít hành động nhất không đồng nghĩa ít cost có trọng số nhất.
-- State gồm `r,c,orientation,bridges,r2,c2,active_cube`; có bốn trạng thái hướng,
-  gồm SPLIT. Hai state cùng vị trí nhưng khác cầu hoặc khối đang chọn có thể khác nhau.
-- Tập tìm kiếm gồm bốn hướng thường và bốn hướng đổi khối rồi lăn có tiền tố S.
-  SPACE chỉ chọn khối khi chơi tay; `solution_length = len(moves)`.
-- Phần kiến trúc web tách khỏi mô hình tìm kiếm để tránh lặp nội dung của Thức.
-  Nhờ Thức rà luật, Phúc rà cost, Thiện rà quan hệ cost–heuristic.
+---
 
-## Bố cục báo cáo theo đề §3.6
-
-1. Giới thiệu, đủ năm thành viên, phân công và phần trăm hoàn thành được từng người xác nhận.
-2. Mô hình hóa và kiến trúc game/GUI.
-3. BFS, DFS, UCS, A*: ý tưởng, giả mã, chống lặp, cost và heuristic.
-4. Bộ màn cố định, nhóm độ khó, môi trường, phiên bản code và phương pháp đo.
-5. Bảng/biểu đồ thời gian, peak memory, expanded nodes, solution length; thêm cost chung để phân tích.
-6. Nhận xét theo màn/nhóm màn, timeout, điểm mạnh/yếu và giới hạn.
-7. URL YouTube công khai, tài liệu tham khảo và phụ lục cách dùng AI/prompt.
-
-Phần trăm là mức hoàn thành công việc cá nhân, không bắt buộc cộng thành 100%.
-Không tự điền thay thành viên hoặc coi checkbox giao việc là phần trăm chấm điểm.
-
-## Tiêu chí N03/N04/N05
-
-- Mọi kết luận định lượng có ID màn, dòng CSV hoặc hình nguồn; cùng snapshot và policy.
-  Không kết luận A* luôn tốt nhất hay ít node luôn nhanh hơn.
-- Nêu số mẫu, timeout/lỗi và cách tổng hợp. Sửa các số liệu cũ chỉ sau khi có kết quả đo thay thế.
-- Dùng đúng ms và KiB; peak Python không phải tổng RAM hoặc bộ nhớ GPU.
-- PDF đủ mục, không còn placeholder, hình và công thức đọc được, link video hoạt động.
-- N05 chỉ cần checklist GUI, thao tác tay, thắng/thua, ô nâng cao và solver/replay.
-  Phúc viết kịch bản chi tiết/quay dựng; Nam rà tính thống nhất với báo cáo.
+## 3. Quy chuẩn kỹ thuật trong báo cáo
+1. **Thuật toán BFS**:
+   - Sử dụng hàng đợi `collections.deque` (FIFO).
+   - Kiểm tra đích sớm ngay khi sinh trạng thái con để tối ưu số node mở rộng.
+   - Giải thích rõ: BFS đảm bảo tìm được lời giải có số bước đi ít nhất, nhưng không đảm bảo chi phí tối ưu trên các màn có ô gạch cam fragile (vì chi phí mỗi bước không đồng nhất = 1).
+2. **Quy ước trạng thái & hành động**:
+   - Trạng thái `State(r, c, orientation, bridges, r2, c2, active_cube)` gồm 7 trường bất biến (frozen dataclass).
+   - Tập 8 hành động tìm kiếm: `UP`, `LEFT`, `RIGHT`, `DOWN`, `SUP`, `SLEFT`, `SRIGHT`, `SDOWN` (tiền tố `S` chỉ xuất hiện khi đang ở trạng thái phân tách khối `SPLIT`). Phím `SPACE` chỉ phục vụ chơi tay, không tính là cạnh trong cây tìm kiếm.
+3. **Số liệu thực nghiệm**:
+   - Trích dẫn chính xác từ bảng số liệu chuẩn 300 lượt chạy tại `handoff/quan/benchmarks/summary.csv` và các biểu đồ PNG chuẩn tại `handoff/phuc/charts/`.
+   - Đơn vị: Thời gian (ms), Bộ nhớ đỉnh (KiB), Node mở rộng (node), Độ dài (bước), Chi phí đường đi (`path_cost`).

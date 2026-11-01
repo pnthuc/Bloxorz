@@ -1,446 +1,327 @@
 {
-  "1": {
-    "level": "1",
-    "solvable": true,
-    "bfs_moves": 7,
-    "ucs_cost": 7,
-    "walkthrough": ["RIGHT", "DOWN", "DOWN", "RIGHT", "RIGHT", "DOWN", "RIGHT"],
-    "walkthrough_cost": 7
-  },
-  "2": {
-    "level": "2",
-    "solvable": true,
-    "bfs_moves": 6,
-    "ucs_cost": 7.5,
-    "walkthrough": ["RIGHT", "UP", "RIGHT", "RIGHT", "DOWN", "RIGHT"],
-    "walkthrough_cost": 7.5
-  },
-  "3": {
-    "level": "3",
-    "solvable": true,
-    "bfs_moves": 15,
-    "ucs_cost": 15,
-    "walkthrough": [
-      "RIGHT", "DOWN", "RIGHT", "RIGHT", "RIGHT", "UP", "RIGHT", "DOWN", "LEFT", "UP", "RIGHT", "RIGHT",
-      "RIGHT", "DOWN", "DOWN"
-    ],
-    "walkthrough_cost": 15
-  },
-  "4": {
-    "level": "4",
-    "solvable": true,
-    "bfs_moves": 16,
-    "ucs_cost": 16.5,
-    "walkthrough": [
-      "RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN", "RIGHT", "RIGHT", "RIGHT", "UP", "SUP", "RIGHT",
-      "RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN"
-    ],
-    "walkthrough_cost": 16.5
-  },
-  "5": {
-    "level": "5",
-    "solvable": true,
-    "bfs_moves": 12,
-    "ucs_cost": 12,
-    "walkthrough": ["RIGHT", "RIGHT", "DOWN", "DOWN", "RIGHT", "RIGHT", "UP", "UP", "RIGHT", "RIGHT", "DOWN", "DOWN"],
-    "walkthrough_cost": 12
-  },
-  "6": {
-    "level": "6",
-    "solvable": true,
-    "bfs_moves": 8,
-    "ucs_cost": 10,
-    "walkthrough": ["RIGHT", "RIGHT", "DOWN", "DOWN", "DOWN", "DOWN", "RIGHT", "RIGHT"],
-    "walkthrough_cost": 10,
-    "visits": [2]
-  },
-  "7": {
-    "level": "7",
-    "solvable": true,
-    "bfs_moves": 11,
-    "ucs_cost": 11,
-    "walkthrough": ["RIGHT", "DOWN", "LEFT", "UP", "RIGHT", "DOWN", "RIGHT", "RIGHT", "RIGHT", "DOWN", "RIGHT"],
-    "walkthrough_cost": 11,
-    "visits": [3, 10]
-  },
-  "8": {
-    "level": "8",
-    "solvable": true,
-    "bfs_moves": 17,
-    "ucs_cost": 17,
-    "walkthrough": [
-      "UP", "LEFT", "DOWN", "RIGHT", "UP", "RIGHT", "LEFT", "DOWN", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "UP",
-      "RIGHT", "DOWN", "LEFT", "DOWN"
-    ],
-    "walkthrough_cost": 17,
-    "visits": [4, 10]
-  },
-  "9": {
-    "level": "9",
-    "solvable": true,
-    "bfs_moves": 19,
-    "ucs_cost": 19,
-    "walkthrough": [
-      "RIGHT", "DOWN", "RIGHT", "RIGHT", "RIGHT", "UP", "RIGHT", "DOWN", "LEFT", "DOWN", "RIGHT", "RIGHT",
-      "RIGHT", "RIGHT", "DOWN", "RIGHT", "UP", "LEFT", "DOWN"
-    ],
-    "walkthrough_cost": 19,
-    "visits": [3, 10, 11]
-  },
-  "10": {
-    "level": "10",
-    "solvable": true,
-    "bfs_moves": 20,
-    "ucs_cost": 20,
-    "walkthrough": [
-      "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN", "SDOWN", "RIGHT", "RIGHT", "RIGHT", "RIGHT",
-      "RIGHT", "UP", "SDOWN", "DOWN", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN"
-    ],
-    "walkthrough_cost": 20.0,
-    "visits": [3, 10, "SPLIT"]
-  },
-  "11": {
-    "level": "11",
-    "solvable": true,
-    "bfs_moves": 23,
-    "ucs_cost": 23,
-    "walkthrough": [
-      "DOWN", "RIGHT", "UP", "LEFT", "DOWN", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "UP", "RIGHT", "LEFT", "DOWN",
-      "DOWN", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN", "RIGHT", "UP", "LEFT", "DOWN"
-    ],
-    "walkthrough_cost": 23,
-    "visits": [3, 4, 10, 11]
-  },
-  "12": {
-    "level": "12",
-    "solvable": true,
-    "bfs_moves": 30,
-    "ucs_cost": 31,
-    "walkthrough": [
-      "RIGHT", "RIGHT", "DOWN", "RIGHT", "RIGHT", "UP", "DOWN", "RIGHT", "RIGHT", "RIGHT", "DOWN", "UP", "LEFT",
-      "LEFT", "LEFT", "LEFT", "UP", "LEFT", "DOWN", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "UP",
-      "RIGHT", "DOWN", "LEFT", "DOWN"
-    ],
-    "walkthrough_cost": 31,
-    "visits": [2, 3, 4, 10, 11, "SPLIT"]
-  },
-  "13": {
-    "level": "13",
-    "solvable": true,
-    "bfs_moves": 25,
-    "ucs_cost": 25,
-    "walkthrough": [
-      "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN", "DOWN",
-      "DOWN", "DOWN", "LEFT", "DOWN", "LEFT", "LEFT", "LEFT", "LEFT", "LEFT", "LEFT", "LEFT", "LEFT", "LEFT"
-    ],
-    "walkthrough_cost": 25
-  },
-  "14": {
-    "level": "14",
-    "solvable": true,
-    "bfs_moves": 20,
-    "ucs_cost": 23,
-    "walkthrough": [
-      "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN", "DOWN", "DOWN", "DOWN", "LEFT", "UP",
-      "RIGHT", "DOWN", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN"
-    ],
-    "walkthrough_cost": 23
-  },
-  "15": {
-    "level": "15",
-    "solvable": true,
-    "bfs_moves": 39,
-    "ucs_cost": 39,
-    "walkthrough": [
-      "DOWN", "RIGHT", "RIGHT", "DOWN", "RIGHT", "RIGHT", "DOWN", "DOWN", "LEFT", "DOWN", "DOWN", "LEFT", "UP",
-      "RIGHT", "DOWN", "UP", "LEFT", "DOWN", "RIGHT", "UP", "UP", "RIGHT", "UP", "UP", "LEFT", "LEFT", "UP",
-      "UP", "LEFT", "DOWN", "RIGHT", "DOWN", "LEFT", "UP", "RIGHT", "RIGHT", "RIGHT", "UP", "RIGHT"
-    ],
-    "walkthrough_cost": 39
-  },
-  "16": {
-    "level": "16",
-    "solvable": true,
-    "bfs_moves": 38,
-    "ucs_cost": 38,
-    "walkthrough": [
-      "LEFT", "LEFT", "UP", "UP", "DOWN", "DOWN", "RIGHT", "RIGHT", "DOWN", "RIGHT", "RIGHT", "UP", "RIGHT",
-      "UP", "RIGHT", "RIGHT", "RIGHT", "UP", "LEFT", "RIGHT", "DOWN", "LEFT", "LEFT", "LEFT", "DOWN", "LEFT",
-      "DOWN", "DOWN", "RIGHT", "RIGHT", "DOWN", "DOWN", "RIGHT", "UP", "LEFT", "UP", "RIGHT", "DOWN"
-    ],
-    "walkthrough_cost": 38
-  },
-  "17": {
-    "level": "17",
-    "solvable": true,
-    "bfs_moves": 22,
-    "ucs_cost": 22,
-    "walkthrough": [
-      "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "SRIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT",
-      "RIGHT", "RIGHT", "RIGHT", "UP", "UP", "SRIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT",
-      "DOWN"
-    ],
-    "walkthrough_cost": 22.0
-  },
-  "18": {
-    "level": "18",
-    "solvable": true,
-    "bfs_moves": 20,
-    "ucs_cost": 20,
-    "walkthrough": [
-      "RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN", "RIGHT", "DOWN", "RIGHT", "UP", "RIGHT", "RIGHT", "RIGHT",
-      "RIGHT", "UP", "UP", "LEFT", "RIGHT", "RIGHT", "RIGHT", "RIGHT"
-    ],
-    "walkthrough_cost": 20
-  },
-  "19": {
-    "level": "19",
-    "solvable": true,
-    "bfs_moves": 33,
-    "ucs_cost": 44,
-    "walkthrough": [
-      "DOWN", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN", "LEFT",
-      "DOWN", "DOWN", "DOWN", "DOWN", "RIGHT", "DOWN", "LEFT", "LEFT", "LEFT", "LEFT", "UP", "LEFT", "DOWN",
-      "DOWN", "RIGHT", "UP", "LEFT", "DOWN", "RIGHT", "UP", "LEFT"
-    ],
-    "walkthrough_cost": 44
-  },
-  "20": {
-    "level": "20",
-    "solvable": true,
-    "bfs_moves": 19,
-    "ucs_cost": 19,
-    "walkthrough": [
-      "UP", "RIGHT", "RIGHT", "DOWN", "DOWN", "RIGHT", "RIGHT", "SDOWN", "RIGHT", "RIGHT", "SRIGHT", "RIGHT", "RIGHT", "DOWN", "DOWN", "RIGHT", "RIGHT", "RIGHT", "RIGHT"
-    ],
-    "walkthrough_cost": 19.0
-  },
-  "21": {
-    "level": "21",
-    "solvable": true,
-    "bfs_moves": 14,
-    "ucs_cost": 14,
-    "walkthrough": [
-      "RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN", "DOWN", "RIGHT", "RIGHT", "RIGHT", "DOWN", "RIGHT", "DOWN",
-      "LEFT", "UP"
-    ],
-    "walkthrough_cost": 14
-  },
-  "22": {
-    "level": "22",
-    "solvable": true,
-    "bfs_moves": 22,
-    "ucs_cost": 22.5,
-    "walkthrough": [
-      "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "SRIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT",
-      "RIGHT", "UP", "UP", "SRIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN", "DOWN", "LEFT", "DOWN"
-    ],
-    "walkthrough_cost": 22.5
-  },
-  "23": {
-    "level": "23",
-    "solvable": true,
-    "bfs_moves": 28,
-    "ucs_cost": 28,
-    "walkthrough": [
-      "DOWN", "RIGHT", "UP", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN", "RIGHT",
-      "DOWN", "DOWN", "DOWN", "DOWN", "DOWN", "RIGHT", "DOWN", "RIGHT", "UP", "RIGHT", "RIGHT", "RIGHT", "DOWN",
-      "RIGHT", "RIGHT", "UP"
-    ],
-    "walkthrough_cost": 28
-  },
-  "24": {
-    "level": "24",
-    "solvable": true,
-    "bfs_moves": 43,
-    "ucs_cost": 43,
-    "walkthrough": [
-      "DOWN", "RIGHT", "UP", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN", "UP", "RIGHT", "RIGHT",
-      "RIGHT", "RIGHT", "DOWN", "RIGHT", "UP", "RIGHT", "DOWN", "RIGHT", "UP", "RIGHT", "RIGHT", "RIGHT",
-      "RIGHT", "DOWN", "DOWN", "LEFT", "DOWN", "DOWN", "DOWN", "DOWN", "LEFT", "UP", "LEFT", "LEFT", "LEFT",
-      "LEFT", "DOWN", "LEFT", "DOWN", "LEFT", "DOWN"
-    ],
-    "walkthrough_cost": 43
-  },
-  "25": {
-    "level": "25",
-    "solvable": true,
-    "bfs_moves": 55,
-    "ucs_cost": 55,
-    "walkthrough": [
-      "RIGHT", "UP", "RIGHT", "DOWN", "LEFT", "UP", "LEFT", "DOWN", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN",
-      "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "SRIGHT", "RIGHT", "RIGHT", "UP", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT",
-      "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "UP", "UP", "UP", "RIGHT", "RIGHT", "UP", "UP", "SRIGHT", "RIGHT", "RIGHT", "DOWN", "DOWN", "RIGHT", "RIGHT", "DOWN"
-    ],
-    "walkthrough_cost": 55.0
-  },
-  "26": {
-    "level": "26",
-    "solvable": true,
-    "bfs_moves": 54,
-    "ucs_cost": 54,
-    "walkthrough": [
-      "RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN", "RIGHT", "UP", "RIGHT", "RIGHT", "RIGHT", "DOWN", "RIGHT",
-      "UP", "RIGHT", "DOWN", "LEFT", "UP", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN", "RIGHT", "DOWN", "DOWN",
-      "DOWN", "DOWN", "LEFT", "UP", "LEFT", "LEFT", "LEFT", "DOWN", "LEFT", "LEFT", "UP", "LEFT", "LEFT",
-      "LEFT", "LEFT", "DOWN", "DOWN", "DOWN", "DOWN", "RIGHT", "DOWN", "RIGHT", "RIGHT", "UP", "RIGHT", "RIGHT",
-      "RIGHT", "RIGHT", "RIGHT"
-    ],
-    "walkthrough_cost": 54
-  },
-  "27": {
-    "level": "27",
-    "solvable": true,
-    "bfs_moves": 73,
-    "ucs_cost": 73,
-    "walkthrough": [
-      "DOWN", "RIGHT", "UP", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN", "UP", "RIGHT", "RIGHT",
-      "RIGHT", "RIGHT", "DOWN", "RIGHT", "RIGHT", "UP", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "UP", "RIGHT",
-      "DOWN", "DOWN", "DOWN", "DOWN", "DOWN", "DOWN", "LEFT", "UP", "LEFT", "LEFT", "LEFT", "LEFT", "LEFT",
-      "DOWN", "LEFT", "LEFT", "UP", "LEFT", "LEFT", "LEFT", "LEFT", "LEFT", "DOWN", "LEFT", "DOWN", "DOWN",
-      "DOWN", "DOWN", "UP", "RIGHT", "DOWN", "RIGHT", "UP", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN", "RIGHT",
-      "UP", "RIGHT", "DOWN", "RIGHT", "UP", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT"
-    ],
-    "walkthrough_cost": 73
-  },
-  "28": {
-    "level": "28",
-    "solvable": true,
-    "bfs_moves": 57,
-    "ucs_cost": 57,
-    "walkthrough": [
-      "RIGHT", "UP", "RIGHT", "DOWN", "LEFT", "UP", "LEFT", "DOWN", "RIGHT", "UP", "RIGHT", "RIGHT", "RIGHT",
-      "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN", "DOWN", "RIGHT",
-      "RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN", "DOWN", "DOWN", "DOWN", "DOWN", "SUP", "RIGHT",
-      "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT",
-      "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "UP", "UP", "RIGHT", "RIGHT", "UP"
-    ],
-    "walkthrough_cost": 57.0
-  },
-  "29": {
-    "level": "29",
-    "solvable": true,
-    "bfs_moves": 47,
-    "ucs_cost": 47,
-    "walkthrough": [
-      "RIGHT", "UP", "RIGHT", "DOWN", "LEFT", "UP", "LEFT", "DOWN", "RIGHT", "DOWN", "DOWN", "RIGHT", "RIGHT",
-      "RIGHT", "RIGHT", "RIGHT", "SUP", "UP", "UP", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT",
-      "RIGHT", "UP", "UP", "UP", "UP", "UP", "UP", "UP", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "UP",
-      "RIGHT", "DOWN", "DOWN", "DOWN", "RIGHT", "DOWN", "RIGHT", "RIGHT", "RIGHT"
-    ],
-    "walkthrough_cost": 47.0
-  },
-  "30": {
-    "level": "30",
-    "solvable": true,
-    "bfs_moves": 56,
-    "ucs_cost": 56,
-    "walkthrough": [
-      "DOWN", "RIGHT", "UP", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN", "UP", "RIGHT", "RIGHT",
-      "RIGHT", "RIGHT", "DOWN", "RIGHT", "RIGHT", "UP", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "UP", "RIGHT",
-      "DOWN", "DOWN", "DOWN", "DOWN", "DOWN", "DOWN", "LEFT", "UP", "LEFT", "LEFT", "LEFT", "LEFT", "LEFT",
-      "DOWN", "LEFT", "LEFT", "UP", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN",
-      "DOWN", "DOWN", "DOWN", "DOWN", "DOWN", "DOWN", "RIGHT"
-    ],
-    "walkthrough_cost": 56
-  },
-  "31": {
-    "level": "31",
-    "solvable": true,
-    "bfs_moves": 9,
-    "ucs_cost": 10,
-    "walkthrough": ["DOWN", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "UP"],
-    "walkthrough_cost": 10
-  },
-  "32": {
-    "level": "32",
-    "solvable": true,
-    "bfs_moves": 6,
-    "ucs_cost": 6,
-    "walkthrough": ["RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT"],
-    "walkthrough_cost": 6
-  },
-  "33": {
-    "level": "33",
-    "solvable": true,
-    "bfs_moves": 110,
-    "ucs_cost": 110.5,
-    "walkthrough": [
-      "UP", "RIGHT", "DOWN", "LEFT", "UP", "UP", "LEFT", "RIGHT", "RIGHT", "DOWN", "RIGHT", "DOWN", "DOWN",
-      "RIGHT", "LEFT", "LEFT", "SUP", "RIGHT", "LEFT", "DOWN", "RIGHT", "RIGHT", "RIGHT", "RIGHT",
-      "RIGHT", "DOWN", "DOWN", "DOWN", "DOWN", "RIGHT", "RIGHT", "RIGHT", "DOWN", "SDOWN", "DOWN",
-      "DOWN", "RIGHT", "DOWN", "RIGHT", "LEFT", "LEFT", "SUP", "UP", "LEFT", "LEFT", "UP", "DOWN",
-      "DOWN", "RIGHT", "RIGHT", "RIGHT", "DOWN", "RIGHT", "UP", "UP", "UP", "UP", "UP", "UP", "LEFT", "UP",
-      "RIGHT", "SDOWN", "LEFT", "LEFT", "LEFT", "DOWN", "LEFT", "LEFT", "RIGHT", "RIGHT", "SUP",
-      "UP", "DOWN", "DOWN", "DOWN", "DOWN", "SUP", "LEFT", "DOWN", "LEFT", "LEFT", "SUP", "UP",
-      "LEFT", "LEFT", "LEFT", "LEFT", "UP", "LEFT", "SUP", "RIGHT", "RIGHT", "UP", "RIGHT", "UP",
-      "RIGHT", "RIGHT", "RIGHT", "UP", "UP", "UP", "RIGHT", "RIGHT", "UP", "LEFT", "SDOWN", "DOWN",
-      "RIGHT", "UP"
-    ],
-    "walkthrough_cost": 111.0
-  },
   "T1": {
     "name": "Màn cơ bản",
-    "level": "1",
     "solvable": true,
     "bfs_moves": 7,
     "ucs_cost": 7,
-    "walkthrough": ["RIGHT", "DOWN", "DOWN", "RIGHT", "RIGHT", "DOWN", "RIGHT"],
-    "walkthrough_cost": 7
+    "walkthrough": [
+      "RIGHT",
+      "DOWN",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "RIGHT"
+    ],
+    "walkthrough_cost": 7,
+    "board": {
+      "id": "1",
+      "name": "Stage 1: Classic Warmup",
+      "difficulty": "Easy (Basic Floor Only)",
+      "start_pos": [
+        1,
+        1
+      ],
+      "initial_bridges": [],
+      "switches": {},
+      "grid": [
+        [
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0
+        ],
+        [
+          0,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          9,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          0
+        ]
+      ]
+    }
   },
   "T2": {
     "name": "Bẫy chi phí gạch cam",
-    "level": "2",
     "solvable": true,
     "bfs_moves": 6,
     "ucs_cost": 7.5,
-    "walkthrough": ["RIGHT", "UP", "RIGHT", "RIGHT", "DOWN", "RIGHT"],
-    "walkthrough_cost": 7.5
+    "walkthrough": [
+      "RIGHT",
+      "UP",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "RIGHT"
+    ],
+    "walkthrough_cost": 7.5,
+    "board": {
+      "id": "2",
+      "name": "Stage 2: Fragile Path",
+      "difficulty": "Medium (Fragile Orange Tiles)",
+      "start_pos": [
+        2,
+        1
+      ],
+      "initial_bridges": [],
+      "switches": {},
+      "grid": [
+        [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          2,
+          2,
+          2,
+          2,
+          1,
+          9,
+          1
+        ],
+        [
+          1,
+          1,
+          2,
+          2,
+          2,
+          2,
+          1,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1
+        ]
+      ]
+    }
   },
   "T3": {
     "name": "Tách khối, đổi khối và mở cầu",
     "board": {
-      "start_pos": [1, 1],
-      "initial_bridges": [false],
+      "start_pos": [
+        1,
+        1
+      ],
+      "initial_bridges": [
+        false
+      ],
       "switches": {
         "1,4": {
           "behavior": "split",
           "targets": [
-            [0, 4],
-            [2, 4]
+            [
+              0,
+              4
+            ],
+            [
+              2,
+              4
+            ]
           ]
         },
         "0,6": {
           "behavior": "toggle",
-          "targets": [0]
+          "targets": [
+            0
+          ]
         }
       },
       "grid": [
-        [0, 0, 0, 1, 1, 1, 3, 0, 0, 1],
-        [1, 1, 1, 1, 5, 1, 1, 10, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 0, 1, 9],
-        [0, 0, 0, 0, 0, 0, 0, 0, 1, 1]
+        [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          3,
+          0,
+          0,
+          1
+        ],
+        [
+          1,
+          1,
+          1,
+          1,
+          5,
+          1,
+          1,
+          10,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0,
+          1,
+          9
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1
+        ]
       ]
     },
     "solvable": true,
     "bfs_moves": 16,
     "ucs_cost": 16,
     "walkthrough": [
-      "RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN", "RIGHT", "RIGHT", "RIGHT", "UP", "SUP", "RIGHT",
-      "RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN"
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "UP",
+      "SUP",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN"
     ],
     "walkthrough_cost": 16.0
   },
   "T4": {
     "name": "Đích bị cô lập",
     "board": {
-      "start_pos": [1, 1],
+      "start_pos": [
+        1,
+        1
+      ],
       "initial_bridges": [],
       "switches": {},
       "grid": [
-        [1, 1, 1, 0, 0, 0],
-        [1, 1, 1, 0, 9, 1],
-        [1, 1, 1, 0, 1, 1]
+        [
+          1,
+          1,
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          1,
+          1,
+          0,
+          9,
+          1
+        ],
+        [
+          1,
+          1,
+          1,
+          0,
+          1,
+          1
+        ]
       ]
     },
     "solvable": false,
@@ -453,25 +334,47 @@
     "name": "Hành lang hai bước",
     "board": {
       "grid": [
-        [1, 1, 1, 9]
+        [
+          1,
+          1,
+          1,
+          9
+        ]
       ],
-      "start_pos": [0, 0],
+      "start_pos": [
+        0,
+        0
+      ],
       "initial_bridges": [],
       "switches": {}
     },
     "solvable": true,
     "bfs_moves": 2,
     "ucs_cost": 2,
-    "walkthrough": ["RIGHT", "RIGHT"],
+    "walkthrough": [
+      "RIGHT",
+      "RIGHT"
+    ],
     "walkthrough_cost": 2
   },
   "T6": {
     "name": "Gạch cam chặn vị trí đứng",
     "board": {
       "grid": [
-        [1, 1, 1, 2, 1, 1, 9]
+        [
+          1,
+          1,
+          1,
+          2,
+          1,
+          1,
+          9
+        ]
       ],
-      "start_pos": [0, 0],
+      "start_pos": [
+        0,
+        0
+      ],
       "initial_bridges": [],
       "switches": {}
     },
@@ -485,56 +388,111 @@
     "name": "Soft switch mở cầu",
     "board": {
       "grid": [
-        [1, 1, 3, 10, 1, 1, 9]
+        [
+          1,
+          1,
+          3,
+          10,
+          1,
+          1,
+          9
+        ]
       ],
-      "start_pos": [0, 0],
-      "initial_bridges": [false],
+      "start_pos": [
+        0,
+        0
+      ],
+      "initial_bridges": [
+        false
+      ],
       "switches": {
         "0,2": {
           "behavior": "toggle",
-          "targets": [0]
+          "targets": [
+            0
+          ]
         }
       }
     },
     "solvable": true,
     "bfs_moves": 4,
     "ucs_cost": 4,
-    "walkthrough": ["RIGHT", "RIGHT", "RIGHT", "RIGHT"],
+    "walkthrough": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT"
+    ],
     "walkthrough_cost": 4
   },
   "T8": {
     "name": "Heavy switch khi đứng",
     "board": {
       "grid": [
-        [1, 1, 1, 4, 10, 10, 9]
+        [
+          1,
+          1,
+          1,
+          4,
+          10,
+          10,
+          9
+        ]
       ],
-      "start_pos": [0, 0],
-      "initial_bridges": [false],
+      "start_pos": [
+        0,
+        0
+      ],
+      "initial_bridges": [
+        false
+      ],
       "switches": {
         "0,3": {
           "behavior": "open",
-          "targets": [0]
+          "targets": [
+            0
+          ]
         }
       }
     },
     "solvable": true,
     "bfs_moves": 4,
     "ucs_cost": 4,
-    "walkthrough": ["RIGHT", "RIGHT", "RIGHT", "RIGHT"],
+    "walkthrough": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT"
+    ],
     "walkthrough_cost": 4
   },
   "T9": {
     "name": "Heavy switch khi nằm",
     "board": {
       "grid": [
-        [1, 1, 4, 1, 10, 10, 9]
+        [
+          1,
+          1,
+          4,
+          1,
+          10,
+          10,
+          9
+        ]
       ],
-      "start_pos": [0, 0],
-      "initial_bridges": [false],
+      "start_pos": [
+        0,
+        0
+      ],
+      "initial_bridges": [
+        false
+      ],
       "switches": {
         "0,2": {
           "behavior": "open",
-          "targets": [0]
+          "targets": [
+            0
+          ]
         }
       }
     },
@@ -548,14 +506,750 @@
     "name": "Xuất phát tại đích",
     "board": {
       "grid": [
-        [9]
+        [
+          9
+        ]
       ],
-      "start_pos": [0, 0]
+      "start_pos": [
+        0,
+        0
+      ]
     },
     "solvable": true,
     "bfs_moves": 0,
     "ucs_cost": 0,
     "walkthrough": [],
     "walkthrough_cost": 0
+  },
+  "1": {
+    "level": "1",
+    "solvable": true,
+    "bfs_moves": 7,
+    "ucs_cost": 7.0,
+    "walkthrough": [
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN"
+    ],
+    "walkthrough_cost": 7.0
+  },
+  "2": {
+    "level": "2",
+    "solvable": true,
+    "bfs_moves": 6,
+    "ucs_cost": 7.5,
+    "walkthrough": [
+      "RIGHT",
+      "UP",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "RIGHT"
+    ],
+    "walkthrough_cost": 7.5
+  },
+  "3": {
+    "level": "3",
+    "solvable": true,
+    "bfs_moves": 15,
+    "ucs_cost": 15.0,
+    "walkthrough": [
+      "RIGHT",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "UP",
+      "RIGHT",
+      "DOWN",
+      "LEFT",
+      "UP",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "DOWN"
+    ],
+    "walkthrough_cost": 15.0
+  },
+  "4": {
+    "level": "4",
+    "solvable": true,
+    "bfs_moves": 16,
+    "ucs_cost": 16.5,
+    "walkthrough": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "UP",
+      "SUP",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN"
+    ],
+    "walkthrough_cost": 16.5
+  },
+  "5": {
+    "level": "5",
+    "solvable": true,
+    "bfs_moves": 8,
+    "ucs_cost": 10.0,
+    "walkthrough": [
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "DOWN"
+    ],
+    "walkthrough_cost": 10.0
+  },
+  "6": {
+    "level": "6",
+    "solvable": true,
+    "bfs_moves": 11,
+    "ucs_cost": 11.0,
+    "walkthrough": [
+      "RIGHT",
+      "DOWN",
+      "LEFT",
+      "UP",
+      "RIGHT",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "RIGHT"
+    ],
+    "walkthrough_cost": 11.0
+  },
+  "7": {
+    "level": "7",
+    "solvable": true,
+    "bfs_moves": 17,
+    "ucs_cost": 17.0,
+    "walkthrough": [
+      "UP",
+      "LEFT",
+      "DOWN",
+      "RIGHT",
+      "UP",
+      "RIGHT",
+      "LEFT",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "UP",
+      "RIGHT",
+      "DOWN",
+      "LEFT",
+      "DOWN"
+    ],
+    "walkthrough_cost": 17.0
+  },
+  "8": {
+    "level": "8",
+    "solvable": true,
+    "bfs_moves": 23,
+    "ucs_cost": 23.0,
+    "walkthrough": [
+      "RIGHT",
+      "DOWN",
+      "LEFT",
+      "UP",
+      "RIGHT",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "UP",
+      "RIGHT",
+      "LEFT",
+      "DOWN",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "RIGHT",
+      "UP",
+      "LEFT",
+      "DOWN"
+    ],
+    "walkthrough_cost": 23.0
+  },
+  "9": {
+    "level": "9",
+    "solvable": true,
+    "bfs_moves": 30,
+    "ucs_cost": 31.0,
+    "walkthrough": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "SRIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "UP",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "UP",
+      "LEFT",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "UP",
+      "RIGHT",
+      "DOWN",
+      "LEFT",
+      "DOWN"
+    ],
+    "walkthrough_cost": 31.0
+  },
+  "10": {
+    "level": "10",
+    "solvable": true,
+    "bfs_moves": 39,
+    "ucs_cost": 39.0,
+    "walkthrough": [
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "UP",
+      "RIGHT",
+      "DOWN",
+      "UP",
+      "LEFT",
+      "DOWN",
+      "RIGHT",
+      "UP",
+      "UP",
+      "RIGHT",
+      "UP",
+      "UP",
+      "LEFT",
+      "LEFT",
+      "UP",
+      "UP",
+      "LEFT",
+      "DOWN",
+      "RIGHT",
+      "DOWN",
+      "LEFT",
+      "UP",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "UP",
+      "RIGHT"
+    ],
+    "walkthrough_cost": 39.0
+  },
+  "11": {
+    "level": "11",
+    "solvable": true,
+    "bfs_moves": 33,
+    "ucs_cost": 44.0,
+    "walkthrough": [
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "LEFT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "RIGHT",
+      "DOWN",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "UP",
+      "LEFT",
+      "DOWN",
+      "DOWN",
+      "RIGHT",
+      "UP",
+      "LEFT",
+      "DOWN",
+      "RIGHT",
+      "UP",
+      "LEFT"
+    ],
+    "walkthrough_cost": 44.0
+  },
+  "12": {
+    "level": "12",
+    "solvable": true,
+    "bfs_moves": 28,
+    "ucs_cost": 28.0,
+    "walkthrough": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "RIGHT",
+      "UP",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "RIGHT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "RIGHT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "RIGHT",
+      "UP",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "UP"
+    ],
+    "walkthrough_cost": 28.0
+  },
+  "13": {
+    "level": "13",
+    "solvable": true,
+    "bfs_moves": 56,
+    "ucs_cost": 56.0,
+    "walkthrough": [
+      "DOWN",
+      "RIGHT",
+      "UP",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "UP",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "UP",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "UP",
+      "RIGHT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "UP",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "DOWN",
+      "LEFT",
+      "LEFT",
+      "UP",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "RIGHT"
+    ],
+    "walkthrough_cost": 56.0
+  },
+  "14": {
+    "level": "14",
+    "solvable": true,
+    "bfs_moves": 9,
+    "ucs_cost": 10.0,
+    "walkthrough": [
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "UP"
+    ],
+    "walkthrough_cost": 10.0
+  },
+  "15": {
+    "level": "15",
+    "solvable": true,
+    "bfs_moves": 6,
+    "ucs_cost": 6.0,
+    "walkthrough": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT"
+    ],
+    "walkthrough_cost": 6.0
+  },
+  "16": {
+    "level": "16",
+    "solvable": true,
+    "bfs_moves": 110,
+    "ucs_cost": 110.5,
+    "walkthrough": [
+      "UP",
+      "RIGHT",
+      "DOWN",
+      "LEFT",
+      "UP",
+      "UP",
+      "LEFT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "RIGHT",
+      "DOWN",
+      "DOWN",
+      "RIGHT",
+      "LEFT",
+      "LEFT",
+      "SUP",
+      "RIGHT",
+      "LEFT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "DOWN",
+      "SRIGHT",
+      "RIGHT",
+      "DOWN",
+      "DOWN",
+      "RIGHT",
+      "DOWN",
+      "LEFT",
+      "LEFT",
+      "SUP",
+      "UP",
+      "LEFT",
+      "LEFT",
+      "UP",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "RIGHT",
+      "DOWN",
+      "UP",
+      "UP",
+      "UP",
+      "UP",
+      "UP",
+      "UP",
+      "LEFT",
+      "UP",
+      "RIGHT",
+      "SLEFT",
+      "LEFT",
+      "LEFT",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "LEFT",
+      "RIGHT",
+      "RIGHT",
+      "SUP",
+      "UP",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "SUP",
+      "LEFT",
+      "DOWN",
+      "LEFT",
+      "LEFT",
+      "SUP",
+      "UP",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "UP",
+      "LEFT",
+      "SUP",
+      "RIGHT",
+      "RIGHT",
+      "UP",
+      "RIGHT",
+      "UP",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "UP",
+      "UP",
+      "UP",
+      "RIGHT",
+      "RIGHT",
+      "UP",
+      "LEFT",
+      "SRIGHT",
+      "DOWN",
+      "DOWN",
+      "UP"
+    ],
+    "walkthrough_cost": 111.5
+  },
+  "17": {
+    "level": "17",
+    "solvable": true,
+    "bfs_moves": 2,
+    "ucs_cost": 2.0,
+    "walkthrough": [
+      "LEFT",
+      "LEFT"
+    ],
+    "walkthrough_cost": 2.0
+  },
+  "18": {
+    "level": "18",
+    "solvable": true,
+    "bfs_moves": 2,
+    "ucs_cost": 2.0,
+    "walkthrough": [
+      "UP",
+      "UP"
+    ],
+    "walkthrough_cost": 2.0
+  },
+  "19": {
+    "level": "19",
+    "solvable": true,
+    "bfs_moves": 2,
+    "ucs_cost": 2.0,
+    "walkthrough": [
+      "RIGHT",
+      "RIGHT"
+    ],
+    "walkthrough_cost": 2.0
+  },
+  "20": {
+    "level": "20",
+    "solvable": true,
+    "bfs_moves": 2,
+    "ucs_cost": 2.0,
+    "walkthrough": [
+      "DOWN",
+      "DOWN"
+    ],
+    "walkthrough_cost": 2.0
+  },
+  "21": {
+    "level": "21",
+    "solvable": true,
+    "bfs_moves": 16,
+    "ucs_cost": 16.0,
+    "walkthrough": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN"
+    ],
+    "walkthrough_cost": 16.0
+  },
+  "22": {
+    "level": "22",
+    "solvable": true,
+    "bfs_moves": 16,
+    "ucs_cost": 16.0,
+    "walkthrough": [
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN"
+    ],
+    "walkthrough_cost": 16.0
+  },
+  "23": {
+    "level": "23",
+    "solvable": true,
+    "bfs_moves": 20,
+    "ucs_cost": 20.0,
+    "walkthrough": [
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "UP",
+      "UP",
+      "UP",
+      "UP",
+      "UP",
+      "UP",
+      "UP",
+      "UP"
+    ],
+    "walkthrough_cost": 20.0
+  },
+  "24": {
+    "level": "24",
+    "solvable": true,
+    "bfs_moves": 16,
+    "ucs_cost": 20.0,
+    "walkthrough": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT"
+    ],
+    "walkthrough_cost": 23.0
+  },
+  "25": {
+    "level": "25",
+    "solvable": true,
+    "bfs_moves": 16,
+    "ucs_cost": 20.0,
+    "walkthrough": [
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT"
+    ],
+    "walkthrough_cost": 23.0
   }
 }

@@ -1,5 +1,5 @@
 """Flask routes; gameplay and search remain in core/ and solvers/."""
-import hashlib
+import zlib
 import json
 from pathlib import Path
 from threading import BoundedSemaphore
@@ -64,7 +64,9 @@ def api_list_levels():
 def api_get_level(level_id):
     """Tải cấu trúc bàn cờ và trạng thái khởi đầu của một màn chơi."""
     levels = load_all_levels()
-    lvl = levels.get(str(level_id)) or next(iter(levels.values()))
+    lvl = levels.get(str(level_id))
+    if lvl is None:
+        return jsonify(error="Màn chơi không tồn tại."), 404
     board = BloxorzBoard(lvl)
     return jsonify({
         "level": lvl,
@@ -77,7 +79,10 @@ def api_move():
     """Kiểm tra và thực hiện 1 bước di chuyển thủ công hoặc bước diễn hoạt AI."""
     data = request.get_json(force=True)
     levels = load_all_levels()
-    lvl = levels.get(str(data.get("level_id", "1"))) or next(iter(levels.values()))
+    level_id = str(data.get("level_id")) if data.get("level_id") is not None else next(iter(levels), None)
+    lvl = levels.get(level_id)
+    if lvl is None:
+        return jsonify(error="Màn chơi không tồn tại."), 404
     board = BloxorzBoard(lvl)
 
     current_state = deserialize_state(data["state"])
@@ -101,7 +106,10 @@ def api_solve():
     """Gọi thuật toán tìm kiếm tương ứng (BFS, DFS, UCS, A*) và trả về lời giải + Metrics."""
     data = request.get_json(force=True)
     levels = load_all_levels()
-    lvl = levels.get(str(data.get("level_id", "1"))) or next(iter(levels.values()))
+    level_id = str(data.get("level_id")) if data.get("level_id") is not None else next(iter(levels), None)
+    lvl = levels.get(level_id)
+    if lvl is None:
+        return jsonify(error="Màn chơi không tồn tại."), 404
     board = BloxorzBoard(lvl)
     solver_name = str(data.get("solver", "bfs")).lower()
 
@@ -133,7 +141,7 @@ def api_benchmark():
     level = load_all_levels().get(level_id)
     if level is None:
         return jsonify(error="Màn chơi không tồn tại."), 404
-    revision = hashlib.sha256(json.dumps(level, sort_keys=True).encode()).hexdigest()
+    revision = f"{zlib.crc32(json.dumps(level, sort_keys=True).encode()):08x}"
     if data.get("level_revision") not in (None, revision):
         return jsonify(error="Dữ liệu màn chơi đã đổi. Hãy chạy lại cả lượt so sánh.",
                        code="LEVEL_CHANGED"), 409

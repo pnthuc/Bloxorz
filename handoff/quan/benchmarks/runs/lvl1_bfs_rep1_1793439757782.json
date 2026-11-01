@@ -1,0 +1,24 @@
+{
+  "run_id": "lvl1_bfs_rep1_1793439757782",
+  "level_id": "1",
+  "level_name": "Stage 1: Basic Moves",
+  "solver": "bfs",
+  "repeat_index": 1,
+  "status": "SOLVED",
+  "search_time_ms": 2.697,
+  "memory_kb": 16.73,
+  "expanded_nodes": 35,
+  "solution_length": 7,
+  "path_cost": 7.0,
+  "timestamp": "2026-10-31T16:42:37.782291",
+  "error_message": "",
+  "moves": [
+    "RIGHT",
+    "RIGHT",
+    "DOWN",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "DOWN"
+  ]
+}

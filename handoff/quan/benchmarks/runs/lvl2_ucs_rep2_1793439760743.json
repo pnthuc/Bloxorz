@@ -1,0 +1,23 @@
+{
+  "run_id": "lvl2_ucs_rep2_1793439760743",
+  "level_id": "2",
+  "level_name": "Stage 2: Fragile Tiles",
+  "solver": "ucs",
+  "repeat_index": 2,
+  "status": "SOLVED",
+  "search_time_ms": 3.828,
+  "memory_kb": 22.13,
+  "expanded_nodes": 41,
+  "solution_length": 6,
+  "path_cost": 7.5,
+  "timestamp": "2026-10-31T16:42:40.743266",
+  "error_message": "",
+  "moves": [
+    "RIGHT",
+    "UP",
+    "RIGHT",
+    "RIGHT",
+    "DOWN",
+    "RIGHT"
+  ]
+}

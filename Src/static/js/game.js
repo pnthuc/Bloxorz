@@ -6,13 +6,7 @@
   const B=window.Bloxorz,$=id=>document.getElementById(id);
   const keyActions={ArrowUp:'UP',KeyW:'UP',ArrowDown:'DOWN',KeyS:'DOWN',ArrowLeft:'LEFT',KeyA:'LEFT',ArrowRight:'RIGHT',KeyD:'RIGHT',Space:'SPACE'};
   const labels={STANDING:'Đứng thẳng',HORIZONTAL:'Nằm ngang',VERTICAL:'Nằm dọc',SPLIT:'Hai khối đơn'};
-  const stages={
-    '1':['Khởi đầu','Lăn khối qua sàn đá và đứng thẳng vào ô đích.'],
-    '2':['Đường đi mong manh','Gạch cam chỉ chịu được khối nằm. Hãy chọn đường đi cẩn thận.'],
-    '3':['Công tắc & cầu nối','Kích hoạt công tắc để mở đường đến đích.'],
-    '4':['Tách khối','Ghép hai khối đơn để hoàn thành màn chơi.']
-  };
-  let scene=null,state=null,initialState=null,level=null,levelId='1',moveCount=0,epoch=0;
+  let scene=null,state=null,initialState=null,level=null,levelId=null,moveCount=0,epoch=0;
   const levelCache=new Map(),copy=value=>JSON.parse(JSON.stringify(value));
   const currentLevelKey='bloxorz-current-level';
   function startingLevel(){
@@ -107,10 +101,10 @@
       const key=String(id),data=!forceReload&&levelCache.has(key)?copy(levelCache.get(key)):await api(`/api/level/${encodeURIComponent(id)}`);if(token!==epoch)return false;
       levelCache.set(key,copy(data));level=data.level;initialState=copy(data.initial_state);state=copy(initialState);levelId=String(level.id);moveCount=0;
       $('level-select').value=levelId;
-      const text=[level.display_name||stages[levelId]?.[0]||level.name,
-        level.description||stages[levelId]?.[1]||'Đưa khối đứng thẳng vào ô đích.'];
+      const text=[level.display_name||level.name||`Màn ${levelId}`,
+        level.description||'Đưa khối đứng thẳng vào ô đích.'];
       $('stage-title').textContent=text[0];$('stage-description').textContent=text[1];
-      $('level-difficulty').textContent=({'1':'Cơ bản','2':'Trung bình','3':'Khó','4':'Nâng cao'})[levelId]||level.difficulty||'Tùy chỉnh';
+      $('level-difficulty').textContent=level.difficulty||'Tùy chỉnh';
       $('level-summary').textContent=text[1];
       const index=Object.keys(allLevels).indexOf(levelId)+1;
       $('stage-number').textContent=`MÀN ${String(index).padStart(2,'0')} / ${String(Object.keys(allLevels).length).padStart(2,'0')}`;
@@ -298,9 +292,10 @@
       $('level-select').replaceChildren();
       Object.values(allLevels).forEach(item=>{
         const option=document.createElement('option');option.value=item.id;
-        option.textContent=`${String(item.id).padStart(2,'0')} / ${item.display_name||stages[item.id]?.[0]||item.name}`;
+        option.textContent=`${String(item.id).padStart(2,'0')} / ${item.display_name||item.name||`Màn ${item.id}`}`;
         $('level-select').append(option);
       });
+      if(!Object.keys(allLevels).length)throw new Error('Chưa có màn chơi trong danh mục.');
       $('level-select').disabled=false;
       await loadLevel(startingLevel());
     } catch(error) {
