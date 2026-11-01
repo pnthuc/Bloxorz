@@ -1,0 +1,26 @@
+{
+  "run_id": "lvl14_bfs_rep3_1793539664153",
+  "level_id": "14",
+  "level_name": "Stage 14: Fragile Shortcut",
+  "solver": "bfs",
+  "repeat_index": 3,
+  "status": "SOLVED",
+  "search_time_ms": 1.844,
+  "memory_kb": 8.45,
+  "expanded_nodes": 32,
+  "solution_length": 9,
+  "path_cost": 10.0,
+  "timestamp": "2026-11-01T20:27:44.153100",
+  "error_message": "",
+  "moves": [
+    "DOWN",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "UP"
+  ]
+}

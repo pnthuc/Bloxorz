@@ -1,0 +1,26 @@
+{
+  "run_id": "lvl26_bfs_rep1_1793540187816",
+  "level_id": "26",
+  "level_name": "Stage 26: Split & Bridge Warmup",
+  "solver": "bfs",
+  "repeat_index": 1,
+  "status": "SOLVED",
+  "search_time_ms": 50.475,
+  "memory_kb": 104.7,
+  "expanded_nodes": 325,
+  "solution_length": 9,
+  "path_cost": 9.5,
+  "timestamp": "2026-11-01T20:36:27.816008",
+  "error_message": "",
+  "moves": [
+    "RIGHT",
+    "RIGHT",
+    "LEFT",
+    "DOWN",
+    "DOWN",
+    "SUP",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT"
+  ]
+}

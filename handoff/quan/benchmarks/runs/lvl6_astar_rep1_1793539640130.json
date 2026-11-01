@@ -1,0 +1,28 @@
+{
+  "run_id": "lvl6_astar_rep1_1793539640130",
+  "level_id": "6",
+  "level_name": "Stage 6: Open Switch",
+  "solver": "astar",
+  "repeat_index": 1,
+  "status": "SOLVED",
+  "search_time_ms": 7.745,
+  "memory_kb": 33.24,
+  "expanded_nodes": 81,
+  "solution_length": 11,
+  "path_cost": 11.0,
+  "timestamp": "2026-11-01T20:27:20.130707",
+  "error_message": "",
+  "moves": [
+    "RIGHT",
+    "DOWN",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "DOWN",
+    "LEFT",
+    "UP",
+    "RIGHT",
+    "DOWN"
+  ]
+}

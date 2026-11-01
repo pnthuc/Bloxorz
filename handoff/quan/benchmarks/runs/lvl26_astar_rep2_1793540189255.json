@@ -1,0 +1,26 @@
+{
+  "run_id": "lvl26_astar_rep2_1793540189255",
+  "level_id": "26",
+  "level_name": "Stage 26: Split & Bridge Warmup",
+  "solver": "astar",
+  "repeat_index": 2,
+  "status": "SOLVED",
+  "search_time_ms": 22.202,
+  "memory_kb": 73.59,
+  "expanded_nodes": 120,
+  "solution_length": 9,
+  "path_cost": 9.5,
+  "timestamp": "2026-11-01T20:36:29.255311",
+  "error_message": "",
+  "moves": [
+    "RIGHT",
+    "RIGHT",
+    "SUP",
+    "SLEFT",
+    "DOWN",
+    "DOWN",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "run_id": "lvl14_astar_rep2_1793539664009",
+  "level_id": "14",
+  "level_name": "Stage 14: Fragile Shortcut",
+  "solver": "astar",
+  "repeat_index": 2,
+  "status": "SOLVED",
+  "search_time_ms": 1.342,
+  "memory_kb": 5.86,
+  "expanded_nodes": 14,
+  "solution_length": 9,
+  "path_cost": 10.0,
+  "timestamp": "2026-11-01T20:27:44.009844",
+  "error_message": "",
+  "moves": [
+    "DOWN",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "UP"
+  ]
+}

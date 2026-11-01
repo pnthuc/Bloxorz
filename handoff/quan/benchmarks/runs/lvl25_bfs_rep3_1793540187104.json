@@ -1,0 +1,33 @@
+{
+  "run_id": "lvl25_bfs_rep3_1793540187104",
+  "level_id": "25",
+  "level_name": "Stage 25: Short or Cheap Turned",
+  "solver": "bfs",
+  "repeat_index": 3,
+  "status": "SOLVED",
+  "search_time_ms": 9.209,
+  "memory_kb": 29.16,
+  "expanded_nodes": 160,
+  "solution_length": 16,
+  "path_cost": 23.0,
+  "timestamp": "2026-11-01T20:36:27.104326",
+  "error_message": "",
+  "moves": [
+    "LEFT",
+    "LEFT",
+    "LEFT",
+    "LEFT",
+    "LEFT",
+    "LEFT",
+    "LEFT",
+    "LEFT",
+    "LEFT",
+    "LEFT",
+    "LEFT",
+    "LEFT",
+    "LEFT",
+    "LEFT",
+    "LEFT",
+    "LEFT"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "run_id": "lvl27_bfs_rep3_1793540192520",
+  "level_id": "27",
+  "level_name": "Stage 27: Amber Islands",
+  "solver": "bfs",
+  "repeat_index": 3,
+  "status": "SOLVED",
+  "search_time_ms": 84.461,
+  "memory_kb": 122.07,
+  "expanded_nodes": 450,
+  "solution_length": 9,
+  "path_cost": 10.0,
+  "timestamp": "2026-11-01T20:36:32.520229",
+  "error_message": "",
+  "moves": [
+    "RIGHT",
+    "RIGHT",
+    "SUP",
+    "UP",
+    "UP",
+    "RIGHT",
+    "DOWN",
+    "RIGHT",
+    "RIGHT"
+  ]
+}

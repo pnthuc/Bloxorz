@@ -1,0 +1,19 @@
+{
+  "run_id": "lvl17_astar_rep2_1793540170060",
+  "level_id": "17",
+  "level_name": "Stage 17: Goal Left",
+  "solver": "astar",
+  "repeat_index": 2,
+  "status": "SOLVED",
+  "search_time_ms": 0.434,
+  "memory_kb": 4.17,
+  "expanded_nodes": 2,
+  "solution_length": 2,
+  "path_cost": 2.0,
+  "timestamp": "2026-11-01T20:36:10.060976",
+  "error_message": "",
+  "moves": [
+    "LEFT",
+    "LEFT"
+  ]
+}

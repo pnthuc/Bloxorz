@@ -1,0 +1,25 @@
+{
+  "run_id": "lvl5_ucs_rep2_1793539638921",
+  "level_id": "5",
+  "level_name": "Stage 5: Narrow Path",
+  "solver": "ucs",
+  "repeat_index": 2,
+  "status": "SOLVED",
+  "search_time_ms": 0.795,
+  "memory_kb": 4.55,
+  "expanded_nodes": 11,
+  "solution_length": 8,
+  "path_cost": 10.0,
+  "timestamp": "2026-11-01T20:27:18.921763",
+  "error_message": "",
+  "moves": [
+    "RIGHT",
+    "RIGHT",
+    "DOWN",
+    "DOWN",
+    "RIGHT",
+    "RIGHT",
+    "DOWN",
+    "DOWN"
+  ]
+}

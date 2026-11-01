@@ -1,0 +1,33 @@
+{
+  "run_id": "lvl22_bfs_rep2_1793540179697",
+  "level_id": "22",
+  "level_name": "Stage 22: Open Field Turned",
+  "solver": "bfs",
+  "repeat_index": 2,
+  "status": "SOLVED",
+  "search_time_ms": 56.829,
+  "memory_kb": 100.43,
+  "expanded_nodes": 594,
+  "solution_length": 16,
+  "path_cost": 16.0,
+  "timestamp": "2026-11-01T20:36:19.697672",
+  "error_message": "",
+  "moves": [
+    "LEFT",
+    "LEFT",
+    "LEFT",
+    "LEFT",
+    "LEFT",
+    "LEFT",
+    "LEFT",
+    "LEFT",
+    "DOWN",
+    "DOWN",
+    "DOWN",
+    "DOWN",
+    "DOWN",
+    "DOWN",
+    "DOWN",
+    "DOWN"
+  ]
+}

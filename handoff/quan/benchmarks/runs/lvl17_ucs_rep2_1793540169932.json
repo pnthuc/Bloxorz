@@ -1,0 +1,19 @@
+{
+  "run_id": "lvl17_ucs_rep2_1793540169932",
+  "level_id": "17",
+  "level_name": "Stage 17: Goal Left",
+  "solver": "ucs",
+  "repeat_index": 2,
+  "status": "SOLVED",
+  "search_time_ms": 2.372,
+  "memory_kb": 8.69,
+  "expanded_nodes": 9,
+  "solution_length": 2,
+  "path_cost": 2.0,
+  "timestamp": "2026-11-01T20:36:09.932294",
+  "error_message": "",
+  "moves": [
+    "LEFT",
+    "LEFT"
+  ]
+}

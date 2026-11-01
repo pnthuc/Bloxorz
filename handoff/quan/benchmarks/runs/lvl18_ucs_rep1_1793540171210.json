@@ -1,0 +1,19 @@
+{
+  "run_id": "lvl18_ucs_rep1_1793540171210",
+  "level_id": "18",
+  "level_name": "Stage 18: Goal Up",
+  "solver": "ucs",
+  "repeat_index": 1,
+  "status": "SOLVED",
+  "search_time_ms": 0.949,
+  "memory_kb": 5.8,
+  "expanded_nodes": 5,
+  "solution_length": 2,
+  "path_cost": 2.0,
+  "timestamp": "2026-11-01T20:36:11.210807",
+  "error_message": "",
+  "moves": [
+    "UP",
+    "UP"
+  ]
+}

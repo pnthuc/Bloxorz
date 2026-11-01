@@ -1,0 +1,26 @@
+{
+  "run_id": "lvl26_ucs_rep1_1793540188256",
+  "level_id": "26",
+  "level_name": "Stage 26: Split & Bridge Warmup",
+  "solver": "ucs",
+  "repeat_index": 1,
+  "status": "SOLVED",
+  "search_time_ms": 82.963,
+  "memory_kb": 175.59,
+  "expanded_nodes": 425,
+  "solution_length": 9,
+  "path_cost": 9.5,
+  "timestamp": "2026-11-01T20:36:28.256060",
+  "error_message": "",
+  "moves": [
+    "RIGHT",
+    "RIGHT",
+    "LEFT",
+    "DOWN",
+    "DOWN",
+    "SUP",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT"
+  ]
+}

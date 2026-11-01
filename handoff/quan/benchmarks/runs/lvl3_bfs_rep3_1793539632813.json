@@ -1,0 +1,32 @@
+{
+  "run_id": "lvl3_bfs_rep3_1793539632813",
+  "level_id": "3",
+  "level_name": "Stage 3: Two Bridges",
+  "solver": "bfs",
+  "repeat_index": 3,
+  "status": "SOLVED",
+  "search_time_ms": 6.555,
+  "memory_kb": 22.92,
+  "expanded_nodes": 115,
+  "solution_length": 15,
+  "path_cost": 15.0,
+  "timestamp": "2026-11-01T20:27:12.813048",
+  "error_message": "",
+  "moves": [
+    "RIGHT",
+    "DOWN",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "UP",
+    "RIGHT",
+    "DOWN",
+    "LEFT",
+    "UP",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "DOWN",
+    "DOWN"
+  ]
+}

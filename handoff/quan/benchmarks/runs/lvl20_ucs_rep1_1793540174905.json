@@ -1,0 +1,19 @@
+{
+  "run_id": "lvl20_ucs_rep1_1793540174905",
+  "level_id": "20",
+  "level_name": "Stage 20: Goal Down",
+  "solver": "ucs",
+  "repeat_index": 1,
+  "status": "SOLVED",
+  "search_time_ms": 1.738,
+  "memory_kb": 13.77,
+  "expanded_nodes": 16,
+  "solution_length": 2,
+  "path_cost": 2.0,
+  "timestamp": "2026-11-01T20:36:14.905684",
+  "error_message": "",
+  "moves": [
+    "DOWN",
+    "DOWN"
+  ]
+}

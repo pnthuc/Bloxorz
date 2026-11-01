@@ -1,0 +1,26 @@
+{
+  "run_id": "lvl30_ucs_rep1_1793540205037",
+  "level_id": "30",
+  "level_name": "Stage 30: Twin Gateways",
+  "solver": "ucs",
+  "repeat_index": 1,
+  "status": "SOLVED",
+  "search_time_ms": 154.55,
+  "memory_kb": 339.28,
+  "expanded_nodes": 766,
+  "solution_length": 9,
+  "path_cost": 9.5,
+  "timestamp": "2026-11-01T20:36:45.037360",
+  "error_message": "",
+  "moves": [
+    "RIGHT",
+    "RIGHT",
+    "DOWN",
+    "DOWN",
+    "SUP",
+    "UP",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT"
+  ]
+}

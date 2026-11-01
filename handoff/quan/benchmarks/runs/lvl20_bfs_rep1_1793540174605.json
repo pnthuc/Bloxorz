@@ -1,0 +1,19 @@
+{
+  "run_id": "lvl20_bfs_rep1_1793540174605",
+  "level_id": "20",
+  "level_name": "Stage 20: Goal Down",
+  "solver": "bfs",
+  "repeat_index": 1,
+  "status": "SOLVED",
+  "search_time_ms": 0.548,
+  "memory_kb": 5.52,
+  "expanded_nodes": 5,
+  "solution_length": 2,
+  "path_cost": 2.0,
+  "timestamp": "2026-11-01T20:36:14.605696",
+  "error_message": "",
+  "moves": [
+    "DOWN",
+    "DOWN"
+  ]
+}

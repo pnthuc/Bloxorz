@@ -1,0 +1,19 @@
+{
+  "run_id": "lvl19_ucs_rep1_1793540172956",
+  "level_id": "19",
+  "level_name": "Stage 19: Goal Right",
+  "solver": "ucs",
+  "repeat_index": 1,
+  "status": "SOLVED",
+  "search_time_ms": 1.393,
+  "memory_kb": 10.02,
+  "expanded_nodes": 12,
+  "solution_length": 2,
+  "path_cost": 2.0,
+  "timestamp": "2026-11-01T20:36:12.956167",
+  "error_message": "",
+  "moves": [
+    "RIGHT",
+    "RIGHT"
+  ]
+}

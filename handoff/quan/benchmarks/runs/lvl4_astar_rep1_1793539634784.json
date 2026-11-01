@@ -1,0 +1,33 @@
+{
+  "run_id": "lvl4_astar_rep1_1793539634784",
+  "level_id": "4",
+  "level_name": "Stage 4: Split and Merge",
+  "solver": "astar",
+  "repeat_index": 1,
+  "status": "SOLVED",
+  "search_time_ms": 297.947,
+  "memory_kb": 555.2,
+  "expanded_nodes": 1245,
+  "solution_length": 16,
+  "path_cost": 16.5,
+  "timestamp": "2026-11-01T20:27:14.784773",
+  "error_message": "",
+  "moves": [
+    "RIGHT",
+    "RIGHT",
+    "SRIGHT",
+    "SRIGHT",
+    "RIGHT",
+    "DOWN",
+    "RIGHT",
+    "SUP",
+    "SRIGHT",
+    "SRIGHT",
+    "SRIGHT",
+    "SRIGHT",
+    "SUP",
+    "SRIGHT",
+    "RIGHT",
+    "DOWN"
+  ]
+}

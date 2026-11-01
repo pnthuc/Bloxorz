@@ -1,0 +1,23 @@
+{
+  "run_id": "lvl15_bfs_rep2_1793539665241",
+  "level_id": "15",
+  "level_name": "Stage 15: Teleport Chain",
+  "solver": "bfs",
+  "repeat_index": 2,
+  "status": "SOLVED",
+  "search_time_ms": 3.276,
+  "memory_kb": 15.66,
+  "expanded_nodes": 41,
+  "solution_length": 6,
+  "path_cost": 6.0,
+  "timestamp": "2026-11-01T20:27:45.241442",
+  "error_message": "",
+  "moves": [
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT"
+  ]
+}

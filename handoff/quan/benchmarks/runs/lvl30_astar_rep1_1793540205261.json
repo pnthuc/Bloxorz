@@ -1,0 +1,26 @@
+{
+  "run_id": "lvl30_astar_rep1_1793540205261",
+  "level_id": "30",
+  "level_name": "Stage 30: Twin Gateways",
+  "solver": "astar",
+  "repeat_index": 1,
+  "status": "SOLVED",
+  "search_time_ms": 35.411,
+  "memory_kb": 108.52,
+  "expanded_nodes": 166,
+  "solution_length": 9,
+  "path_cost": 9.5,
+  "timestamp": "2026-11-01T20:36:45.261078",
+  "error_message": "",
+  "moves": [
+    "RIGHT",
+    "RIGHT",
+    "SUP",
+    "UP",
+    "SDOWN",
+    "DOWN",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT"
+  ]
+}

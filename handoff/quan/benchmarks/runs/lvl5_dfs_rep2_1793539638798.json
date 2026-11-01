@@ -1,0 +1,25 @@
+{
+  "run_id": "lvl5_dfs_rep2_1793539638798",
+  "level_id": "5",
+  "level_name": "Stage 5: Narrow Path",
+  "solver": "dfs",
+  "repeat_index": 2,
+  "status": "SOLVED",
+  "search_time_ms": 0.494,
+  "memory_kb": 3.09,
+  "expanded_nodes": 8,
+  "solution_length": 8,
+  "path_cost": 10.0,
+  "timestamp": "2026-11-01T20:27:18.798704",
+  "error_message": "",
+  "moves": [
+    "RIGHT",
+    "RIGHT",
+    "DOWN",
+    "DOWN",
+    "DOWN",
+    "DOWN",
+    "RIGHT",
+    "RIGHT"
+  ]
+}

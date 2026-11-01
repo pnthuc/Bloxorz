@@ -1,0 +1,26 @@
+{
+  "run_id": "lvl30_bfs_rep1_1793540204593",
+  "level_id": "30",
+  "level_name": "Stage 30: Twin Gateways",
+  "solver": "bfs",
+  "repeat_index": 1,
+  "status": "SOLVED",
+  "search_time_ms": 84.569,
+  "memory_kb": 185.06,
+  "expanded_nodes": 542,
+  "solution_length": 9,
+  "path_cost": 9.5,
+  "timestamp": "2026-11-01T20:36:44.593677",
+  "error_message": "",
+  "moves": [
+    "RIGHT",
+    "RIGHT",
+    "DOWN",
+    "DOWN",
+    "SUP",
+    "UP",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT"
+  ]
+}

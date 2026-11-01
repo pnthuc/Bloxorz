@@ -1,0 +1,32 @@
+{
+  "run_id": "lvl3_ucs_rep2_1793539632537",
+  "level_id": "3",
+  "level_name": "Stage 3: Two Bridges",
+  "solver": "ucs",
+  "repeat_index": 2,
+  "status": "SOLVED",
+  "search_time_ms": 10.743,
+  "memory_kb": 30.66,
+  "expanded_nodes": 122,
+  "solution_length": 15,
+  "path_cost": 15.0,
+  "timestamp": "2026-11-01T20:27:12.537438",
+  "error_message": "",
+  "moves": [
+    "RIGHT",
+    "DOWN",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "UP",
+    "RIGHT",
+    "DOWN",
+    "LEFT",
+    "UP",
+    "RIGHT",
+    "RIGHT",
+    "RIGHT",
+    "DOWN",
+    "DOWN"
+  ]
+}
